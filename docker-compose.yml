@@ -1,5 +1,20 @@
 version: "3.7"
 services:
+  api:
+    image: mrzzy/np_web_folio_api:develop
+    build:
+      context: ./folio
+      target: develop
+    user: "${UID}:${GID}"
+    environment:
+      - DB_CONNECTION_STR=Data Source=db;Initial Catalog=NPBookWEB;User ID=sa;Password=${DB_PASSWORD};
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+    ports:
+      - "5000:5000"
+    volumes:
+      - "./folio:/src"
+    depends_on:
+      - db
   db:
     image: mrzzy/np_web_folio_db
     build: 
