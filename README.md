@@ -21,6 +21,7 @@ Current Project Status:
 | 1.1 | Complete Frontend Design for Folio | :heavy_check_mark: |
 | 2.1 | Complete Database setup | :heavy_check_mark: |
 | 2.2 | Setup Entity Framework Core | :heavy_check_mark: |
+| 2.3 | Dockerize Project | :heavy_check_mark: |
 
 
 ## Structure
