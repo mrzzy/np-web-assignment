@@ -18,8 +18,10 @@ This repository contains our WEB assignment source code.
 Current Project Status:
 | No. | Step | Completition |
 | --- | --- | --- |
-| 1.1 | Complete Frontend Design for Folio | :heavy_checkmark: |
-| 2.1 | Complete Database setup | |
+| 1.1 | Complete Frontend Design for Folio | :heavy_check_mark: |
+| 2.1 | Complete Database setup | :heavy_check_mark: |
+| 2.2 | Setup Entity Framework Core | :construction: |
+
 
 ## Structure
 - db - database setup, container
