@@ -10,7 +10,7 @@ This repository contains our WEB assignment source code.
 
 ### Visual Studio
 1. Configure SQL Server with script in `db\Student_EPortfolio_Db_SetUp_Script.sql`
-2. Open `folio\folio.csproj` using the project
+2. Open `folio\folio.sln` using the project
 3. Run the project.
 4. Open the application at http://localhost:5000
 
@@ -20,7 +20,7 @@ Current Project Status:
 | --- | --- | --- |
 | 1.1 | Complete Frontend Design for Folio | :heavy_check_mark: |
 | 2.1 | Complete Database setup | :heavy_check_mark: |
-| 2.2 | Setup Entity Framework Core | :construction: |
+| 2.2 | Setup Entity Framework Core | :heavy_check_mark: |
 
 
 ## Structure
