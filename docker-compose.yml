@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  db:
+    image: mrzzy/np_web_folio_db
+    build: 
+      context: ./db
+      args:
+        - "SA_PASSWORD=${DB_PASSWORD}"
+    ports:
+      - "1433:1433"
