@@ -135,6 +135,7 @@ CREATE TABLE dbo.ProjectMember
   ProjectID				int				NOT NULL,
   StudentID				int  			NOT NULL,
   [Role]				varchar(50)  	NOT NULL DEFAULT ('Member') CHECK ([Role] IN ('Leader','Member')),
+  CONSTRAINT PK_ProjectMember PRIMARY KEY NONCLUSTERED (ProjectID, StudentID),
   CONSTRAINT FK_ProjectMember_ProjectID FOREIGN KEY (ProjectID) 
   REFERENCES dbo.Project(ProjectID),
   CONSTRAINT FK_ProjectMember_StudentID  FOREIGN KEY (StudentID) 

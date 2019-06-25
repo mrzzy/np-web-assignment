@@ -207,6 +207,32 @@ namespace folio.Models
                     .HasConstraintName("FK_Suggestion_StudentID");
             });
 
+            // ProjectMember Model
+            modelBuilder.Entity<ProjectMember>((entity) => 
+            {
+                // Composite Primary Key - ProjectId, StudentId
+                entity.HasKey(e => new { e.ProjectId, e.StudentId })
+                    .ForSqlServerIsClustered(false);
+                entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
+                entity.Property(e => e.StudentId).HasColumnName("StudentID");
+                
+                // Foreign Key ProjectID - One Project to Many ProjectMembers
+                // On project deletion: delete this ProjectMember too
+                entity.HasOne<Project>(projectMember => projectMember.Project)
+                    .WithMany(project => project.ProjectMembers)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasForeignKey(projectMember => projectMember.ProjectId)
+                    .HasConstraintName("FK_ProjectMember_ProjectID⎋");
+
+                // Foreign Key StudentID - One Student to Many ProjectMembers
+                // On student deletion: delete this ProjectMember too
+                entity.HasOne<Student>(projectMember => projectMember.Student)
+                    .WithMany(student => student.ProjectMembers)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasForeignKey(projectMember => projectMember.StudentId)
+                    .HasConstraintName("FK_ProjectMember_StudentID");
+            });
+            
             // StudentSkillset Model
             modelBuilder.Entity<StudentSkillSet>((entity) => 
             {
