@@ -10,13 +10,13 @@ namespace folio.Models
     public partial class EPortfolioDB : DbContext
     {
         /* Models managed by EPortfolioDB */
-        public virtual DbSet<Lecturer> Lecturer { get; set; }
-        public virtual DbSet<Project> Project { get; set; }
-        public virtual DbSet<SkillSet> SkillSet { get; set; }
-        public virtual DbSet<Student> Student { get; set; }
-        public virtual DbSet<Suggestion> Suggestion { get; set; }
-        public virtual DbSet<StudentSkillSet> StudentSkillSet { get; set; }
-        public virtual DbSet<ProjectMember> ProjectMember { get; set; }
+        public virtual DbSet<Lecturer> Lecturers { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<SkillSet> SkillSets { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Suggestion> Suggestions { get; set; }
+        public virtual DbSet<StudentSkillSet> StudentSkillSets { get; set; }
+        public virtual DbSet<ProjectMember> ProjectMembers { get; set; }
 
         /* constructors */
         public EPortfolioDB() { }
