@@ -214,13 +214,17 @@ namespace folio.Models
                 entity.HasKey(e => new { e.StudentId, e.SkillSetId });
                 
                 // Foreign Key StudentID - One Student to Many StudentSkillSets
+                // On student deletion: delete this StudentSkillSets too
                 entity.HasOne<Student>(studentSkillSet => studentSkillSet.Student)
                     .WithMany(student => student.StudentSkillSets)
-                    .HasForeignKey(studentSkillSet => studentSkillSet.StudentId);
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasForeignKey(studentSkillSet => studentSkillSet.StudentId)
                 
                 // Foreign Key SkillSetID - One SkillSet to Many StudentSkillSets
+                // On student deletion: delete this StudentSkillSets too
                 entity.HasOne<SkillSet>(studentSkillSet => studentSkillSet.SkillSet)
                     .WithMany(skillset => skillset.StudentSkillSets)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasForeignKey(studentSkillSet => studentSkillSet.SkillSetId);
             });
         }
