@@ -1,6 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace folio.Models
 {
@@ -270,6 +274,17 @@ namespace folio.Models
         */
         public string ReadConnectionString()
         {
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json");
+            
+            var configuration = builder.Build();
+            string strConn = configuration.GetConnectionString(
+            "EPortfolioConnectionString");
+
+
+            return strConn;
+
         }
     }
 }
