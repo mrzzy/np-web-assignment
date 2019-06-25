@@ -211,7 +211,10 @@ namespace folio.Models
             modelBuilder.Entity<StudentSkillSet>((entity) => 
             {
                 // Composite Primary Key - StudentId, SkillSetId
-                entity.HasKey(e => new { e.StudentId, e.SkillSetId });
+                entity.HasKey(e => new { e.StudentId, e.SkillSetId })
+                    .ForSqlServerIsClustered(false);
+                entity.Property(e => e.StudentId).HasColumnName("StudentID");
+                entity.Property(e => e.SkillSetId).HasColumnName("SkillSetID");
                 
                 // Foreign Key StudentID - One Student to Many StudentSkillSets
                 // On student deletion: delete this StudentSkillSets too
@@ -219,13 +222,15 @@ namespace folio.Models
                     .WithMany(student => student.StudentSkillSets)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasForeignKey(studentSkillSet => studentSkillSet.StudentId)
+                    .HasConstraintName("FK_StudentSkillSet_StudentID");
                 
                 // Foreign Key SkillSetID - One SkillSet to Many StudentSkillSets
                 // On student deletion: delete this StudentSkillSets too
                 entity.HasOne<SkillSet>(studentSkillSet => studentSkillSet.SkillSet)
                     .WithMany(skillset => skillset.StudentSkillSets)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasForeignKey(studentSkillSet => studentSkillSet.SkillSetId);
+                    .HasForeignKey(studentSkillSet => studentSkillSet.SkillSetId)
+                    .HasConstraintName("FK_StudentSkillSet_SkillSetID");
             });
         }
     }
