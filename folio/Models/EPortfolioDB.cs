@@ -229,7 +229,7 @@ namespace folio.Models
                 entity.HasOne<SkillSet>(studentSkillSet => studentSkillSet.SkillSet)
                     .WithMany(skillset => skillset.StudentSkillSets)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasForeignKey(studentSkillSet => studentSkillSet.SkillSetId)
+                    .HasForeignKey(studentSkillSet => studentSkillSet.SkillSetId);
                     .HasConstraintName("FK_StudentSkillSet_SkillSetID");
             });
         }
