@@ -206,6 +206,23 @@ namespace folio.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Suggestion_StudentID");
             });
+
+            // StudentSkillset Model
+            modelBuilder.Entity<StudentSkillSet>((entity) => 
+            {
+                // Composite Primary Key - StudentId, SkillSetId
+                entity.HasKey(e => new { e.StudentId, e.SkillSetId });
+                
+                // Foreign Key StudentID - One Student to Many StudentSkillSets
+                entity.HasOne<Student>(studentSkillSet => studentSkillSet.Student)
+                    .WithMany(student => student.StudentSkillSets)
+                    .HasForeignKey(studentSkillSet => studentSkillSet.StudentId);
+                
+                // Foreign Key SkillSetID - One SkillSet to Many StudentSkillSets
+                entity.HasOne<SkillSet>(studentSkillSet => studentSkillSet.SkillSet)
+                    .WithMany(skillset => skillset.StudentSkillSets)
+                    .HasForeignKey(studentSkillSet => studentSkillSet.SkillSetId);
+            });
         }
     }
 }
