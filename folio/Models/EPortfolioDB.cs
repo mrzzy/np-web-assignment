@@ -32,8 +32,7 @@ namespace folio.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                /* TODO: inject connection string */
-                throw new NotImplementedException("Connection String injection not implemented");
+                optionsBuilder.UseSqlServer(this.ReadConnectionString());
             }
         }
         
