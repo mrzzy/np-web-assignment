@@ -10,5 +10,8 @@ namespace folio.Models
         public string Description { get; set; }
         public string ProjectPoster { get; set; }
         public string ProjectUrl { get; set; }
+    
+        // Foreign Model Relationships
+        public ICollection<ProjectMember> ProjectMembers { get; set; }
     }
 }
