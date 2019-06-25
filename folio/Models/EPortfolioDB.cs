@@ -270,7 +270,7 @@ namespace folio.Models
          *   DB_CONNECTION_STR 
          * - Otherwise attempts to read the connection string from appsettings.json
         */
-        public string ReadConnectionString()
+        private string ReadConnectionString()
         {
             // Attempt to read connection string environment variable
             string envConnectionStr = Environment.GetEnvironmentVariable(
