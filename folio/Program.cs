@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
+
 namespace folio
 {
     public class Program
@@ -21,7 +22,7 @@ namespace folio
                 .UseUrls("http://0.0.0.0:5000/")
                 .UseStartup<Startup>()
                 .Build();
-
+            
             host.Run();
         }
 
