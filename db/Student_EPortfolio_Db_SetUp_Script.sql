@@ -109,6 +109,7 @@ CREATE TABLE dbo.StudentSkillSet
 (
   StudentID				int  			NOT NULL,
   SkillSetID			int				NOT NULL,
+  CONSTRAINT PK_StudentSkillSet PRIMARY KEY NONCLUSTERED (StudentID, SkillSetID),
   CONSTRAINT FK_StudentSkillSet_StudentID FOREIGN KEY (StudentID) 
   REFERENCES dbo.Student(StudentID),
   CONSTRAINT FK_StudentSkillSet_SkillSetID  FOREIGN KEY (SkillSetID) 
