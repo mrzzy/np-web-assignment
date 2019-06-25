@@ -7,7 +7,7 @@ namespace folio.Models
     {
         public Student()
         {
-            Suggestion = new HashSet<Suggestion>();
+            this.Suggestions = new HashSet<Suggestion>();
             this.StudentSkillSets = new HashSet<StudentSkillSet>();
             this.ProjectMembers = new HashSet<ProjectMember>();
         }
@@ -25,7 +25,7 @@ namespace folio.Models
 
         // Foreign model relationships
         public virtual Lecturer Mentor { get; set; }
-        public virtual ICollection<Suggestion> Suggestion { get; set; }
+        public virtual ICollection<Suggestion> Suggestions { get; set; }
         public virtual ICollection<StudentSkillSet> StudentSkillSets { get; set; }
         public virtual ICollection<ProjectMember> ProjectMembers { get; set; }
     }

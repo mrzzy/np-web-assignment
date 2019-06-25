@@ -7,8 +7,8 @@ namespace folio.Models
     {
         public Lecturer()
         {
-            Student = new HashSet<Student>();
-            Suggestion = new HashSet<Suggestion>();
+            Students = new HashSet<Student>();
+            Suggestions = new HashSet<Suggestion>();
         }
 
         public int LecturerId { get; set; }
@@ -17,7 +17,7 @@ namespace folio.Models
         public string Password { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<Student> Student { get; set; }
-        public virtual ICollection<Suggestion> Suggestion { get; set; }
+        public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<Suggestion> Suggestions { get; set; }
     }
 }

@@ -163,7 +163,7 @@ namespace folio.Models
                 // Foreign Key MentorID - One Mentor(Lecturer) to Many Students
                 // On mentor(Lecturer) deletion: set to null
                 entity.HasOne(d => d.Mentor)
-                    .WithMany(p => p.Student)
+                    .WithMany(p => p.Students)
                     .HasForeignKey(d => d.MentorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Student_MentorID");
@@ -198,7 +198,7 @@ namespace folio.Models
                 // Foreign Key Lecturer - One Lecturer to Many Suggestions
                 // On Lecturer deletion: delete this suggestion too (cascade)
                 entity.HasOne(d => d.Lecturer)
-                    .WithMany(p => p.Suggestion)
+                    .WithMany(p => p.Suggestions)
                     .HasForeignKey(d => d.LecturerId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Suggestion_LecturerID");
@@ -206,7 +206,7 @@ namespace folio.Models
                 // Foreign Key StudentID- One Student to Many Suggestions
                 // On Student deletion: delete this suggestion too (cascade)
                 entity.HasOne(d => d.Student)
-                    .WithMany(p => p.Suggestion)
+                    .WithMany(p => p.Suggestions)
                     .HasForeignKey(d => d.StudentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Suggestion_StudentID");
