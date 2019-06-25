@@ -21,7 +21,8 @@ namespace folio.Models
         /* constructors */
         public EPortfolioDB() { }
         public EPortfolioDB(DbContextOptions<EPortfolioDB> options) : base(options) { }
-
+    
+        /* Database Context methods */
         /* configure EPortfolioDB to connect to the database */
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -258,6 +259,17 @@ namespace folio.Models
                     .HasForeignKey(studentSkillSet => studentSkillSet.SkillSetId)
                     .HasConstraintName("FK_StudentSkillSet_SkillSetID");
             });
+        }
+        
+        /* Utilties */
+        /* Attempts to read and return the connection string:
+         * - Tries to read the connection string from the environment variable
+         *   DB_CONNECTION_STR 
+         * - Otherwise attempts to read the connection string from appsettings.json
+         * If read is unsucessful, ArgumentNullException will be thrown
+        */
+        public string ReadConnectionString()
+        {
         }
     }
 }
