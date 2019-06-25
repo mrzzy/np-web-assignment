@@ -4,44 +4,45 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace folio.Models
 {
+    /* EPortfolioDB provides a data access layer (DAL) that bridges the game 
+     * between the models and the database.
+    */
     public partial class EPortfolioDB : DbContext
     {
-        public EPortfolioDB()
-        {
-        }
-
-        public EPortfolioDB(DbContextOptions<EPortfolioDB> options)
-            : base(options)
-        {
-        }
-
+        /* Models managed by EPortfolioDB */
         public virtual DbSet<Lecturer> Lecturer { get; set; }
         public virtual DbSet<Project> Project { get; set; }
         public virtual DbSet<SkillSet> SkillSet { get; set; }
         public virtual DbSet<Student> Student { get; set; }
         public virtual DbSet<Suggestion> Suggestion { get; set; }
-
         // Unable to generate entity type for table 'dbo.StudentSkillSet'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.ProjectMember'. Please see the warning messages.
 
+        /* constructors */
+        public EPortfolioDB() { }
+        public EPortfolioDB(DbContextOptions<EPortfolioDB> options) : base(options) { }
+
+        /* configure EPortfolioDB to connect to the database */
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 /* TODO: inject connection string */
-                throw NotImplementedException("Connection String injection not implemented"):
+                throw new NotImplementedException("Connection String injection not implemented");
             }
         }
-
+        
+        /* configure mapping of models to database tables */
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
-
+        
+            // Lecturer model
             modelBuilder.Entity<Lecturer>(entity =>
             {
+                // primary key - LecturerID
                 entity.HasKey(e => e.LecturerId)
                     .ForSqlServerIsClustered(false);
-
                 entity.Property(e => e.LecturerId).HasColumnName("LecturerID");
 
                 entity.Property(e => e.Description)
@@ -65,8 +66,10 @@ namespace folio.Models
                     .HasDefaultValueSql("('p@55Lecturer')");
             });
 
+            // Project Model
             modelBuilder.Entity<Project>(entity =>
             {
+                // Primary key - ProjectID
                 entity.HasKey(e => e.ProjectId)
                     .ForSqlServerIsClustered(false);
 
@@ -91,11 +94,12 @@ namespace folio.Models
                     .IsUnicode(false);
             });
 
+            // SkillSet Model
             modelBuilder.Entity<SkillSet>(entity =>
             {
+                // Primary Key SkillSetID
                 entity.HasKey(e => e.SkillSetId)
                     .ForSqlServerIsClustered(false);
-
                 entity.Property(e => e.SkillSetId).HasColumnName("SkillSetID");
 
                 entity.Property(e => e.SkillSetName)
@@ -104,11 +108,12 @@ namespace folio.Models
                     .IsUnicode(false);
             });
 
+            // Student Model
             modelBuilder.Entity<Student>(entity =>
             {
+                // Primary Key StudentID
                 entity.HasKey(e => e.StudentId)
                     .ForSqlServerIsClustered(false);
-
                 entity.Property(e => e.StudentId).HasColumnName("StudentID");
 
                 entity.Property(e => e.Achievement)
@@ -150,6 +155,8 @@ namespace folio.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                // Foreign Key MentorID - One Mentor(Lecturer) to Many Students
+                // On mentor(Lecturer) deletion: set to null
                 entity.HasOne(d => d.Mentor)
                     .WithMany(p => p.Student)
                     .HasForeignKey(d => d.MentorId)
@@ -157,11 +164,12 @@ namespace folio.Models
                     .HasConstraintName("FK_Student_MentorID");
             });
 
+            // Suggestion Model
             modelBuilder.Entity<Suggestion>(entity =>
             {
+                // Primary Key SuggestionID
                 entity.HasKey(e => e.SuggestionId)
                     .ForSqlServerIsClustered(false);
-
                 entity.Property(e => e.SuggestionId).HasColumnName("SuggestionID");
 
                 entity.Property(e => e.DateCreated)
@@ -182,12 +190,16 @@ namespace folio.Models
 
                 entity.Property(e => e.StudentId).HasColumnName("StudentID");
 
+                // Foreign Key Lecturer - One Lecturer to Many Suggestions
+                // On Lecturer deletion: delete this suggestion too (cascade)
                 entity.HasOne(d => d.Lecturer)
                     .WithMany(p => p.Suggestion)
                     .HasForeignKey(d => d.LecturerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Suggestion_LecturerID");
 
+                // Foreign Key StudentID- One Student to Many Suggestions
+                // On Student deletion: delete this suggestion too (cascade)
                 entity.HasOne(d => d.Student)
                     .WithMany(p => p.Suggestion)
                     .HasForeignKey(d => d.StudentId)
