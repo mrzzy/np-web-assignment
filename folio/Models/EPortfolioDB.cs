@@ -270,21 +270,24 @@ namespace folio.Models
          * - Tries to read the connection string from the environment variable
          *   DB_CONNECTION_STR 
          * - Otherwise attempts to read the connection string from appsettings.json
-         * If read is unsucessful, ArgumentNullException will be thrown
         */
         public string ReadConnectionString()
         {
-            var builder = new ConfigurationBuilder()
+            // Attempt to read connection string environment variable
+            string envConnectionStr = Environment.GetEnvironmentVariable(
+                    "DB_CONNECTION_STR");
+            if(envConnectionStr != null) return envConnectionStr;
+
+            // Loads connection string from appsettings.json
+            IConfigurationBuilder builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json");
             
-            var configuration = builder.Build();
-            string strConn = configuration.GetConnectionString(
-            "EPortfolioConnectionString");
+            IConfiguration configuration = builder.Build();
+            string connectionStr = configuration.GetConnectionString(
+                    "EPortfolioConnectionString");
 
-
-            return strConn;
-
+            return connectionStr;
         }
     }
 }
