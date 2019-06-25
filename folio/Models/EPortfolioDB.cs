@@ -15,8 +15,8 @@ namespace folio.Models
         public virtual DbSet<SkillSet> SkillSet { get; set; }
         public virtual DbSet<Student> Student { get; set; }
         public virtual DbSet<Suggestion> Suggestion { get; set; }
-        // Unable to generate entity type for table 'dbo.StudentSkillSet'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.ProjectMember'. Please see the warning messages.
+        public virtual DbSet<StudentSkillSet> StudentSkillSet { get; set; }
+        public virtual DbSet<ProjectMember> ProjectMember { get; set; }
 
         /* constructors */
         public EPortfolioDB() { }
