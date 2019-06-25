@@ -24,10 +24,9 @@ Current Project Status:
 | 2.3 | Dockerize Project | :heavy_check_mark: |
 | 2.4.1 | AutoScaffolding of Models| :heavy_check_mark: |
 | 2.4.2 | Injecting Connection String | :construction: |
-| 2.4.3 | Fixing Missing Models From Scaffolding | :construction: |
+| 2.4.3 | Fixing Missing Models From Scaffolding | :heavy_check_mark: |
 | 2.5.2 | Setup Unit Testing Framwork| :construction: |
 | 2.5.1 | Intergration Test Models | :construction: |
-
 
 ## Structure
 - db - database setup, container
