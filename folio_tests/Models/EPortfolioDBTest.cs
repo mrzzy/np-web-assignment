@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Xunit;
 
@@ -70,6 +71,9 @@ namespace folio.Tests.Models
                 Assert.False(ProjectTest.CheckSampleProject(obtainProject),
                         "Project update changes has not propogated to database");
                 Assert.Equal(obtainProject.Title, "Deep Learning Time Travel");
+            
+                // cleanup
+                database.Projects.Remove(obtainProject);
                 database.SaveChanges();
             }
         }
@@ -97,6 +101,31 @@ namespace folio.Tests.Models
             {
                 int nMatches = database.Projects.Where(p => p.ProjectId == projectId).Count();
                 Assert.Equal(nMatches, 0);
+            }
+        }
+        
+        // test querying ability of the model, including traversing
+        // foreign model relations.
+        // NOTE: relies on prepopulated data defined in
+        // db/Student_EPortfolio_Db_SetUp_Script.sql
+        [Fact]
+        public void TestQueryModel()
+        {
+            // query 
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                Student student = database.Students
+                    .Where(s => s.Name == "Amy Ng")
+                    .Include(s => s.ProjectMembers)
+                        .ThenInclude(pm => pm.Project)
+                    .Single();
+                
+                Assert.True(student.StudentId == 2,
+                        "Query returned wrong student model");
+
+                Project obtainProject = student.ProjectMembers.First().Project;
+                Assert.True(obtainProject.ProjectId == 2,
+                        "Traversing foreign relations gave wrong project");
             }
         }
     }
