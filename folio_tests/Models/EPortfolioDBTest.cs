@@ -10,12 +10,11 @@ namespace folio.Tests.Models
     public class EPortfolioDBTest
     {
         /* DB Intergration Tests - requires database to be present  */
-        /* Project model */
-        // Test insertion the project model into the database
+        // Test insertion the model into the database
         [Fact]
         public void TestInsertModel()
         {
-            // Perform insertion of the project object
+            // Perform insertion of the project model
             int projectId = -1; // -1 -> null value
             using (EPortfolioDB database = new EPortfolioDB())
             {
@@ -42,14 +41,14 @@ namespace folio.Tests.Models
         
     
         [Fact]
+        // test updating models in the database
         public void TestUpdateModel()
         {
             
-            // Update object in database
             int projectId = 0;
             using (EPortfolioDB database = new EPortfolioDB())
             {
-                // Test Projects
+                // insert test project into db
                 Project project = ProjectTest.GetSampleProject();
                 database.Projects.Add(project);
                 database.SaveChanges();
@@ -63,7 +62,7 @@ namespace folio.Tests.Models
                 database.SaveChanges();
             }
             
-            // check that the object has actually been updated
+            // check that the project has actually been updated
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 Project obtainProject = database.Projects.Where(
@@ -72,6 +71,32 @@ namespace folio.Tests.Models
                         "Project update changes has not propogated to database");
                 Assert.Equal(obtainProject.Title, "Deep Learning Time Travel");
                 database.SaveChanges();
+            }
+        }
+
+        // test deletion the model into the database
+        [Fact]
+        public void TestDeleteModel()
+        {
+            int projectId = -1; // -1 -> null value
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                // Perform insertion of the test project
+                Project project = ProjectTest.GetSampleProject();
+                database.Projects.Add(project);
+                database.SaveChanges();
+                projectId = project.ProjectId;
+                
+                // delete the test project
+                database.Projects.Remove(project);
+                database.SaveChanges();
+            }
+
+            // Check for presence of record in the database
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                int nMatches = database.Projects.Where(p => p.ProjectId == projectId).Count();
+                Assert.Equal(nMatches, 0);
             }
         }
     }
