@@ -13,10 +13,10 @@ namespace folio.Tests.Models
         /* Project model */
         // Test insertion the project model into the database
         [Fact]
-        public void InsertProject()
+        public void TestInsertProject()
         {
             // Perform insertion of the project object
-            int projectId = -1;
+            int projectId = -1; // -1 -> null value
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 Project project = ProjectTest.GetSampleProject();
