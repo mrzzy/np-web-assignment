@@ -12,15 +12,15 @@ namespace folio.Tests.Models
         [Fact]
         public void CheckProjectConstruction()
         {
-            Project sampleProject =  this.GetSampleProject();
-            Assert.True(this.CheckSampleProject(sampleProject), 
+            Project sampleProject =  ProjectTest.GetSampleProject();
+            Assert.True(ProjectTest.CheckSampleProject(sampleProject), 
                     "Sample Project provided not consistent with original sample " +
                     "Project");
         }
 
         /* Utilties */
         // Create a new sample project model object and return it 
-        public Project GetSampleProject()
+        public static Project GetSampleProject()
         {
             Project sampleProject = new Project
             {
@@ -36,7 +36,7 @@ namespace folio.Tests.Models
     
         // check the consistency of the project model created by GetSampleProject()
         // Returns true if the consistency is validated, false otherwise
-        public bool CheckSampleProject(Project project)
+        public static bool CheckSampleProject(Project project)
         {
             if(project == null) return false;
             else if(project.Title != "Time Traveling with Deep Learning") 
