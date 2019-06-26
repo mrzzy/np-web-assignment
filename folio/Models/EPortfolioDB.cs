@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +33,7 @@ namespace folio.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(this.ReadConnectionString());
+                optionsBuilder.UseSqlServer(EPortfolioDB.ReadConnectionString());
             }
         }
         
@@ -44,6 +45,8 @@ namespace folio.Models
             // Lecturer model
             modelBuilder.Entity<Lecturer>(entity =>
             {
+                entity.ToTable("Lecturer");
+                        
                 // primary key - LecturerID
                 entity.HasKey(e => e.LecturerId)
                     .ForSqlServerIsClustered(false);
@@ -73,6 +76,8 @@ namespace folio.Models
             // Project Model
             modelBuilder.Entity<Project>(entity =>
             {
+                entity.ToTable("Project");
+
                 // Primary key - ProjectID
                 entity.HasKey(e => e.ProjectId)
                     .ForSqlServerIsClustered(false);
@@ -101,6 +106,8 @@ namespace folio.Models
             // SkillSet Model
             modelBuilder.Entity<SkillSet>(entity =>
             {
+                entity.ToTable("SkillSet");
+
                 // Primary Key SkillSetID
                 entity.HasKey(e => e.SkillSetId)
                     .ForSqlServerIsClustered(false);
@@ -115,6 +122,8 @@ namespace folio.Models
             // Student Model
             modelBuilder.Entity<Student>(entity =>
             {
+                entity.ToTable("Student");
+
                 // Primary Key StudentID
                 entity.HasKey(e => e.StudentId)
                     .ForSqlServerIsClustered(false);
@@ -171,6 +180,8 @@ namespace folio.Models
             // Suggestion Model
             modelBuilder.Entity<Suggestion>(entity =>
             {
+                entity.ToTable("Suggestion");
+                
                 // Primary Key SuggestionID
                 entity.HasKey(e => e.SuggestionId)
                     .ForSqlServerIsClustered(false);
@@ -214,6 +225,7 @@ namespace folio.Models
             // ProjectMember Model
             modelBuilder.Entity<ProjectMember>((entity) => 
             {
+                entity.ToTable("ProjectMember");
                 // Composite Primary Key - ProjectId, StudentId
                 entity.HasKey(e => new { e.ProjectId, e.StudentId })
                     .ForSqlServerIsClustered(false);
@@ -240,6 +252,8 @@ namespace folio.Models
             // StudentSkillset Model
             modelBuilder.Entity<StudentSkillSet>((entity) => 
             {
+                entity.ToTable("StudentSkillSet");
+
                 // Composite Primary Key - StudentId, SkillSetId
                 entity.HasKey(e => new { e.StudentId, e.SkillSetId })
                     .ForSqlServerIsClustered(false);
@@ -270,17 +284,17 @@ namespace folio.Models
          *   DB_CONNECTION_STR 
          * - Otherwise attempts to read the connection string from appsettings.json
         */
-        private string ReadConnectionString()
+        public static string ReadConnectionString()
         {
             // Attempt to read connection string environment variable
-            string envConnectionStr = Environment.GetEnvironmentVariable(
+            String envConnectionStr = Environment.GetEnvironmentVariable(
                     "DB_CONNECTION_STR");
-            if(envConnectionStr != null) return envConnectionStr;
-
+            if(!string.IsNullOrWhiteSpace(envConnectionStr)) return envConnectionStr;
+            
             // Loads connection string from appsettings.json
-            IConfigurationBuilder builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json");
+            IConfigurationBuilder builder = new ConfigurationBuilder();
+            builder.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
             
             IConfiguration configuration = builder.Build();
             string connectionStr = configuration.GetConnectionString(
