@@ -7,7 +7,7 @@ services:
       target: develop
     user: "${UID}:${GID}"
     environment:
-      - DB_CONNECTION_STR=Server=db;Database=Student_Eportfolio;User ID=sa;Password=${DB_PASSWORD};
+      - DB_CONNECTION_STR=Server=db,1433;Database=Student_Eportfolio;User ID=sa;Password=${DB_PASSWORD};
       - DOTNET_USE_POLLING_FILE_WATCHER=1
     ports:
       - "5000:5000"

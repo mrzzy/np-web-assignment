@@ -109,6 +109,7 @@ CREATE TABLE dbo.StudentSkillSet
 (
   StudentID				int  			NOT NULL,
   SkillSetID			int				NOT NULL,
+  CONSTRAINT PK_StudentSkillSet PRIMARY KEY NONCLUSTERED (StudentID, SkillSetID),
   CONSTRAINT FK_StudentSkillSet_StudentID FOREIGN KEY (StudentID) 
   REFERENCES dbo.Student(StudentID),
   CONSTRAINT FK_StudentSkillSet_SkillSetID  FOREIGN KEY (SkillSetID) 
@@ -134,6 +135,7 @@ CREATE TABLE dbo.ProjectMember
   ProjectID				int				NOT NULL,
   StudentID				int  			NOT NULL,
   [Role]				varchar(50)  	NOT NULL DEFAULT ('Member') CHECK ([Role] IN ('Leader','Member')),
+  CONSTRAINT PK_ProjectMember PRIMARY KEY NONCLUSTERED (ProjectID, StudentID),
   CONSTRAINT FK_ProjectMember_ProjectID FOREIGN KEY (ProjectID) 
   REFERENCES dbo.Project(ProjectID),
   CONSTRAINT FK_ProjectMember_StudentID  FOREIGN KEY (StudentID) 
