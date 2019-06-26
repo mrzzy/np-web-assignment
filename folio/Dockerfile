@@ -13,7 +13,7 @@ COPY . .
 RUN mkdir /.dotnet && chmod a=rwx /.dotnet
 RUN mkdir /.nuget && chmod a=rwx /.nuget
 RUN chmod a=rwx /tmp
-ENTRYPOINT dotnet watch run
+ENTRYPOINT dotnet watch --project folio/folio.csproj run
 
 # stage: build project
 FROM develop AS build
