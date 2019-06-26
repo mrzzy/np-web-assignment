@@ -3,7 +3,8 @@ services:
   api:
     image: mrzzy/np_web_folio_api:develop
     build:
-      context: ./folio
+      context: .
+      dockerfile: ./folio/Dockerfile
       target: develop
     user: "${UID}:${GID}"
     environment:
@@ -12,7 +13,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - "./folio:/src"
+      - ".:/src"
     depends_on:
       - db
   db:
