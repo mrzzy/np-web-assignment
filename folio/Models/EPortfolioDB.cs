@@ -238,7 +238,7 @@ namespace folio.Models
                     .WithMany(project => project.ProjectMembers)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasForeignKey(projectMember => projectMember.ProjectId)
-                    .HasConstraintName("FK_ProjectMember_ProjectID⎋");
+                    .HasConstraintName("FK_ProjectMember_ProjectID");
 
                 // Foreign Key StudentID - One Student to Many ProjectMembers
                 // On student deletion: delete this ProjectMember too
