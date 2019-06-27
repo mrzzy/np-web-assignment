@@ -9,7 +9,7 @@ This repository contains our WEB assignment source code.
 4. Open the application at http://localhost:5000
 
 ### Visual Studio
-1. Configure SQL Server with script in `db\Student_EPortfolio_Db_SetUp_Script.sql`
+1. Configure & Run SQL Server with script in `db\Student_EPortfolio_Db_SetUp_Script.sql`
 2. Open `folio\folio.sln` using the project
 3. Run the project.
 4. Open the application at http://localhost:5000
