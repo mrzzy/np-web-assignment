@@ -99,7 +99,8 @@ namespace folio.Tests.Models
             // Check for presence of record in the database
             using (EPortfolioDB database = new EPortfolioDB())
             {
-                int nMatches = database.Projects.Where(p => p.ProjectId == projectId).Count();
+                int nMatches = database.Projects
+                    .Where(p => p.ProjectId == projectId).Count();
                 Assert.Equal(nMatches, 0);
             }
         }
@@ -111,7 +112,7 @@ namespace folio.Tests.Models
         [Fact]
         public void TestQueryModel()
         {
-            // query 
+            // query for  predefined data
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 Student student = database.Students
@@ -126,6 +127,79 @@ namespace folio.Tests.Models
                 Project obtainProject = student.ProjectMembers.First().Project;
                 Assert.True(obtainProject.ProjectId == 2,
                         "Traversing foreign relations gave wrong project");
+            }
+        }
+        
+        // Test the insertion, query of a complex model (model with foreign model
+        // relationships
+        [Fact]
+        public void TestComplexModel()
+        {
+            /* Insert a complex model with foreign model relationships 
+             * <- means depends foreign model
+             * Lecturer <- Student <- ProjectMembers -> Project 
+            */
+            int lecturerId = -1;
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                // Lecturer model
+                Lecturer lecturer = LecturerTest.GetSampleLecturer();
+                database.Lecturers.Add(lecturer);
+            
+                // Student model
+                Student student = StudentTest.GetSampleStudent();
+                student.Mentor = lecturer;
+                database.Students.Add(student);
+        
+                // Project model
+                Project project = ProjectTest.GetSampleProject();
+                database.Projects.Add(project);
+            
+                // ProjectMember model
+                ProjectMember projectMember = new ProjectMember
+                {
+                    Student = student,
+                    Project = project
+                };
+                database.ProjectMembers.Add(projectMember);
+
+                database.SaveChanges();
+                lecturerId = lecturer.LecturerId;
+            }
+        
+            // query complex model
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                Lecturer lecturer = database.Lecturers
+                    .Where(l => l.LecturerId == lecturerId)
+                    .Include(l => l.Students)
+                        .ThenInclude(s => s.ProjectMembers)
+                            .ThenInclude(pm => pm.Project)
+                    .Single();
+
+                Assert.True(LecturerTest.CheckSampleLecturer(lecturer),
+                    "lecturer obtained from DB inconsistent with one inserted " +
+                    "into the db");
+                
+                Student student = lecturer.Students.First();
+                Assert.True(StudentTest.CheckSampleStudent(student),
+                    "student obtained from DB inconsistent with one inserted " +
+                    "into the db");
+                
+                
+                ProjectMember projectMember = lecturer.Students.First()
+                                                .ProjectMembers.First();
+                Project project = projectMember.Project;
+                Assert.True(ProjectTest.CheckSampleProject(project),
+                    "project obtained from DB inconsistent with one inserted " +
+                    "into the db");
+
+                // cleanup
+                database.ProjectMembers.Remove(projectMember);
+                database.Projects.Remove(project);
+                database.Students.Remove(student);
+                database.Lecturers.Remove(lecturer);
+                database.SaveChanges();
             }
         }
     }
