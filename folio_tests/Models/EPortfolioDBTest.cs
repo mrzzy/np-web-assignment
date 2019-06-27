@@ -158,7 +158,7 @@ namespace folio.Tests.Models
                 // ProjectMember model
                 ProjectMember projectMember = new ProjectMember
                 {
-                    Student = student,
+                    Member = student,
                     Project = project
                 };
                 database.ProjectMembers.Add(projectMember);

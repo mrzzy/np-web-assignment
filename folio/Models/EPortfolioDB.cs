@@ -242,7 +242,7 @@ namespace folio.Models
 
                 // Foreign Key StudentID - One Student to Many ProjectMembers
                 // On student deletion: delete this ProjectMember too
-                entity.HasOne<Student>(projectMember => projectMember.Student)
+                entity.HasOne<Student>(projectMember => projectMember.Member)
                     .WithMany(student => student.ProjectMembers)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasForeignKey(projectMember => projectMember.StudentId)
