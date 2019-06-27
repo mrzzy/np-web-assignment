@@ -26,7 +26,7 @@ Current Project Status:
 | 2.4.2 | Injecting Connection String | :heavy_check_mark: |
 | 2.4.3 | Fixing Missing Models From Scaffolding | :heavy_check_mark: |
 | 2.5.2 | Setup Unit Testing Framwork| :heavy_check_mark: |
-| 2.5.1 | Intergration Test Models | :construction: |
+| 2.5.1 | Intergration Test Models | :heavy_check_mark: |
 
 ## Structure
 - db - database setup, container

@@ -19,6 +19,6 @@ namespace folio.Models
         
         // One ProjectMember to many Member(student) mapping
         public int StudentId  { get; set; }
-        public Student Student  { get; set; }
+        public Student Member  { get; set; }
     }
 }
