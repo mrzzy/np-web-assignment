@@ -10,10 +10,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 using folio.Models;
+using folio.FormModels;
 
-namespace folio.Controllers
+namespace folio.API.Controllers
 {
     // controller for the /api/skillset[s]/ route
     public class SkillSetController : Controller
@@ -73,6 +76,31 @@ namespace folio.Controllers
             if(skillset == null) return NotFound();
 
             return Json(skillset);
+        }
+
+            
+        // route to create a skillset for skillset form modle
+        // responds to request with json reprensetation of the skillset
+        [HttpPost("skillset/create")]
+        [Produces("application/json")]
+        public ActionResult CreateSkillSet([FromBody] SkillSetFormModel formModel)
+        {
+            Console.WriteLine("creating: " + formModel.SkillSetName);
+
+            // write the given skillset to database
+            int skillSetId = -1;
+            using(EPortfolioDB database = new EPortfolioDB())
+            {
+                SkillSet skillSet =  formModel.Generate();
+                database.SkillSets.Add(skillSet);
+                database.SaveChanges();
+            
+                skillSetId = skillSet.SkillSetId;
+            }
+
+            // respond with sucess message with inserted skillset id
+            Object response = new { skillset_id = skillSetId };
+            return Json(response);
         }
     }
 }
