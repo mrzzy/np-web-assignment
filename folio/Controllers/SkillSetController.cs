@@ -6,7 +6,7 @@
 
 using System;
 using System.Linq;
-using System.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +15,7 @@ using folio.Models;
 
 namespace folio.Controllers
 {
-    // controller for the /skillset/ route
+    // controller for the /api/skillset[s]/ route
     public class SkillSetController : Controller
     {   
         /* Controller Routes */
@@ -26,7 +26,7 @@ namespace folio.Controllers
         // responds to request with the ids of all matching skillsets
         [HttpGet]
         [Produces("application/json")]
-        public ActionResult Index([FromQuery] string name, [FromQuery] int? limit)
+        public ActionResult Query([FromQuery] string name, [FromQuery] int? limit)
         {
             Console.WriteLine("Skillset: Index: name:" + name + " limit: " + limit.ToString());
             // obtain the skillsets that match the query
@@ -53,5 +53,26 @@ namespace folio.Controllers
             return Json(matchIds);
         }
     
+        // route to get a skillset for the given id
+        // responds to request with json reprensetation of the skilset
+        [HttpGet("skillset/{id}")]
+        [Produces("application/json")]
+        public ActionResult GetSkillSet(int id)
+        {
+            Console.WriteLine("get id:", id.ToString());
+            // Retrieve the Skillset for id
+            SkillSet skillset = null;
+            using(EPortfolioDB database = new EPortfolioDB())
+            {
+                skillset = database.SkillSets
+                    .Where(s => s.SkillSetId == id)
+                    .FirstOrDefault();
+            }
+        
+            // check if skill has been found for targetId
+            if(skillset == null) return NotFound();
+
+            return Json(skillset);
+        }
     }
 }
