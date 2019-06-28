@@ -31,7 +31,6 @@ namespace folio.API.Controllers
         [Produces("application/json")]
         public ActionResult Query([FromQuery] string name, [FromQuery] int? limit)
         {
-            Console.WriteLine("Skillset: Index: name:" + name + " limit: " + limit.ToString());
             // obtain the skillsets that match the query
             List<int> matchIds = null;
             using(EPortfolioDB database = new EPortfolioDB())
@@ -100,7 +99,7 @@ namespace folio.API.Controllers
             }
 
             // respond with sucess message with inserted skillset id
-            Object response = new { skillset_id = skillSetId };
+            Object response = new { skillSetId = skillSetId };
             return Json(response);
         }
     
@@ -125,7 +124,7 @@ namespace folio.API.Controllers
         }
     
         // route to delete skillset for skillset id
-        [HttpPost("api/skillset/delete/{id}")]
+        [HttpPost("/api/skillset/delete/{id}")]
         public ActionResult DeleteSkillSet(int id)
         {
             using(EPortfolioDB database = new EPortfolioDB())
