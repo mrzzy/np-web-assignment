@@ -87,6 +87,7 @@ namespace folio.API.Controllers
         // route to create a skillset for skillset form model
         // responds to request with json representatoin of the skillset
         [HttpPost("/api/skillset/create")]
+        [ValidateAntiForgeryToken]
         [Produces("application/json")]
         public ActionResult CreateSkillSet([FromBody] SkillSetFormModel formModel)
         {
@@ -111,6 +112,7 @@ namespace folio.API.Controllers
     
         // route to update skillset for skillset id and skillset form model
         [HttpPost("/api/skillset/update/{id}")]
+        [ValidateAntiForgeryToken]
         public ActionResult UpdateSkillSet(
                 int id, [FromBody] SkillSetFormModel formModel)
         {
@@ -131,6 +133,7 @@ namespace folio.API.Controllers
     
         // route to delete skillset for skillset id
         [HttpPost("/api/skillset/delete/{id}")]
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteSkillSet(int id)
         {
             using(EPortfolioDB database = new EPortfolioDB())
