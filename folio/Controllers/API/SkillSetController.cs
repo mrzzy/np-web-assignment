@@ -31,7 +31,6 @@ namespace folio.API.Controllers
         [Produces("application/json")]
         public ActionResult Query([FromQuery] string name, [FromQuery] int? limit)
         {
-            Console.WriteLine("Skillset: Index: name:" + name + " limit: " + limit.ToString());
             // obtain the skillsets that match the query
             List<int> matchIds = null;
             using(EPortfolioDB database = new EPortfolioDB())
@@ -100,13 +99,14 @@ namespace folio.API.Controllers
             }
 
             // respond with sucess message with inserted skillset id
-            Object response = new { skillset_id = skillSetId };
+            Object response = new { skillSetId = skillSetId };
             return Json(response);
         }
     
-        // route to update skillset for skillset form model
+        // route to update skillset for skillset id and skillset form model
         [HttpPost("/api/skillset/update/{id}")]
-        public ActionResult UpdateSkillSet(int id, [FromBody] SkillSetFormModel formModel)
+        public ActionResult UpdateSkillSet(
+                int id, [FromBody] SkillSetFormModel formModel)
         {
             using(EPortfolioDB database = new EPortfolioDB())
             {
@@ -117,6 +117,25 @@ namespace folio.API.Controllers
 
                 // perform Update using data in form model
                 formModel.Apply(skillSet);
+                database.SaveChanges();
+            }
+
+            return Ok();
+        }
+    
+        // route to delete skillset for skillset id
+        [HttpPost("/api/skillset/delete/{id}")]
+        public ActionResult DeleteSkillSet(int id)
+        {
+            using(EPortfolioDB database = new EPortfolioDB())
+            {
+                // Find the skillset specified by formModel
+                SkillSet skillSet = database.SkillSets
+                    .Where(s => s.SkillSetId == id)
+                    .Single();
+                
+                // remove the skillSet from db
+                database.SkillSets.Remove(skillSet);
                 database.SaveChanges();
             }
 
