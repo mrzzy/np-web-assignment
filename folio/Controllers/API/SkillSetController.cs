@@ -22,14 +22,15 @@ namespace folio.API.Controllers
     public class SkillSetController : Controller
     {   
         /* Controller Routes */
-       
         // route to query skillsets, with optional specification in url params:
         // name - filter the url parameter by exact match name
+        // skip - skip the first n results.
         // limit - limit results returned to the given no.
         // responds to request with the ids of all matching skillsets
         [HttpGet("/api/skillsets")]
         [Produces("application/json")]
-        public ActionResult Query([FromQuery] string name, [FromQuery] int? limit)
+        public ActionResult Query(
+                [FromQuery] string name, [FromQuery] int? skip, [FromQuery] int? limit)
         {
             // obtain the skillsets that match the query
             List<int> matchIds = null;
@@ -41,6 +42,11 @@ namespace folio.API.Controllers
                 {
                     matchingSkillsets = matchingSkillsets
                         .Where(s => s.SkillSetName == name);
+                }
+                if(skip != null && skip.Value >= 0)
+                {
+                    matchingSkillsets = matchingSkillsets
+                        .Skip(skip.Value);
                 }
                 if(limit != null && limit.Value >= 0)
                 {
@@ -54,7 +60,7 @@ namespace folio.API.Controllers
             
             return Json(matchIds);
         }
-    
+
         // route to get a skillset for the given id
         // responds to request with json reprensetation of the skilset
         [HttpGet("/api/skillset/{id}")]

@@ -27,7 +27,7 @@ Current Project Status:
 | 2.4.3 | Fixing Missing Models From Scaffolding | :heavy_check_mark: |
 | 2.5.1 | Setup Unit Testing Framwork| :heavy_check_mark: |
 | 2.5.2 | Intergration Test Models | :heavy_check_mark: |
-| 2.6.1 | Skillset API | :construction: |
+| 2.6.1 | Skillset API | :heavy_check_mark: |
 | 2.6.2 | Authentication API | :construction: |
 | 2.6.3 | Image API | :construction: |
 
