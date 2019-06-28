@@ -27,7 +27,7 @@ namespace folio.API.Controllers
         // name - filter the url parameter by exact match name
         // limit - limit results returned to the given no.
         // responds to request with the ids of all matching skillsets
-        [HttpGet]
+        [HttpGet("/api/skillsets")]
         [Produces("application/json")]
         public ActionResult Query([FromQuery] string name, [FromQuery] int? limit)
         {
@@ -58,7 +58,7 @@ namespace folio.API.Controllers
     
         // route to get a skillset for the given id
         // responds to request with json reprensetation of the skilset
-        [HttpGet("skillset/{id}")]
+        [HttpGet("/api/skillset/{id}")]
         [Produces("application/json")]
         public ActionResult GetSkillSet(int id)
         {
@@ -81,7 +81,7 @@ namespace folio.API.Controllers
             
         // route to create a skillset for skillset form modle
         // responds to request with json reprensetation of the skillset
-        [HttpPost("skillset/create")]
+        [HttpPost("/api/skillset/create")]
         [Produces("application/json")]
         public ActionResult CreateSkillSet([FromBody] SkillSetFormModel formModel)
         {

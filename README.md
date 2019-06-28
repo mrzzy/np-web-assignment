@@ -25,12 +25,21 @@ Current Project Status:
 | 2.4.1 | AutoScaffolding of Models| :heavy_check_mark: |
 | 2.4.2 | Injecting Connection String | :heavy_check_mark: |
 | 2.4.3 | Fixing Missing Models From Scaffolding | :heavy_check_mark: |
-| 2.5.2 | Setup Unit Testing Framwork| :heavy_check_mark: |
-| 2.5.1 | Intergration Test Models | :heavy_check_mark: |
+| 2.5.1 | Setup Unit Testing Framwork| :heavy_check_mark: |
+| 2.5.2 | Intergration Test Models | :heavy_check_mark: |
+| 2.6.1 | Skillset API | :construction: |
+| 2.6.2 | Authentication API | :construction: |
+| 2.6.3 | Image API | :construction: |
+
+Future TODO:
+- CORS allow host on the ui project
 
 ## Structure
 - db - database setup, container
 - design - frontend design
 - dotenv - template for `.env` 
 - folio - folio project source code
+    - Controllers - controllers
+        - API - api controllers
+- folio_tests - folio project source code
 - README.md - this file
