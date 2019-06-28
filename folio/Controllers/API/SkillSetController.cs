@@ -89,10 +89,13 @@ namespace folio.API.Controllers
             int skillSetId = -1;
             using(EPortfolioDB database = new EPortfolioDB())
             {
-                SkillSet skillSet = formModel.Create();
+                // create skillSet with form model values
+                SkillSet skillSet = new SkillSet();
+                formModel.Apply(skillSet);
+
+                // add new skillset to database
                 database.SkillSets.Add(skillSet);
                 database.SaveChanges();
-            
                 skillSetId = skillSet.SkillSetId;
             }
 
@@ -102,19 +105,18 @@ namespace folio.API.Controllers
         }
     
         // route to update skillset for skillset form model
-        [HttpPost("/api/skillset/update")]
-        public ActionResult UpdateSkillSet([FromBody] SkillSetFormModel formModel)
+        [HttpPost("/api/skillset/update/{id}")]
+        public ActionResult UpdateSkillSet(int id, [FromBody] SkillSetFormModel formModel)
         {
             using(EPortfolioDB database = new EPortfolioDB())
             {
                 // Find the skillset specified by formModel
                 SkillSet skillSet = database.SkillSets
-                    .Where(s => s.SkillSetId == formModel.SkillSetId.Value)
+                    .Where(s => s.SkillSetId == id)
                     .Single();
 
-                // Perform Update using datain form model
-                formModel.Update(skillSet);
-                
+                // perform Update using data in form model
+                formModel.Apply(skillSet);
                 database.SaveChanges();
             }
 
