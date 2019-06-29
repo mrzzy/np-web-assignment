@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Xunit;
+using DotNetEnv;
 
 using folio.Models;
 
@@ -15,6 +16,9 @@ namespace folio.Tests.Models
         [Fact]
         public void TestInsertModel()
         {
+            // load environment variables from .env
+            DotNetEnv.Env.Load();
+            
             // Perform insertion of the project model
             int projectId = -1; // -1 -> null value
             using (EPortfolioDB database = new EPortfolioDB())
@@ -45,6 +49,8 @@ namespace folio.Tests.Models
         // test updating models in the database
         public void TestUpdateModel()
         {
+            // load environment variables from .env
+            DotNetEnv.Env.Load();
             
             int projectId = 0;
             using (EPortfolioDB database = new EPortfolioDB())
@@ -112,6 +118,9 @@ namespace folio.Tests.Models
         [Fact]
         public void TestQueryModel()
         {
+            // load environment variables from .env
+            DotNetEnv.Env.Load();
+
             // query for  predefined data
             using (EPortfolioDB database = new EPortfolioDB())
             {
@@ -135,6 +144,9 @@ namespace folio.Tests.Models
         [Fact]
         public void TestComplexModel()
         {
+            // load environment variables from .env
+            DotNetEnv.Env.Load();
+
             /* Insert a complex model with foreign model relationships 
              * <- means depends foreign model
              * Lecturer <- Student <- ProjectMembers -> Project 
