@@ -20,3 +20,6 @@ folio/%: %
 
 folio_tests/%: %
 	cp -af $< $@
+
+clean:
+	rm -f $(TARGET_PATHS)
