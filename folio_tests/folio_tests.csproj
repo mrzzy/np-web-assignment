@@ -17,10 +17,4 @@
     <ProjectReference Include="..\folio\folio.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-      <Content Include="appsettings.json">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-  </ItemGroup>
-
 </Project>
