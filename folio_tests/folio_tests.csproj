@@ -17,4 +17,11 @@
     <ProjectReference Include="..\folio\folio.csproj" />
   </ItemGroup>
 
+
+   <ItemGroup>
+       <Content Include=".env">
+         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+       </Content>
+   </ItemGroup>
+
 </Project>
