@@ -14,8 +14,8 @@ namespace folio.Services.Content
         // Optionally provide a MIME content type 
         string UploadContent(Stream contentStream, string contentType = null);
 
-        // Decode the url that can be used to retrieve the content given the 
-        // content id returned by UploadContent()
-        string decodeUrl(string contentId);
+        // Encode the given content id in to a url so that can be used to 
+        // retrieve the content given the content id returned by UploadContent()
+        string DecodeUrl(string contentId);
     }
 }

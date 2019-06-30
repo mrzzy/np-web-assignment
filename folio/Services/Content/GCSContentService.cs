@@ -36,16 +36,23 @@ namespace folio.Services.Content
         // Upload the content in the given contentStream to the GCS
         // returns a content id string which can be used to retrieve the content 
         // Optionally provide a MIME content type 
-        public string UploadContent(Stream contentStream, string contentType=null);
+        public string UploadContent(Stream contentStream, string contentType=null)
         {
-            return "";
+            // generate id for the new content
+            string contentId = Guid.NewGuid().ToString();
+            // perform the upload using GCS
+            this.storage.UploadObject(
+                    this.bucketName, contentId, contentType, contentStream);
+            
+            return contentId;
         }
 
-        // Decode the url that can be used to retrieve the content given the 
-        // content id returned by UploadContent()
-        public string decodeUrl(string contentId)
+        // Encode the given content id in to a url so that can be used to 
+        // retrieve the content given the content id returned by UploadContent()
+        public string EncodeUrl(string contentId)
         {
-            return "";
+            var storageObject = this.storage.GetObject(this.bucketName, contentId);
+            return storageObject.MediaLink;
         }
         
         /* private utilities */
