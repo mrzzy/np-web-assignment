@@ -15,7 +15,7 @@ namespace folio.Services.Content
 {
     public class GCSContentService: IContentService
     {
-        private StorageClient client;
+        private StorageClient storage;
         private string bucketName;
 
         /* constructor */
@@ -35,7 +35,8 @@ namespace folio.Services.Content
         /* IContentService interface */
         // Upload the content in the given contentStream to the GCS
         // returns a content id string which can be used to retrieve the content 
-        public string UploadContent(Stream contentStream)
+        // Optionally provide a MIME content type 
+        public string UploadContent(Stream contentStream, string contentType=null);
         {
             return "";
         }
@@ -64,7 +65,7 @@ namespace folio.Services.Content
             File.WriteAllText(secretPath, secret);
         
             // load storage client using secret
-            this.client = StorageClient.Create(
+            this.storage = StorageClient.Create(
                 GoogleCredential.FromFile(secretPath));
             
             // delete secret file
