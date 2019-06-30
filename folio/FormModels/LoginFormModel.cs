@@ -14,6 +14,8 @@ namespace folio.FormModels
         public string Password  { get; set; }
 
         /* public utility constructors */
+        public LoginFormModel() {}
+
         // construct a login form model from given student
         public LoginFormModel(Student student)
         {
