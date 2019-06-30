@@ -13,12 +13,43 @@ using Google.Cloud.Storage.V1;
 
 namespace folio.Services.Content
 {
-    public class GCSContentService
+    public class GCSContentService: IContentService
     {
-        StorageClient client;
+        private StorageClient client;
+        private string bucketName;
 
-        // Setups storage client by authenticating with Google Cloud
+        /* constructor */
         public GCSContentService()
+        {
+            this.SetupClient();
+            
+            // read storage bucket name from the environment
+            this.bucketName = Environment.GetEnvironmentVariable("GCS_BUCKET");
+            if(string.IsNullOrWhiteSpace(this.bucketName))
+            {
+                throw new ArgumentNullException("GCS_BUCKET environment variable" +
+                    " with GCS bucket name not set");
+            }
+        }
+    
+        /* IContentService interface */
+        // Upload the content in the given contentStream to the GCS
+        // returns a content id string which can be used to retrieve the content 
+        public string UploadContent(Stream contentStream)
+        {
+            return "";
+        }
+
+        // Decode the url that can be used to retrieve the content given the 
+        // content id returned by UploadContent()
+        public string decodeUrl(string contentId)
+        {
+            return "";
+        }
+        
+        /* private utilities */
+        // Setups storage client by authenticating with Google Cloud
+        private void SetupClient ()
         {
             // write GCP secret in temporary file
             string secretPath = Path.GetTempFileName();
