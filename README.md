@@ -13,7 +13,7 @@ This repository contains our WEB assignment source code.
 ### Visual Studio
 1. Configure & Run SQL Server with script in `db\Student_EPortfolio_Db_SetUp_Script.sql`
 2. Make a copy of the `dotenv` as `.env`and fill up the values to variables 
-    - reference: https://drive.google.com/file/d/1xDCzM8pVr4Fqk8lzOBl7K6GLFjE86RMT/view?usp=sharing
+    - reference: https://drive.google.com/file/d/1EuTGCEuJMSgw-6AMFpyPTtbjgTF2hyhr/view?usp=sharing
 3. Copy the `.env` file into `folio` and `folio_tests/` folders
 4. Open `/np-web-assignment-1.sln` using the Visual Studio
 5. Run the project.
