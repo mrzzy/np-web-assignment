@@ -5,6 +5,7 @@
 */
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
@@ -33,10 +34,10 @@ namespace folio.Services.Content
         }
     
         /* IContentService interface */
-        // Upload the content in the given contentStream to the GCS
+        // Insert the content in the given contentStream to the content service
         // returns a content id string which can be used to retrieve the content 
         // Optionally provide a MIME content type 
-        public string UploadContent(Stream contentStream, string contentType=null)
+        public string Insert(Stream contentStream, string contentType = null)
         {
             // generate id for the new content
             string contentId = Guid.NewGuid().ToString();
@@ -46,6 +47,32 @@ namespace folio.Services.Content
             
             return contentId;
         }
+        
+        // Updates the content in the given contentStream to the content service
+        // specified by contentId
+        // returns a content id string which can be used to retrieve the content 
+        // Optionally provide a MIME content type 
+        public string Update(string contentId, Stream contentStream)
+        {
+            // perform the upload of updated file using GCS
+            var storageObject = this.storage.GetObject(this.bucketName, contentId);
+            // remove existing object
+            this.Delete(contentId);
+            // update object
+            this.storage.UploadObject(
+                    this.bucketName, contentId,
+                    storageObject.ContentType, contentStream);
+
+            return contentId;
+        }
+
+
+        // deletes the content specified by content id from the contentService
+        public void Delete(string contentId)
+        {
+            // peform removal of object using GCS
+            this.storage.DeleteObject(this.bucketName, contentId);
+        }
 
         // Encode the given content id in to a url so that can be used to 
         // retrieve the content given the content id returned by UploadContent()
@@ -53,6 +80,17 @@ namespace folio.Services.Content
         {
             var storageObject = this.storage.GetObject(this.bucketName, contentId);
             return storageObject.MediaLink;
+        }
+        
+        // Decode the content id from the given url (ie from EncodeUrl)
+        public string DecodeContentId(string url)
+        {
+            // use regular expressions to extract content id
+            Regex regex = new Regex(@"\/o\/([0-9a-z-]+)\?");
+            Match match = regex.Match(url);
+            
+            string contentId = match.Groups[0].Value;
+            return contentId;
         }
         
         /* private utilities */
