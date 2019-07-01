@@ -5,9 +5,8 @@
 #
 
 TARGET_PROJECTS:=folio folio_tests
-TARGET_CONFIG:=appsettings.json .env
-# TODO: figure out a way to generate this with nested for loop
-TARGET_PATHS:=folio/appsettings.json folio_tests/appsettings.json folio/.env folio_test.env
+TARGET_CONFIG:=.env
+TARGET_PATHS:=$(foreach p,$(TARGET_PROJECTS),$(p)/$(TARGET_CONFIG))
 
 # targets
 .DEFAULT: all
@@ -21,3 +20,6 @@ folio/%: %
 
 folio_tests/%: %
 	cp -af $< $@
+
+clean:
+	rm -f $(TARGET_PATHS)
