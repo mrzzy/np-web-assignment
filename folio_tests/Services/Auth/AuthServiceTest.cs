@@ -8,6 +8,7 @@ using System;
 using DotNetEnv;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 using folio.Models;
 using folio.FormModels;
@@ -50,6 +51,26 @@ namespace folio.Tests.Services
             });
             
             Assert.True(!String.IsNullOrWhiteSpace(token));
+        }
+        
+        // test extraction of Session from HttpContext
+        // NOTE: this test depends on existing data in the database as defined
+        // in db setup SQL
+        [Fact]
+        public void TestExtractSession()
+        {
+            string token = AuthService.Login(new LoginFormModel
+            {
+                EmailAddr = "s1234112@ap.edu.sg",
+                Password = "p@55Student"
+            });
+            
+            // create test http context with tokenk
+            HttpContext context = new DefaultHttpContext();
+            context.Request.Headers.Add("Authorization", "Bearer " + token);
+            
+            Session session = AuthService.ExtractSession(context);
+            Assert.Equal(session.EmailAddr, "s1234112@ap.edu.sg");
         }
     }
 }

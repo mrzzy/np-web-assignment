@@ -59,19 +59,31 @@ namespace folio.Services.Auth
         }
     
         // Attempt Extract the session from the given http context
+        // Extracts the token from the context's requests Authorization header
         // Returns the extracted session object.
         // Throws AuthException on session load failure
         public static Session ExtractSession(HttpContext context)
         {
-            // extract JWT token from context & reconstruct session
-            string token = context.Request.Headers["Authorization"];
+            // extract JWT token from context
+            string authHeader = context.Request.Headers["Authorization"]; 
+            authHeader = authHeader.Trim();
+            // check header is correctly set
+            if(!authHeader.StartsWith("Bearer"))
+            {
+                throw new AuthException("Authorization header set without " +
+                        " Bearer token");
+            }
+            string token = authHeader.Replace("Bearer", "").Trim();
+
+            // reconstruct session
             Session session = Session.FromJWT(token, 
                     AuthService.GetSessionSecretKey());
         
             // check if token references and actual user
             if(AuthService.FindUser(session.EmailAddr) == null)
             {
-                throw new AuthException("Loaded Session references a non existent user");
+                throw new AuthException(
+                        "Loaded Session references a non existent user");
             }
 
             return session;
