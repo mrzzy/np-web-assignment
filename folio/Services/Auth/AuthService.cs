@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Security.Authentication;
 using Microsoft.AspNetCore.Http;
 
 using folio.Models;
@@ -13,12 +14,6 @@ using folio.FormModels;
 
 namespace folio.Services.Auth
 {
-    // Authentication exception
-    public class AuthException: Exception 
-    {
-        public AuthException(string message): base(message) {}
-    }
-
     public class AuthService
     { 
         /* properties */
@@ -41,14 +36,14 @@ namespace folio.Services.Auth
         // provided the given login
         // Returns a session token that can be used to temporary authenticate 
         // with the user
-        // Throw AuthException on authentication failure 
+        // Throw AuthenticationException on authentication failure 
         public static string Login(LoginFormModel loginCredentials)
         { 
             LoginFormModel dbLoginCreds = 
                 AuthService.FindUser(loginCredentials.EmailAddr);
             if(dbLoginCreds == null || !dbLoginCreds.Equals(loginCredentials))
             {
-                throw new AuthException("User not found or invalid credentials");
+                throw new AuthenticationException("User not found or invalid credentials");
             }
         
             // create temporary session token for the user    
@@ -61,7 +56,7 @@ namespace folio.Services.Auth
         // Attempt Extract the session from the given http context
         // Extracts the token from the context's requests Authorization header
         // Returns the extracted session object.
-        // Throws AuthException on session load failure
+        // Throws AuthenticationException on session load failure
         public static Session ExtractSession(HttpContext context)
         {
             // extract JWT token from context
@@ -70,7 +65,7 @@ namespace folio.Services.Auth
             // check header is correctly set
             if(!authHeader.StartsWith("Bearer"))
             {
-                throw new AuthException("Authorization header set without " +
+                throw new AuthenticationException("Authorization header set without " +
                         " Bearer token");
             }
             string token = authHeader.Replace("Bearer", "").Trim();
@@ -82,7 +77,7 @@ namespace folio.Services.Auth
             // check if token references and actual user
             if(AuthService.FindUser(session.EmailAddr) == null)
             {
-                throw new AuthException(
+                throw new AuthenticationException(
                         "Loaded Session references a non existent user");
             }
 
