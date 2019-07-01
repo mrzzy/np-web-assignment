@@ -87,7 +87,7 @@ namespace folio.API.Controllers
         // route to create a skillset for skillset form model
         // responds to request with json representatoin of the skillset
         [HttpPost("/api/skillset/create")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [Produces("application/json")]
         public ActionResult CreateSkillSet([FromBody] SkillSetFormModel formModel)
         {
