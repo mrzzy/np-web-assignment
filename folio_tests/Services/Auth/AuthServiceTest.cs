@@ -5,6 +5,7 @@
 
 using Xunit;
 using System;
+using DotNetEnv;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -17,24 +18,38 @@ namespace folio.Tests.Services
     public class AuthServiceTest
     {
         /* Intergration Tests */
+        // test login with loginCredentials
         // NOTE: this test depends on existing data in the database as defined
         // in db setup SQL
         [Fact]
-        public void TestAuthServiceCheckCredentials()
+        public void TestWithLoginWithCredentials()
         {
-            // attempt to authenticate with wrong credentials
-            Assert.False(AuthService.CheckCredentials(new LoginFormModel 
+            DotNetEnv.Env.Load();
+            
+            // attempt login with wrong credentials
+            bool hasException = false;
+            try
             {
-                EmailAddr = "s1234112@ap.edu.sg",
-                Password = "superman"
-            }));
+                AuthService.Login(new LoginFormModel 
+                {
+                    EmailAddr = "s1234112@ap.edu.sg",
+                    Password = "superman"
+                });
+            }
+            catch
+            {
+                hasException = true;
+            }
+            Assert.True(hasException);
         
-            // attempt to authenticate with correct credentials
-            Assert.True(AuthService.CheckCredentials(new LoginFormModel
+            // perform login 
+            string token = AuthService.Login(new LoginFormModel
             {
                 EmailAddr = "s1234112@ap.edu.sg",
                 Password = "p@55Student"
-            }));
+            });
+            
+            Assert.True(!String.IsNullOrWhiteSpace(token));
         }
     }
 }

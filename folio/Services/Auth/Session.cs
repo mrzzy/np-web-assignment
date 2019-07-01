@@ -61,10 +61,10 @@ namespace folio.Services.Auth
             // validate that the token has not yet expired
             DateTime expiryDateTime = Session.ConvertFromUnixTimestamp(expiry);
             if(DateTime.Now >= expiryDateTime)
-                throw new ArgumentException("JWT token has already expired");
+                throw new AuthException("JWT token has already expired");
             // validate audience and issuer of the token
             if(audience != Session.JWTAudience || issuer != Session.JWTIssuer)
-                throw new ArgumentException(
+                throw new AuthException(
                         "JWT token has invalid audience and/or issuer");
         
             // recreate session based on payload 
