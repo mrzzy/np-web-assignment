@@ -32,12 +32,24 @@ namespace folio.API.Controllers
             // try to perform login
             string token = null;
             try { token = AuthService.Login(loginCredentials); }
-            catch(AuthenticationException _)
-            { return Unauthorized(); }
+            catch(AuthenticationException _) { return Unauthorized(); }
             
             // respond with temporary session token 
-            Object response = new { session_token = token };
+            Object response = new { SessionToken = token };
             return Json(response);
+        }
+        
+        // route to check if the user is currently in a valid given 
+        // Authorization Bearin the SessionToken provided by Login()
+        [HttpGet("/api/auth/check")]
+        public ActionResult Check()
+        {
+            // check by trying load session from token
+            try{ Session session = AuthService.ExtractSession(HttpContext); }
+            catch(AuthenticationException _) { return Unauthorized(); }
+
+            // authenticated
+            return Ok();
         }
     }
 }
