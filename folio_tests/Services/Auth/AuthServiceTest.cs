@@ -12,25 +12,29 @@ using folio.Models;
 using folio.FormModels;
 using folio.Services.Auth;
 
-public class AuthServiceTest
+namespace folio.Tests.Services
 {
-    /* Intergration Tests */
-    // NOTE: this test depends on existing data in the database as defined
-    // in db setup SQL
-    public void AuthServiceCheckCredentialsTest()
+    public class AuthServiceTest
     {
-        // attempt to authenticate with wrong credentials
-        Assert.False(AuthService.CheckCredentials(new LoginFormModel 
+        /* Intergration Tests */
+        // NOTE: this test depends on existing data in the database as defined
+        // in db setup SQL
+        [Fact]
+        public void TestAuthServiceCheckCredentials()
         {
-            EmailAddr = "s1234112@ap.edu.sg",
-            Password = "superman"
-        }));
-    
-        // attempt to authenticate with correct credentials
-        Assert.True(AuthService.CheckCredentials(new LoginFormModel
-        {
-            EmailAddr = "s1234112@ap.edu.sg",
-            Password = "p@55Student"
-        }));
+            // attempt to authenticate with wrong credentials
+            Assert.False(AuthService.CheckCredentials(new LoginFormModel 
+            {
+                EmailAddr = "s1234112@ap.edu.sg",
+                Password = "superman"
+            }));
+        
+            // attempt to authenticate with correct credentials
+            Assert.True(AuthService.CheckCredentials(new LoginFormModel
+            {
+                EmailAddr = "s1234112@ap.edu.sg",
+                Password = "p@55Student"
+            }));
+        }
     }
 }

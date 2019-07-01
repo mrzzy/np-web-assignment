@@ -25,7 +25,10 @@ namespace folio.Services.Auth
         // (ie session)
         public string Login(LoginFormModel loginCredentials)
         { 
-            AuthService.CheckCredentials(loginCredentials);
+            if(!AuthService.CheckCredentials(loginCredentials))
+            {
+                throw new AuthException("Invalid login credentials");
+            }
         
             // TODO: Prepare JWT token
             return "";
@@ -52,9 +55,25 @@ namespace folio.Services.Auth
             // check if any users actualy matched
             if(dbLoginCreds.Count() <= 0) return false;
             // check if credentials match
-            else if(dbLoginCreds.Single() != loginCredentials) return false;
+            else if(!dbLoginCreds.Single().Equals(loginCredentials)) return false;
 
             return true;
+        }
+
+        /* private utilities */
+        // convert the given hex dump into a list of bytes
+        private Byte[] ConvertToBytes(string hexDump)
+        {
+            // construct a list of pairs of hex digits to form bytes
+            List<string> bytePairs = new List<string>();
+            for(int i = 0; i < hexDump.Count(); i += 2)
+            {
+                bytePairs.Add(hexDump.Substring(i, 2));
+            }
+        
+            // convert hex pairs to bytes array
+            return bytePairs.Select(hexPair => Convert.ToByte(hexPair, 16))
+                .ToArray();
         }
     }
 }
