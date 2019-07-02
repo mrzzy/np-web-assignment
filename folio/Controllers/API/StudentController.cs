@@ -15,7 +15,7 @@ namespace folio.Controllers.API
     public class StudentController : Controller
     {
         //View students from a list
-        [HttpGet("/api/atudents")]
+        [HttpGet("/api/students")]
         [Produces("application/json")]
         public ActionResult GetStudents()
         {
@@ -28,7 +28,7 @@ namespace folio.Controllers.API
             return Json(studentList);
         }
 
-        [HttpGet("/api/student/{id}")]
+        [HttpGet("/api/students/{id}")]
         [Produces("application/json")]
         public ActionResult GetStudent(int id)
         {
@@ -49,7 +49,7 @@ namespace folio.Controllers.API
         }
 
         //Create new student
-        [HttpPost("/api/student/create")]
+        [HttpPost("/api/students/create")]
         [Produces("application/json")]
         public ActionResult CreateStudent([FromBody] StudentFormModel formModel)
         {
@@ -73,7 +73,7 @@ namespace folio.Controllers.API
         }
 
         //Update student
-        [HttpPost("/api/student/update/{id}")]
+        [HttpPost("/api/students/update/{id}")]
         public ActionResult UpdateStudent(
                 int id, [FromBody] StudentFormModel formModel)
         {
@@ -93,7 +93,7 @@ namespace folio.Controllers.API
         }
 
         //Delete student
-        [HttpPost("/api/student/delete/{id}")]
+        [HttpPost("/api/students/delete/{id}")]
         public ActionResult DeleteStudent(int id)
         {
             using (EPortfolioDB database = new EPortfolioDB())
