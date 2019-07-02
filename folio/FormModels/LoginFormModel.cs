@@ -12,6 +12,7 @@ namespace folio.FormModels
     {
         public string EmailAddr  { get; set; }
         public string Password  { get; set; }
+        public string UserRole { get; set; } = null;
 
         /* public utility constructors */
         public LoginFormModel() {}
@@ -21,6 +22,7 @@ namespace folio.FormModels
         {
             this.EmailAddr = student.EmailAddr;
             this.Password = student.Password;
+            this.UserRole = "Student";
         }
         
         // construct a login form model from given lecturer
@@ -28,6 +30,7 @@ namespace folio.FormModels
         {
             this.EmailAddr = lecturer.EmailAddr;
             this.Password = lecturer.Password;
+            this.UserRole = "Lecturer";
         }
 
         // define instance equality
