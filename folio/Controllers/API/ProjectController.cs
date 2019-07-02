@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 using folio.Models;
 using folio.FormModels;
+using folio.Services.Auth;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -72,6 +73,11 @@ namespace folio.Controllers.API
         [Produces("application/json")]
         public ActionResult Createproject([FromBody] ProjectFormModel formModel)
         {
+
+            // check if authenticated
+            try { AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
             // write the given project to database
             int projectId = -1;
             using (EPortfolioDB database = new EPortfolioDB())
@@ -95,6 +101,10 @@ namespace folio.Controllers.API
         public ActionResult UpdateProject(
                 int id, [FromBody] ProjectFormModel formModel)
         {
+            // check if authenticated
+            try { AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 // Find the project specified by formModel
@@ -113,6 +123,10 @@ namespace folio.Controllers.API
         [HttpPost("/api/project/delete/{id}")]
         public ActionResult DeleteProject(int id)
         {
+            // check if authenticated
+            try { AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 // Find the project specified by formModel
