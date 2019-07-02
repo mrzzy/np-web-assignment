@@ -145,6 +145,36 @@
 					"response": []
 				},
 				{
+					"name": "get skillsets ids with filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/skillsets?skip=5&limit=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillsets"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "5"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "create skillset",
 					"event": [
 						{
@@ -185,36 +215,6 @@
 								"api",
 								"skillset",
 								"create"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get skillsets ids with filters",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/skillsets?skip=5&limit=3",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"skillsets"
-							],
-							"query": [
-								{
-									"key": "skip",
-									"value": "5"
-								},
-								{
-									"key": "limit",
-									"value": "3"
-								}
 							]
 						}
 					},
