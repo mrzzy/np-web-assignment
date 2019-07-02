@@ -4,6 +4,7 @@
  * Web Assignment 1
 */
 using System;
+using System.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -36,14 +37,18 @@ namespace folio.Services.Content
         /* IContentService interface */
         // Insert the content in the given contentStream to the content service
         // returns a content id string which can be used to retrieve the content 
-        // Optionally provide a MIME content type 
-        public string Insert(Stream contentStream, string contentType = null)
+        // contentType provides a MIME content type & a prefix to the path
+        // Optionally a directory prefix to the object being inserted
+        public string Insert(Stream contentStream, string contentType,
+                string prefix="")
         {
-            // generate id for the new content
+            // generate object nae  for the new content
             string contentId = Guid.NewGuid().ToString();
+            string objectName = GCSContentService.BuildObjectName(prefix, contentId);
+            
             // perform the upload using GCS
             this.storage.UploadObject(
-                    this.bucketName, contentId, contentType, contentStream);
+                    this.bucketName, objectName, contentType, contentStream);
             
             return contentId;
         }
@@ -51,34 +56,40 @@ namespace folio.Services.Content
         // Updates the content in the given contentStream to the content service
         // specified by contentId
         // returns a content id string which can be used to retrieve the content 
-        // Optionally provide a MIME content type 
-        public string Update(string contentId, Stream contentStream)
+        // Optionally a directory prefix to the object being inserted
+        public string Update(string contentId, Stream contentStream, string prefix="")
         {
             // perform the upload of updated file using GCS
-            var storageObject = this.storage.GetObject(this.bucketName, contentId);
+            string objectName = GCSContentService.BuildObjectName(prefix, contentId);
+            var storageObject = this.storage.GetObject(this.bucketName, objectName);
             // remove existing object
-            this.Delete(contentId);
+            this.Delete(contentId, prefix);
             // update object
             this.storage.UploadObject(
-                    this.bucketName, contentId,
+                    this.bucketName, objectName,
                     storageObject.ContentType, contentStream);
 
             return contentId;
         }
 
-
         // deletes the content specified by content id from the contentService
-        public void Delete(string contentId)
+        // Optionally a directory prefix to the object being inserted
+        public void Delete(string contentId, string prefix="")
         {
             // peform removal of object using GCS
-            this.storage.DeleteObject(this.bucketName, contentId);
+            string objectName = GCSContentService.BuildObjectName(prefix, contentId);
+            this.storage.DeleteObject(this.bucketName, objectName);
         }
 
         // Encode the given content id in to a url so that can be used to 
-        // retrieve the content given the content id returned by UploadContent()
-        public string EncodeUrl(string contentId)
+        // retrieve the content given the content id returned by 
+        // Insert()/update()
+        // Optionally a directory prefix to the object being inserted
+        public string EncodeUrl(string contentId, string prefix="")
         {
-            var storageObject = this.storage.GetObject(this.bucketName, contentId);
+            // get media link using GCS
+            string objectName = GCSContentService.BuildObjectName(prefix, contentId);
+            var storageObject = this.storage.GetObject(this.bucketName, objectName);
             return storageObject.MediaLink;
         }
         
@@ -115,6 +126,23 @@ namespace folio.Services.Content
             
             // delete secret file
             File.Delete(secretPath);
+        }
+
+        // prepare and standardise the given prefix
+        private static string BuildObjectName(string prefix, string contentId)
+        {
+            // check if prefix has whitespace
+            if(prefix.Any((c) => Char.IsWhiteSpace(c)))
+            {
+                throw new ArgumentNullException("Prefix cannnot contain whitespace");
+            }
+                
+            // parse prefix & standardise prefix
+            if(string.IsNullOrWhiteSpace(prefix)) prefix = "";
+            else prefix = (prefix.EndsWith("/")) ? prefix : prefix + "/";
+
+            // construct content id from content name
+            return prefix + contentId;
         }
     }
 }
