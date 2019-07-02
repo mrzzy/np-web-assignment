@@ -268,4 +268,4 @@ tags.*
 .session.vim
 
 # dotenv
-.env
+.env*

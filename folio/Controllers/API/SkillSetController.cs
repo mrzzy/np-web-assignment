@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 
 using folio.Models;
 using folio.FormModels;
+using folio.Services.Auth;
 
 namespace folio.API.Controllers
 {
@@ -67,7 +68,6 @@ namespace folio.API.Controllers
         [Produces("application/json")]
         public ActionResult GetSkillSet(int id)
         {
-            Console.WriteLine("get id:", id.ToString());
             // Retrieve the Skillset for id
             SkillSet skillset = null;
             using(EPortfolioDB database = new EPortfolioDB())
@@ -82,15 +82,18 @@ namespace folio.API.Controllers
 
             return Json(skillset);
         }
-
             
         // route to create a skillset for skillset form model
         // responds to request with json representatoin of the skillset
+        // authentication is required
         [HttpPost("/api/skillset/create")]
-        [ValidateAntiForgeryToken]
         [Produces("application/json")]
         public ActionResult CreateSkillSet([FromBody] SkillSetFormModel formModel)
         {
+            // check if authenticated
+            try { AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
             // write the given skillset to database
             int skillSetId = -1;
             using(EPortfolioDB database = new EPortfolioDB())
@@ -111,11 +114,15 @@ namespace folio.API.Controllers
         }
     
         // route to update skillset for skillset id and skillset form model
+        // authentication is required
         [HttpPost("/api/skillset/update/{id}")]
-        [ValidateAntiForgeryToken]
         public ActionResult UpdateSkillSet(
                 int id, [FromBody] SkillSetFormModel formModel)
         {
+            // check if authenticated
+            try { AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
             using(EPortfolioDB database = new EPortfolioDB())
             {
                 // Find the skillset specified by formModel
@@ -132,10 +139,14 @@ namespace folio.API.Controllers
         }
     
         // route to delete skillset for skillset id
+        // authentication is required
         [HttpPost("/api/skillset/delete/{id}")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteSkillSet(int id)
         {
+            // check if authenticated
+            try { AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
             using(EPortfolioDB database = new EPortfolioDB())
             {
                 // Find the skillset specified by formModel

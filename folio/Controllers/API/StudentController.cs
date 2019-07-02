@@ -14,37 +14,18 @@ namespace folio.Controllers.API
 {
     public class StudentController : Controller
     {
-        [HttpGet("/api/student")]
+        //View students from a list
+        [HttpGet("/api/atudents")]
         [Produces("application/json")]
-        public ActionResult Query([FromQuery] string name, [FromQuery] int? skip, [FromQuery] int? limit)
+        public ActionResult GetStudents()
         {
-            // obtain the students that match the query
-            List<int> matchIds = null;
-            using (EPortfolioDB database = new EPortfolioDB())
+            List<Student> studentList = null;
+            using (EPortfolioDB db = new EPortfolioDB())
             {
-                IQueryable<Student> matchingStudents = database.Students;
-                // apply filters (if any) in url parameters
-                if (!string.IsNullOrWhiteSpace(name))
-                {
-                    matchingStudents = matchingStudents
-                        .Where(s => s.Name == name);
-                }
-                if (skip != null && skip.Value >= 0)
-                {
-                    matchingStudents = matchingStudents
-                        .Skip(skip.Value);
-                }
-                if (limit != null && limit.Value >= 0)
-                {
-                    matchingStudents = matchingStudents
-                        .Take(limit.Value);
-                }
+                studentList = db.Students.ToList();
 
-                // convert matching students to there corresponding ids
-                matchIds = matchingStudents.Select(s => s.StudentId).ToList();
             }
-
-            return Json(matchIds);
+            return Json(studentList);
         }
 
         [HttpGet("/api/student/{id}")]
@@ -67,8 +48,8 @@ namespace folio.Controllers.API
             return Json(student);
         }
 
+        //Create new student
         [HttpPost("/api/student/create")]
-        [ValidateAntiForgeryToken]
         [Produces("application/json")]
         public ActionResult CreateStudent([FromBody] StudentFormModel formModel)
         {
@@ -87,12 +68,12 @@ namespace folio.Controllers.API
             }
 
             // respond with sucess message with inserted student id
-            Object response = new { skillSetId = studentId };
+            Object response = new { Id = studentId };
             return Json(response);
         }
 
+        //Update student
         [HttpPost("/api/student/update/{id}")]
-        [ValidateAntiForgeryToken]
         public ActionResult UpdateStudent(
                 int id, [FromBody] StudentFormModel formModel)
         {
@@ -111,8 +92,8 @@ namespace folio.Controllers.API
             return Ok();
         }
 
+        //Delete student
         [HttpPost("/api/student/delete/{id}")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteStudent(int id)
         {
             using (EPortfolioDB database = new EPortfolioDB())
@@ -128,23 +109,6 @@ namespace folio.Controllers.API
             }
 
             return Ok();
-        }
-
-        [HttpPost("/api/student/search/{id}")]
-        [ValidateAntiForgeryToken]
-        public ActionResult SearchStudent(int id)
-        {
-            using (EPortfolioDB database = new EPortfolioDB())
-            {
-                // Find the student specified by formModel
-                Student student = database.Students
-                    .Where(s => s.StudentId == id)
-                    .Single();
-
-
-            }
-
-            return
         }
     }
 }
