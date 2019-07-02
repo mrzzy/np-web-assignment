@@ -72,6 +72,10 @@ namespace folio.Services.Auth
                         " Bearer token");
             }
             string token = authHeader.Replace("Bearer", "").Trim();
+            // check if token is not empty
+            if(string.IsNullOrWhiteSpace(token)) 
+            { throw new AuthenticationException("Bearer token is empty"); }
+    
 
             // reconstruct session
             Session session = Session.FromJWT(token, 
