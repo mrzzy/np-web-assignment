@@ -10,9 +10,13 @@ TARGET_PATHS:=$(foreach p,$(TARGET_PROJECTS),$(p)/$(TARGET_CONFIG))
 
 # targets
 .DEFAULT: all
-.PHONY: all
+.PHONY: all test
 
 all: $(TARGET_PATHS)
+
+# test api using newman
+test:
+	newman run folio_tests/API/folio-api.postman_collection.json
 
 # file targets
 folio/%: %
