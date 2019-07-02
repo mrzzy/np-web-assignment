@@ -30,7 +30,7 @@ namespace folio.Tests.Services.Content
             IContentService contentService = new GCSContentService();
             
             string contentId = contentService.Insert(
-                    this.CreateTestContentStream(), "text/plain");
+                    this.CreateTestContentStream(), "text/plain", prefix:"txt");
             
             Assert.False(string.IsNullOrWhiteSpace(contentId),
                         "content id returned from upload is null or empty");
@@ -38,10 +38,10 @@ namespace folio.Tests.Services.Content
             Console.WriteLine("GCSContentServiceTest: " +
                     " TestGCSContentSeviceInsert(): " +
                     " uploaded test content to: "  +
-                    contentService.EncodeUrl(contentId));
+                    contentService.EncodeUrl(contentId, prefix: "txt"));
 
             // clean up
-            contentService.Delete(contentId);
+            contentService.Delete(contentId, prefix:"txt");
         }
 
         [Fact]
@@ -52,11 +52,11 @@ namespace folio.Tests.Services.Content
 
             // insert content
             string contentId = contentService.Insert(
-                    this.CreateTestContentStream());
+                    this.CreateTestContentStream(), "text/plain", prefix:"txt");
 
             // update content
             contentId = contentService.Update(
-                    contentId, this.CreateTestContentStream());
+                    contentId, this.CreateTestContentStream(), prefix:"txt");
             
             Assert.False(string.IsNullOrWhiteSpace(contentId),
                         "content id returned from upload is null or empty");
@@ -64,10 +64,10 @@ namespace folio.Tests.Services.Content
             Console.WriteLine("GCSContentServiceTest: " +
                     " TestGCSContentSeviceUpdate(): " +
                     " uploaded test content to: "  +
-                    contentService.EncodeUrl(contentId));
+                    contentService.EncodeUrl(contentId, prefix:"txt"));
 
             // clean up
-            contentService.Delete(contentId);
+            contentService.Delete(contentId, prefix:"txt");
         }
         
         [Fact]
@@ -78,15 +78,15 @@ namespace folio.Tests.Services.Content
 
             // insert content
             string contentId = contentService.Insert(
-                    this.CreateTestContentStream(), "text/plain");
+                    this.CreateTestContentStream(), "text/plain", prefix:"txt");
 
             // delete content
-            contentService.Delete(contentId);
+            contentService.Delete(contentId, prefix:"txt");
             
             bool hasDeleted = false;
             try
             {
-                contentService.EncodeUrl(contentId);
+                contentService.EncodeUrl(contentId, prefix:"txt");
             }
             catch
             {

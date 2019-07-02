@@ -21,20 +21,18 @@ This repository contains our WEB assignment source code.
 
 ## Status
 Current Project Status:
-| No. | Step | Completition |
-| --- | --- | --- |
-| 1.1 | Complete Frontend Design for Folio | :heavy_check_mark: |
-| 2.1 | Complete Database setup | :heavy_check_mark: |
-| 2.2 | Setup Entity Framework Core | :heavy_check_mark: |
-| 2.3 | Dockerize Project | :heavy_check_mark: |
-| 2.4.1 | AutoScaffolding of Models| :heavy_check_mark: |
-| 2.4.2 | Injecting Connection String | :heavy_check_mark: |
-| 2.4.3 | Fixing Missing Models From Scaffolding | :heavy_check_mark: |
-| 2.5.1 | Setup Unit Testing Framwork| :heavy_check_mark: |
-| 2.5.2 | Intergration Test Models | :heavy_check_mark: |
-| 2.6.1 | Skillset API | :heavy_check_mark: |
-| 2.6.3 | CDN Service - Google Cloud | :heavy_check_mark: |
-| 2.6.2 | Authentication API | :construction: |
+- 1.1 | Complete Frontend Design for Folio | :heavy_check_mark: 
+- 2.1 | Complete Database setup | :heavy_check_mark: 
+- 2.2 | Setup Entity Framework Core | :heavy_check_mark:
+- 2.3 | Dockerize Project | :heavy_check_mark:
+- 2.4.1 | AutoScaffolding of Models| :heavy_check_mark: 
+- 2.4.2 | Injecting Connection String | :heavy_check_mark:
+- 2.4.3 | Fixing Missing Models From Scaffolding | :heavy_check_mark:
+- 2.5.1 | Setup Unit Testing Framwork| :heavy_check_mark:
+- 2.5.2 | Intergration Test Models | :heavy_check_mark:
+- 2.6.1 | Skillset API | :heavy_check_mark:
+- 2.6.3 | CDN Service - Google Cloud | :heavy_check_mark:
+- 2.6.2 | Authentication API | :heavy_check_mark:
 
 ## Structure
 - db - database setup, container

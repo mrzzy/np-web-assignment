@@ -33,7 +33,9 @@ namespace folio.Services.Auth
         }
         
         // Authenticate the user with the given login form model and password.
-        // provided the given login
+        // creating a temporary session for the user
+        // Provides the user role (ie Lecturer or Student) in Session.MetaData,
+        // under the 'UserRole' key
         // Returns a session token that can be used to temporary authenticate 
         // with the user
         // Throw AuthenticationException on authentication failure 
@@ -48,6 +50,7 @@ namespace folio.Services.Auth
         
             // create temporary session token for the user    
             Session session = new Session(loginCredentials.EmailAddr);
+            session.MetaData.Add("UserRole", loginCredentials.UserRole);
             string token = session.ToJWT(AuthService.GetSessionSecretKey());
         
             return token;
@@ -69,6 +72,10 @@ namespace folio.Services.Auth
                         " Bearer token");
             }
             string token = authHeader.Replace("Bearer", "").Trim();
+            // check if token is not empty
+            if(string.IsNullOrWhiteSpace(token)) 
+            { throw new AuthenticationException("Bearer token is empty"); }
+    
 
             // reconstruct session
             Session session = Session.FromJWT(token, 

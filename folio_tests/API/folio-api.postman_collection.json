@@ -1,0 +1,307 @@
+{
+	"info": {
+		"_postman_id": "fb578b49-31c6-41f8-a785-125e44581263",
+		"name": "folio/api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "folio/api/auth",
+			"item": [
+				{
+					"name": "login with credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ad4d5e0-fc97-41a9-8cdd-57e76e58f0ed",
+								"exec": [
+									"// extract session token for user with other requests",
+									"var response = pm.response.json();",
+									"pm.globals.set(\"sessionToken\", response.sessionToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"EmailAddr\": \"s1234112@ap.edu.sg\",\n\t\"Password\": \"p@55Student\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check session token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/auth/check",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"check"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "folio/api/skillset",
+			"item": [
+				{
+					"name": "get skillset by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "790ecb86-17b8-4ba3-a885-78da34fac706",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/skillset/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillset",
+								"1"
+							]
+						},
+						"description": "get skillset by id"
+					},
+					"response": []
+				},
+				{
+					"name": "get skillsets ids",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/skillsets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillsets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get skillsets ids with filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/skillsets?skip=5&limit=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillsets"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "5"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create skillset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4a38cbbd-b58c-4ee1-9e10-15f9e9c538cd",
+								"exec": [
+									"// save the id of the skillset created for later requests",
+									"var skillset = pm.response.json();",
+									"pm.globals.set(\"skillSetId\", skillset.skillSetId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"skillSetName\": \"Fine Dining with $300 suit\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/skillset/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillset",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update skillset by id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"skillSetName\": \"Fine Dining with $9000 suit\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/skillset/update/{{skillSetId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillset",
+								"update",
+								"{{skillSetId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete skillset by id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/skillset/delete/{{skillSetId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillset",
+								"delete",
+								"{{skillSetId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "8c248a3c-c029-4a03-b59b-25d24e4e8827",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "dbf87c72-751c-4980-9cc7-fb958b6d4497",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

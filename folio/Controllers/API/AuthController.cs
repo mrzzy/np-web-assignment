@@ -32,7 +32,7 @@ namespace folio.API.Controllers
             // try to perform login
             string token = null;
             try { token = AuthService.Login(loginCredentials); }
-            catch(AuthenticationException _) { return Unauthorized(); }
+            catch { return Unauthorized(); }
             
             // respond with temporary session token 
             Object response = new { SessionToken = token };
@@ -46,7 +46,7 @@ namespace folio.API.Controllers
         {
             // check by trying load session from token
             try{ Session session = AuthService.ExtractSession(HttpContext); }
-            catch(AuthenticationException _) { return Unauthorized(); }
+            catch { return Unauthorized(); }
 
             // authenticated
             return Ok();

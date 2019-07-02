@@ -34,7 +34,8 @@ namespace folio.Tests.Services
                 AuthService.Login(new LoginFormModel 
                 {
                     EmailAddr = "s1234112@ap.edu.sg",
-                    Password = "superman"
+                    Password = "superman",
+                    UserRole = "Student"
                 });
             }
             catch
@@ -47,7 +48,8 @@ namespace folio.Tests.Services
             string token = AuthService.Login(new LoginFormModel
             {
                 EmailAddr = "s1234112@ap.edu.sg",
-                Password = "p@55Student"
+                Password = "p@55Student",
+                UserRole = "Student"
             });
             
             Assert.True(!String.IsNullOrWhiteSpace(token));
@@ -62,7 +64,8 @@ namespace folio.Tests.Services
             string token = AuthService.Login(new LoginFormModel
             {
                 EmailAddr = "s1234112@ap.edu.sg",
-                Password = "p@55Student"
+                Password = "p@55Student",
+                UserRole = "Student"
             });
             
             // create test http context with tokenk
@@ -71,6 +74,7 @@ namespace folio.Tests.Services
             
             Session session = AuthService.ExtractSession(context);
             Assert.Equal(session.EmailAddr, "s1234112@ap.edu.sg");
+            Assert.Equal("Student", session.MetaData["UserRole"]);
         }
     }
 }
