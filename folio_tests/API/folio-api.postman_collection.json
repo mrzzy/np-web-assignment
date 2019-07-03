@@ -9,7 +9,7 @@
 			"name": "folio/api/auth",
 			"item": [
 				{
-					"name": "login with credentials",
+					"name": "login with credentials student",
 					"event": [
 						{
 							"listen": "test",
@@ -18,7 +18,7 @@
 								"exec": [
 									"// extract session token for user with other requests",
 									"var response = pm.response.json();",
-									"pm.globals.set(\"sessionToken\", response.sessionToken);"
+									"pm.globals.set(\"sessionTokenStudent\", response.sessionToken);"
 								],
 								"type": "text/javascript"
 							}
@@ -30,8 +30,8 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -55,14 +55,91 @@
 					"response": []
 				},
 				{
-					"name": "check session token",
+					"name": "login with credentials lecturer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ad4d5e0-fc97-41a9-8cdd-57e76e58f0ed",
+								"exec": [
+									"// extract session token for user with other requests",
+									"var response = pm.response.json();",
+									"pm.globals.set(\"sessionTokenLecturer\", response.sessionToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"EmailAddr\": \"Lisa_Lee@ap.edu.sg\",\n\t\"Password\": \"p@55Mentor\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check session token student",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{sessionToken}}",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/auth/check",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check session token lecturer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
 									"type": "string"
 								}
 							]
@@ -111,36 +188,6 @@
 					"response": []
 				},
 				{
-					"name": "get skillsets ids with filters",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/skillsets?skip=5&limit=3",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"skillsets"
-							],
-							"query": [
-								{
-									"key": "skip",
-									"value": "5"
-								},
-								{
-									"key": "limit",
-									"value": "3"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "get skillset by id",
 					"event": [
 						{
@@ -175,6 +222,36 @@
 					"response": []
 				},
 				{
+					"name": "get skillsets ids with filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/skillsets?skip=5&limit=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillsets"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "5"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "create skillset",
 					"event": [
 						{
@@ -196,7 +273,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{sessionToken}}",
+									"value": "{{sessionTokenLecturer}}",
 									"type": "string"
 								}
 							]
