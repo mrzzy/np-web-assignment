@@ -22,6 +22,18 @@ namespace folio.API.Controllers
     // controller for the /api/skillset[s]/ route
     public class SkillSetController : Controller
     {   
+        /* properties */
+        private ActionResult SkillSetNameConflict 
+        {
+            get
+            {
+                return Conflict(new Dictionary<string, string>
+                {
+                    { "SkillSetName", "Name of skillset conflicts with an existing skillset" }
+                });
+            }
+        }
+        
         /* Controller Routes */
         // route to query skillsets, with optional specification in url params:
         // student - filter by student (given by id) whom have been assigned skillse
@@ -82,10 +94,20 @@ namespace folio.API.Controllers
         [Authenticate("Lecturer")]
         public ActionResult CreateSkillSet([FromBody] SkillSetFormModel formModel)
         {
+            // check if contents of form model is valid
+            if(!ModelState.IsValid)
+            { return BadRequest(ModelState); }
+            
             // write the given skillset to database
             int skillSetId = -1;
             using(EPortfolioDB database = new EPortfolioDB())
             {
+                // check if skillset name does not conflict with existing skillset
+                if(database.SkillSets
+                    .Where(s => s.SkillSetName == formModel.SkillSetName)
+                    .Count() >= 1)
+                { return SkillSetNameConflict; }
+
                 // create skillSet with form model values
                 SkillSet skillSet = new SkillSet();
                 formModel.Apply(skillSet);
@@ -108,12 +130,23 @@ namespace folio.API.Controllers
         public ActionResult UpdateSkillSet(
                 int id, [FromBody] SkillSetFormModel formModel)
         {
+            // check if contents of form model is valid
+            if(!ModelState.IsValid)
+            { return BadRequest(ModelState); }
+
             using(EPortfolioDB database = new EPortfolioDB())
             {
+                // check if skillset name does not conflict with existing skillset
+                if(database.SkillSets
+                    .Where(s => s.SkillSetName == formModel.SkillSetName)
+                    .Count() >= 2) // all 1 match since updating
+                { return SkillSetNameConflict; }
+
                 // Find the skillset specified by formModel
                 SkillSet skillSet = database.SkillSets
                     .Where(s => s.SkillSetId == id)
-                    .Single();
+                    .FirstOrDefault();
+                if(skillSet == null) return NotFound();
 
                 // perform Update using data in form model
                 formModel.Apply(skillSet);
@@ -140,7 +173,8 @@ namespace folio.API.Controllers
                 // Find the skillset specified by formModel
                 SkillSet skillSet = database.SkillSets
                     .Where(s => s.SkillSetId == id)
-                    .Single();
+                    .FirstOrDefault();
+                if(skillSet == null) return NotFound();
                 
                 // remove the skillSet from db
                 database.SkillSets.Remove(skillSet);
@@ -168,9 +202,12 @@ namespace folio.API.Controllers
             
                 // obtain models for the specified by the given request
                 SkillSet skillSetModel = database.SkillSets  
-                    .Where(s => s.SkillSetId == id).Single();
+                    .Where(s => s.SkillSetId == id).FirstOrDefault();
                 Student studentModel = database.Students
-                    .Where(s => s.StudentId == student).Single();
+                    .Where(s => s.StudentId == student).FirstOrDefault();
+            
+                if(skillSetModel == null || studentModel == null)
+                { return NotFound(); }
                 
                 // assign the skillset to the student
                 StudentSkillSet assignment = new StudentSkillSet
@@ -197,7 +234,8 @@ namespace folio.API.Controllers
                 StudentSkillSet assignment  = database.StudentSkillSets
                     .Where(s => s.SkillSetId == id)
                     .Where(s => s.StudentId == student)
-                    .Single();
+                    .FirstOrDefault();
+                if(assignment == null) return NotFound();
                 
                 // remove assignment from database
                 database.StudentSkillSets.Remove(assignment);
