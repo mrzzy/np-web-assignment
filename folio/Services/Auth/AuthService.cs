@@ -91,6 +91,26 @@ namespace folio.Services.Auth
 
             return session;
         }
+
+        // find the login credentials of then user with the given emailAddr
+        // or null of if no such user exists
+        public static LoginFormModel FindUser(string EmailAddr)
+        {
+            HashSet<LoginFormModel> dbLoginCreds = new HashSet<LoginFormModel>();
+            using(EPortfolioDB database = new EPortfolioDB())
+            {
+                // collect all matching users in the database
+                dbLoginCreds.UnionWith( database.Students
+                        .Where(s => s.EmailAddr == EmailAddr)
+                        .Select(s => new LoginFormModel(s)));
+                dbLoginCreds.UnionWith( database.Lecturers
+                        .Where(l => l.EmailAddr == EmailAddr)
+                        .Select(l => new LoginFormModel(l)));
+            }
+        
+            if(dbLoginCreds.Count() <= 0) return null;
+            return dbLoginCreds.Single();
+        }
     
         /* private utilities */
         // convert the given hex dump into a list of bytes
@@ -108,24 +128,5 @@ namespace folio.Services.Auth
                 .ToArray();
         }
         
-        // find the login credentials of then user with the given emailAddr
-        // or null of if no such user exists
-        private static LoginFormModel FindUser(string EmailAddr)
-        {
-            HashSet<LoginFormModel> dbLoginCreds = new HashSet<LoginFormModel>();
-            using(EPortfolioDB database = new EPortfolioDB())
-            {
-                // collect all matching users in the database
-                dbLoginCreds.UnionWith( database.Students
-                        .Where(s => s.EmailAddr == EmailAddr)
-                        .Select(s => new LoginFormModel(s)));
-                dbLoginCreds.UnionWith( database.Lecturers
-                        .Where(l => l.EmailAddr == EmailAddr)
-                        .Select(l => new LoginFormModel(l)));
-            }
-        
-            if(dbLoginCreds.Count() <= 0) return null;
-            return dbLoginCreds.Single();
-        }
     }
 }
