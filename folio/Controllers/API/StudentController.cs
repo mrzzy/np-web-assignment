@@ -12,20 +12,21 @@ using folio.FormModels;
 
 namespace folio.Controllers.API
 {
+    /* Controller for the /api/students route */
     public class StudentController : Controller
     {
-        //View students from a list
+        /* API routes */
+        // route to get student ids, governed by optional query parameters
         [HttpGet("/api/students")]
         [Produces("application/json")]
         public ActionResult GetStudents()
         {
-            List<Student> studentList = null;
+            List<int> studentIds = null;
             using (EPortfolioDB db = new EPortfolioDB())
             {
-                studentList = db.Students.ToList();
-
+                studentIds = db.Students.Where(s => s.StudentId).ToList();
             }
-            return Json(studentList);
+            return Json(studentIds);
         }
 
         [HttpGet("/api/students/{id}")]
