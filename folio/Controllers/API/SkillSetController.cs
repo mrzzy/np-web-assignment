@@ -84,6 +84,7 @@ namespace folio.API.Controllers
         }
             
         // route to create a skillset for skillset form model
+        // responds to request with json representatoin of the skillset
         // authentication lecturer is required
         [HttpPost("/api/skillset/create")]
         [Produces("application/json")]
