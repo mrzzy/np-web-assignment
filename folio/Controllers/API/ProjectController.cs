@@ -70,13 +70,12 @@ namespace folio.Controllers.API
             return Json(project);
         }
         [HttpPost("/api/project/create")]
+        [Authenticate("Student")]
         [Produces("application/json")]
         public ActionResult Createproject([FromBody] ProjectFormModel formModel)
         {
 
             // check if authenticated
-            try { AuthService.ExtractSession(HttpContext); }
-            catch { return Unauthorized(); }
 
             // write the given project to database
             int projectId = -1;
@@ -86,7 +85,7 @@ namespace folio.Controllers.API
                 Project project = new Project();
                 formModel.Apply(project);
 
-                // add new project to database
+                // add new project to database            
                 database.Projects.Add(project);
                 database.SaveChanges();
                 projectId = project.ProjectId;
@@ -98,12 +97,10 @@ namespace folio.Controllers.API
         }
         // route to update project for project id and project form model
         [HttpPost("/api/project/update/{id}")]
+        [Authenticate("Student")]
         public ActionResult UpdateProject(
                 int id, [FromBody] ProjectFormModel formModel)
         {
-            // check if authenticated
-            try { AuthService.ExtractSession(HttpContext); }
-            catch { return Unauthorized(); }
 
             using (EPortfolioDB database = new EPortfolioDB())
             {
@@ -121,12 +118,10 @@ namespace folio.Controllers.API
         }
         // route to delete project for project id
         [HttpPost("/api/project/delete/{id}")]
+        [Authenticate("Student")]
         public ActionResult DeleteProject(int id)
         {
-            // check if authenticated
-            try { AuthService.ExtractSession(HttpContext); }
-            catch { return Unauthorized(); }
-
+     
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 // Find the project specified by formModel
@@ -136,6 +131,56 @@ namespace folio.Controllers.API
 
                 // remove the Project from db
                 database.Projects.Remove(project);
+                database.SaveChanges();
+            }
+
+            return Ok();
+        }
+        [HttpPost("/api/project/assign/{id}")]
+        [Authenticate("Student")]
+        public ActionResult AssignProjectSet(int id, [FromQuery] int student)
+        {
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                IQueryable<ProjectMember> matchingAssignments = database
+                    .ProjectMembers
+                        .Where(s => s.ProjectId == id)
+                        .Where(s => s.StudentId == student);
+                if (matchingAssignments.Count() >= 1)
+                    return Ok(); // it means that the project is already assigned to student
+
+
+                Project projectModel = database.Projects
+                    .Where(s => s.ProjectId == id).Single();
+                Student studentModel = database.Students
+                    .Where(s => s.StudentId == student).Single();
+
+
+                ProjectMember assignment = new ProjectMember
+                {
+                    Member = studentModel,
+                    Project = projectModel
+                };
+                database.ProjectMembers.Add(assignment);
+                database.SaveChanges();
+            }
+
+            return Ok();
+        }
+         [HttpPost("/api/project/remove/{id}")]
+        [Authenticate("Student")]
+        public ActionResult RemoveProject(int id, [FromQuery] int student)
+        {
+            using(EPortfolioDB database = new EPortfolioDB())
+            {
+                
+                ProjectMember assignment  = database.ProjectMembers
+                    .Where(s => s.ProjectId == id)
+                    .Where(s => s.StudentId == student)
+                    .Single();
+                
+               
+                database.ProjectMembers.Remove(assignment);
                 database.SaveChanges();
             }
 
