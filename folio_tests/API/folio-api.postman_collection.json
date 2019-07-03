@@ -453,6 +453,251 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "folio/api/student",
+			"item": [
+				{
+					"name": "get student ids",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/students",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student ids for skillset",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/students?skillset=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "skillset",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student ids for project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/students?project=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "project",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "005a3098-f7e4-475a-a0ce-43bb85c03ac6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/student/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"student",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create new student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aecfcdef-d789-4ceb-8b35-ae3a657e75fd",
+								"exec": [
+									"// save the student id for other requests",
+									"const response = pm.response.json();",
+									"pm.globals.set(\"studentId\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Johnny Ive\",\n    \"course\": \"IT\",\n    \"photo\": \"male1.jpg\",\n    \"description\": \"I am a passionate individual with a proven track record in creating database and cloud projects. I have strong technical skills as well as excellent interpersonal skills which were further honed during my time in school and internship. I am also an individual who is eager to be challenged in order to grow and improve my career development so that I will be better equipped to handle challenging projects in the future.\",\n    \"achievement\": \"Director's list in AY 2015/16\",\n    \"externalLink\": \"https://www.linkedin.com/in/johnny\",\n    \"emailAddr\": \"s4222224656@ap.edu.sg\",\n    \"password\": \"p@55Student\",\n    \"mentorId\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/student/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"student",
+								"create"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sir Johnny Ive\",\n    \"course\": \"IT\",\n    \"photo\": \"male1.jpg\",\n    \"description\": \"I am a passionate individual with a proven track record in creating database and cloud projects. I have strong technical skills as well as excellent interpersonal skills which were further honed during my time in school and internship. I am also an individual who is eager to be challenged in order to grow and improve my career development so that I will be better equipped to handle challenging projects in the future.\",\n    \"achievement\": \"Knighted by the Queen\",\n    \"externalLink\": \"https://www.linkedin.com/in/johnny\",\n    \"password\": \"p@55Student\",\n    \"mentorId\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/student/update/{{studentId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"student",
+								"update",
+								"{{studentId}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete student by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/student/delete/{{studentId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"student",
+								"delete",
+								"{{studentId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
