@@ -85,15 +85,12 @@ namespace folio.API.Controllers
             
         // route to create a skillset for skillset form model
         // responds to request with json representatoin of the skillset
-        // authentication is required
+        // authentication lecturer is required
         [HttpPost("/api/skillset/create")]
         [Produces("application/json")]
+        [Authenticate("Lecturer")]
         public ActionResult CreateSkillSet([FromBody] SkillSetFormModel formModel)
         {
-            // check if authenticated
-            try { AuthService.ExtractSession(HttpContext); }
-            catch { return Unauthorized(); }
-
             // write the given skillset to database
             int skillSetId = -1;
             using(EPortfolioDB database = new EPortfolioDB())
@@ -114,15 +111,12 @@ namespace folio.API.Controllers
         }
     
         // route to update skillset for skillset id and skillset form model
-        // authentication is required
+        // authentication lecturer is required
         [HttpPost("/api/skillset/update/{id}")]
+        [Authenticate("Lecturer")]
         public ActionResult UpdateSkillSet(
                 int id, [FromBody] SkillSetFormModel formModel)
         {
-            // check if authenticated
-            try { AuthService.ExtractSession(HttpContext); }
-            catch { return Unauthorized(); }
-
             using(EPortfolioDB database = new EPortfolioDB())
             {
                 // Find the skillset specified by formModel
@@ -140,14 +134,11 @@ namespace folio.API.Controllers
     
         // route to delete skillset for skillset id
         // cascade deletes any skillset assignments to student (StudentSkillSet)
-        // authentication is required
+        // authentication for lecturer is required
         [HttpPost("/api/skillset/delete/{id}")]
+        [Authenticate("Lecturer")]
         public ActionResult DeleteSkillSet(int id)
         {
-            // check if authenticated
-            try { AuthService.ExtractSession(HttpContext); }
-            catch { return Unauthorized(); }
-
             using(EPortfolioDB database = new EPortfolioDB())
             {
                 // cascade delete any StudentSkillSet assignments
@@ -171,12 +162,9 @@ namespace folio.API.Controllers
         // route to assign the skillset with the specified id to the student 
         // with the specified student id in query
         [HttpPost("/api/skillset/assign/{id}")]
+        [Authenticate("Student")]
         public ActionResult AssignSkillSet(int id, [FromQuery] int student)
         {
-            // check if authenticated
-            try { AuthService.ExtractSession(HttpContext); }
-            catch { return Unauthorized(); }
-
             using(EPortfolioDB database = new EPortfolioDB())
             {
                 // check if student skillset already exists in the database
@@ -209,12 +197,9 @@ namespace folio.API.Controllers
         // route to remove  the skillset with the specified id to the student 
         // with the specified student id in query
         [HttpPost("/api/skillset/remove/{id}")]
+        [Authenticate("Student")]
         public ActionResult RemoveSkillSet(int id, [FromQuery] int student)
         {
-            // check if authenticated
-            try { AuthService.ExtractSession(HttpContext); }
-            catch { return Unauthorized(); }
-
             using(EPortfolioDB database = new EPortfolioDB())
             {
                 // obtain assignment as per the given request 
