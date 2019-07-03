@@ -156,6 +156,7 @@ namespace folio.Controllers.API
         }
 
         // route to delete the student the given id 
+        // cascade delete any StudentSkillSets assigned
         // authentication required: only lecturers or the specific student
         // (the student being deleted) is allowed to delete the student
         [HttpPost("/api/student/delete/{id}")]
@@ -167,9 +168,13 @@ namespace folio.Controllers.API
                 // Find the student specified by formModel
                 Student student = database.Students
                     .Where(s => s.StudentId == id)
+                    .Include(s => s.StudentSkillSets)
                     .FirstOrDefault();
                 if(student == null)
                 { return NotFound(); }
+
+                // cascade delete the students skillsets
+                database.StudentSkillSets.RemoveRange(student.StudentSkillSets);
             
                 // check authorized to perform deletion
                 Session session = AuthService.ExtractSession(HttpContext);
