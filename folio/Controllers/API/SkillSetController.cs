@@ -165,7 +165,7 @@ namespace folio.API.Controllers
         // route to assign the skillset with the specified id to the student 
         // with the specified student id in query
         [HttpPost("/api/skillset/assign/{id}")]
-        public ActionResult AssignSkillset(int id, [FromQuery] int student)
+        public ActionResult AssignSkillSet(int id, [FromQuery] int student)
         {
             // check if authenticated
             try { AuthService.ExtractSession(HttpContext); }
@@ -196,6 +196,31 @@ namespace folio.API.Controllers
                 database.StudentSkillSets.Add(assignment);
                 database.SaveChanges();
             } 
+
+            return Ok();
+        }
+    
+        // route to remove  the skillset with the specified id to the student 
+        // with the specified student id in query
+        [HttpPost("/api/skillset/remove/{id}")]
+        public ActionResult RemoveSkillSet(int id, [FromQuery] int student)
+        {
+            // check if authenticated
+            try { AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
+            using(EPortfolioDB database = new EPortfolioDB())
+            {
+                // obtain assignment as per the given request 
+                StudentSkillSet assignment  = database.StudentSkillSets
+                    .Where(s => s.SkillSetId == id)
+                    .Where(s => s.StudentId == student)
+                    .Single();
+                
+                // remove assignment from database
+                database.StudentSkillSets.Remove(assignment);
+                database.SaveChanges();
+            }
 
             return Ok();
         }
