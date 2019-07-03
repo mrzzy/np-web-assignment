@@ -16,15 +16,29 @@ namespace folio.Controllers.API
     public class StudentController : Controller
     {
         /* API routes */
-        // route to get student ids, governed by optional query parameters
+        // route to get student ids, governed by optional query parameters:
+        // skillset - filter by skillset (given by id) assigned (StudentSkillSet)
         [HttpGet("/api/students")]
         [Produces("application/json")]
-        public ActionResult GetStudents()
+        public ActionResult GetStudents([FromQuery] int? skillset)
         {
             List<int> studentIds = null;
             using (EPortfolioDB db = new EPortfolioDB())
             {
-                studentIds = db.Students.Where(s => s.StudentId).ToList();
+                IQueryable<Student> matchingStudents = db.Students;
+                
+                // apply filters if specified
+                if(skillset != null)
+                {
+                    // filter by skillset id 
+                    matchingStudents = matchingStudents
+                        .Include(s => s.StudentSkillSets)
+                            .ThenInclude(ss => ss.SkillSet)
+                        .Where(s => s.StudentSkillSets
+                                .Any(ss => ss.SkillSet.SkillSetId == skillset));
+                }
+                
+                studentIds = matchingStudents.Select(s => s.StudentId).ToList();
             }
             return Json(studentIds);
         }
