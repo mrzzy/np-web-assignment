@@ -16,6 +16,18 @@ namespace folio.Controllers.API
     /* Controller for the /api/students route */
     public class StudentController : Controller
     {
+        /* properties */
+        private ActionResult EmailAddrConflict 
+        {
+            get 
+            {
+                return Conflict(new Dictionary<string, string>
+                {
+                    { "EmailAddr", "User with Email adddress already exists." }
+                });
+            }
+        }
+
         /* API routes */
         // route to get student ids, governed by optional query parameters:
         // skillset - filter by skillset (given by id) assigned (StudentSkillSet)
@@ -74,24 +86,27 @@ namespace folio.Controllers.API
         }
 
         // route to create a student for student form model
+        // on success, responses with id of newly created student form model
+        // on validation failure  responses with validation errors
         [HttpPost("/api/student/create")]
         [Produces("application/json")]
-        public ActionResult CreateStudent([FromBody] StudentFormModel formModel)
+        public ActionResult CreateStudent(
+                [FromBody] StudentCreateFormModel formModel)
        {
-            // check if not comflicting user(student/lecturer) already
-            // has the email address for the student that is about to be create
+            // check if contents of form model is valid
+            if(!ModelState.IsValid)
+            { return BadRequest(ModelState); }
+
+            // check if existing user already has email address
             if(AuthService.FindUser(formModel.EmailAddr) != null)
-            {
-                return Conflict();
-            }
+            { return EmailAddrConflict; }
 
             // write the given student to database
             int studentId = -1;
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 // create student with form model values
-                Student student = new Student();
-                formModel.Apply(student, method: "create");
+                Student student = formModel.Create();
 
                 // add new student to database
                 database.Students.Add(student);
@@ -107,25 +122,30 @@ namespace folio.Controllers.API
         // update student with the given id with data from the student form model
         // authentication required: only lecturers or the specific student
         // (the student being updated) is allowed to update the student
+        // on validation failure responses with validation errors
         [HttpPost("/api/student/update/{id}")]
         [Authenticate()]
         public ActionResult UpdateStudent(
-                int id, [FromBody] StudentFormModel formModel)
+                int id, [FromBody] StudentUpdateFormModel formModel)
         {
+            // check if contents of form model is valid
+            if(!ModelState.IsValid)
+            { return BadRequest(ModelState); }
+            
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 // Find the student specified by formModel
                 Student student = database.Students
                     .Where(s => s.StudentId == id)
-                    .Single();
+                    .FirstOrDefault();
+                if(student == null)
+                { return NotFound(); }
 
                 // Check authorized to perform update
                 Session session = AuthService.ExtractSession(HttpContext);
                 if(session.MetaData["UserRole"] != "Lecturer" && // any lecturer
                      session.EmailAddr != student.EmailAddr) // this student
-                {
-                    return Unauthorized(); 
-                }
+                { return Unauthorized(); }
 
                 // perform Update using data in form model
                 formModel.Apply(student);
@@ -147,15 +167,15 @@ namespace folio.Controllers.API
                 // Find the student specified by formModel
                 Student student = database.Students
                     .Where(s => s.StudentId == id)
-                    .Single();
+                    .FirstOrDefault();
+                if(student == null)
+                { return NotFound(); }
             
                 // check authorized to perform deletion
                 Session session = AuthService.ExtractSession(HttpContext);
                 if(session.MetaData["UserRole"] != "Lecturer" && // any lecturer
                      session.EmailAddr != student.EmailAddr) // this student
-                {
-                    return Unauthorized(); 
-                }
+                { return Unauthorized(); }
 
                 // remove the student from db
                 database.Students.Remove(student);

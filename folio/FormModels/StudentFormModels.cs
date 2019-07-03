@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 using folio.Models;
 
@@ -11,33 +12,33 @@ namespace folio.FormModels
     public class StudentCreateFormModel
     {
         [Required] 
-        [DataType.Text]
+        [DataType(DataType.Text)]
         [MinLength(1)]
         public string Name { get; set; }
 
         [Required] 
         [MinLength(1)]
-        [DataType.Text]
+        [DataType(DataType.Text)]
         public string Course { get; set; }
 
-        [DataType.ImageUrl]
+        [DataType(DataType.ImageUrl)]
         public string Photo { get; set; }
 
-        [DataType.Text]
+        [DataType(DataType.Text)]
         public string Description { get; set; }
 
-        [DataType.Text]
+        [DataType(DataType.Text)]
         public string Achievement { get; set; }
 
-        [DataType.Url]
+        [DataType(DataType.Url)]
         public string ExternalLink { get; set; }
 
         [Required] 
-        [DataType.EmailAddr]
+        [DataType(DataType.EmailAddress)]
         public string EmailAddr { get; set; }
 
         [Required] 
-        [DataType.Password]
+        [DataType(DataType.Password)]
         [MinLength(8, ErrorMessage="Passwords must be longer than 8 characters")]
         public string Password { get; set; }
 
@@ -65,30 +66,30 @@ namespace folio.FormModels
     // form model for updating students
     public class StudentUpdateFormModel
     {
-        [DataType.Text]
+        [DataType(DataType.Text)]
         [MinLength(1)]
         public string Name { get; set; }
 
         [MinLength(1)]
-        [DataType.Text]
+        [DataType(DataType.Text)]
         public string Course { get; set; }
 
-        [DataType.ImageUrl]
+        [DataType(DataType.ImageUrl)]
         public string Photo { get; set; }
 
-        [DataType.Text]
+        [DataType(DataType.Text)]
         public string Description { get; set; }
 
-        [DataType.Text]
+        [DataType(DataType.Text)]
         public string Achievement { get; set; }
 
-        [DataType.Url]
+        [DataType(DataType.Url)]
         public string ExternalLink { get; set; }
 
-        [DataType.EmailAddr]
+        [DataType(DataType.EmailAddress)]
         public string EmailAddr { get; set; }
 
-        [DataType.Password]
+        [DataType(DataType.Password)]
         [MinLength(8, ErrorMessage="Passwords must be longer than 8 characters")]
         public string Password { get; set; }
 
@@ -104,7 +105,7 @@ namespace folio.FormModels
             if(this.Achievement != null) student.Achievement = this.Achievement;
             if(this.ExternalLink != null) student.ExternalLink = this.ExternalLink;
             if(this.Password != null) student.Password = this.Password;
-            if(this.MentorId != null) student.MentorId = this.MentorId;
+            if(this.MentorId != 0) student.MentorId = this.MentorId;
         }
     }
 }
