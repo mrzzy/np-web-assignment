@@ -24,18 +24,27 @@ namespace folio.API.Controllers
     {   
         /* Controller Routes */
         // route to query skillsets, with optional specification in url params:
+        // student - filter by student (given by id) whom have been assigned skillse
         // responds to request with the ids of all matching skillsets
         [HttpGet("/api/skillsets")]
         [Produces("application/json")]
-        public ActionResult Query(
-                [FromQuery] string name)
+        public ActionResult Query([FromQuery] int? student)
         {
             // obtain the skillsets that match the query
             List<int> matchIds = null;
             using(EPortfolioDB database = new EPortfolioDB())
             {
                 IQueryable<SkillSet> matchingSkillsets = database.SkillSets;
+                
                 // apply filters (if any) in url parameters
+                if(student != null)
+                {
+                    // select only skillsets assigned to student
+                    matchingSkillsets = matchingSkillsets
+                        .Include(s => s.StudentSkillSets)
+                        .Where(s => s.StudentSkillSets
+                            .Any(ss => ss.StudentId == student));
+                }
             
                 // convert matching skillsets to there corresponding ids
                 matchIds = matchingSkillsets.Select(s => s.SkillSetId).ToList();
