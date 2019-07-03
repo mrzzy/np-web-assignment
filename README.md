@@ -31,8 +31,8 @@ Current Project Status:
 - 2.5.1 | Setup Unit Testing Framwork| :heavy_check_mark:
 - 2.5.2 | Intergration Test Models | :heavy_check_mark:
 - 2.6.1 | Skillset API | :heavy_check_mark:
-- 2.6.3 | CDN Service - Google Cloud | :heavy_check_mark:
-- 2.6.2 | Authentication API | :heavy_check_mark:
+- 2.6.2 | CDN Service - Google Cloud | :heavy_check_mark:
+- 2.6.3 | Authentication API | :heavy_check_mark:
 
 ## Structure
 - db - database setup, container
