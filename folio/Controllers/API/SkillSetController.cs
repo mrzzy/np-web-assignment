@@ -139,6 +139,7 @@ namespace folio.API.Controllers
         }
     
         // route to delete skillset for skillset id
+        // cascade deletes any skillset assignments to student (StudentSkillSet)
         // authentication is required
         [HttpPost("/api/skillset/delete/{id}")]
         public ActionResult DeleteSkillSet(int id)
@@ -149,6 +150,11 @@ namespace folio.API.Controllers
 
             using(EPortfolioDB database = new EPortfolioDB())
             {
+                // cascade delete any StudentSkillSet assignments
+                IQueryable<StudentSkillSet> assignments = database.StudentSkillSets
+                    .Where(s => s.SkillSetId == id);
+                database.StudentSkillSets.RemoveRange(assignments);
+            
                 // Find the skillset specified by formModel
                 SkillSet skillSet = database.SkillSets
                     .Where(s => s.SkillSetId == id)
