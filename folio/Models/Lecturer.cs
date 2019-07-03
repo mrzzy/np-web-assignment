@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace folio.Models
 {
@@ -12,9 +13,12 @@ namespace folio.Models
         }
 
         public int LecturerId { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string EmailAddr { get; set; }
         public string Password { get; set; }
+        
         public string Description { get; set; }
 
         public virtual ICollection<Student> Students { get; set; }
