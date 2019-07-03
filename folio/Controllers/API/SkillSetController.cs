@@ -139,6 +139,7 @@ namespace folio.API.Controllers
         }
     
         // route to delete skillset for skillset id
+        // cascade deletes any skillset assignments to student (StudentSkillSet)
         // authentication is required
         [HttpPost("/api/skillset/delete/{id}")]
         public ActionResult DeleteSkillSet(int id)
@@ -149,6 +150,11 @@ namespace folio.API.Controllers
 
             using(EPortfolioDB database = new EPortfolioDB())
             {
+                // cascade delete any StudentSkillSet assignments
+                IQueryable<StudentSkillSet> assignments = database.StudentSkillSets
+                    .Where(s => s.SkillSetId == id);
+                database.StudentSkillSets.RemoveRange(assignments);
+            
                 // Find the skillset specified by formModel
                 SkillSet skillSet = database.SkillSets
                     .Where(s => s.SkillSetId == id)
@@ -156,6 +162,69 @@ namespace folio.API.Controllers
                 
                 // remove the skillSet from db
                 database.SkillSets.Remove(skillSet);
+                database.SaveChanges();
+            }
+
+            return Ok();
+        }
+    
+        // route to assign the skillset with the specified id to the student 
+        // with the specified student id in query
+        [HttpPost("/api/skillset/assign/{id}")]
+        public ActionResult AssignSkillSet(int id, [FromQuery] int student)
+        {
+            // check if authenticated
+            try { AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
+            using(EPortfolioDB database = new EPortfolioDB())
+            {
+                // check if student skillset already exists in the database
+                IQueryable<StudentSkillSet> matchingAssignments = database
+                    .StudentSkillSets
+                        .Where(s => s.SkillSetId == id)
+                        .Where(s => s.StudentId == student);
+                if(matchingAssignments.Count() >= 1)
+                    return Ok(); // skillset already assigned to student
+            
+                // obtain models for the specified by the given request
+                SkillSet skillSetModel = database.SkillSets  
+                    .Where(s => s.SkillSetId == id).Single();
+                Student studentModel = database.Students
+                    .Where(s => s.StudentId == student).Single();
+                
+                // assign the skillset to the student
+                StudentSkillSet assignment = new StudentSkillSet
+                {
+                    Student = studentModel,
+                    SkillSet = skillSetModel
+                };
+                database.StudentSkillSets.Add(assignment);
+                database.SaveChanges();
+            } 
+
+            return Ok();
+        }
+    
+        // route to remove  the skillset with the specified id to the student 
+        // with the specified student id in query
+        [HttpPost("/api/skillset/remove/{id}")]
+        public ActionResult RemoveSkillSet(int id, [FromQuery] int student)
+        {
+            // check if authenticated
+            try { AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
+            using(EPortfolioDB database = new EPortfolioDB())
+            {
+                // obtain assignment as per the given request 
+                StudentSkillSet assignment  = database.StudentSkillSets
+                    .Where(s => s.SkillSetId == id)
+                    .Where(s => s.StudentId == student)
+                    .Single();
+                
+                // remove assignment from database
+                database.StudentSkillSets.Remove(assignment);
                 database.SaveChanges();
             }
 

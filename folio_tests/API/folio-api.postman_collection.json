@@ -91,40 +91,6 @@
 			"name": "folio/api/skillset",
 			"item": [
 				{
-					"name": "get skillset by id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "790ecb86-17b8-4ba3-a885-78da34fac706",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/api/skillset/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"skillset",
-								"1"
-							]
-						},
-						"description": "get skillset by id"
-					},
-					"response": []
-				},
-				{
 					"name": "get skillsets ids",
 					"request": {
 						"method": "GET",
@@ -175,6 +141,40 @@
 					"response": []
 				},
 				{
+					"name": "get skillset by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "790ecb86-17b8-4ba3-a885-78da34fac706",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/skillset/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillset",
+								"1"
+							]
+						},
+						"description": "get skillset by id"
+					},
+					"response": []
+				},
+				{
 					"name": "create skillset",
 					"event": [
 						{
@@ -191,6 +191,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -254,8 +264,94 @@
 					"response": []
 				},
 				{
+					"name": "assign skillset to student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/skillset/assign/{{skillSetId}}?student=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillset",
+								"assign",
+								"{{skillSetId}}"
+							],
+							"query": [
+								{
+									"key": "student",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove skillset from student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/skillset/remove/{{skillSetId}}?student=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"skillset",
+								"remove",
+								"{{skillSetId}}"
+							],
+							"query": [
+								{
+									"key": "student",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "delete skillset by id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
