@@ -48,9 +48,10 @@ namespace folio.Services.Auth
                 throw new AuthenticationException("User not found or invalid credentials");
             }
         
-            // create temporary session token for the user    
-            Session session = new Session(loginCredentials.EmailAddr);
-            session.MetaData.Add("UserRole", loginCredentials.UserRole);
+            // create temporary session token for the user 
+            // using dbLoginCreds because only dbLoginCreds has user role
+            Session session = new Session(dbLoginCreds.EmailAddr);
+            session.MetaData.Add("UserRole", dbLoginCreds.UserRole);
             string token = session.ToJWT(AuthService.GetSessionSecretKey());
         
             return token;
