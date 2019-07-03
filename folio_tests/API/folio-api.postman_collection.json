@@ -227,7 +227,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/skillsets?skip=5&limit=3",
+							"raw": "http://localhost:5000/api/skillsets?student=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -239,12 +239,8 @@
 							],
 							"query": [
 								{
-									"key": "skip",
-									"value": "5"
-								},
-								{
-									"key": "limit",
-									"value": "3"
+									"key": "student",
+									"value": "1"
 								}
 							]
 						}
@@ -289,7 +285,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"skillSetName\": \"Fine Dining with $300 suit\"\n}"
+							"raw": "{\n    \"skillSetName\": \"Fine Dining with $300 suits\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/api/skillset/create",
