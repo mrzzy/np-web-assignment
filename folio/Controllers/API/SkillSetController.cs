@@ -161,5 +161,43 @@ namespace folio.API.Controllers
 
             return Ok();
         }
+    
+        // route to assign the skillset with the specified id to the student 
+        // with the specified student id in query
+        [HttpPost("/api/skillset/assign/{id}")]
+        public ActionResult AssignSkillset(int id, [FromQuery] int student)
+        {
+            // check if authenticated
+            try { AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
+            using(EPortfolioDB database = new EPortfolioDB())
+            {
+                // check if student skillset already exists in the database
+                IQueryable<StudentSkillSet> matchingAssignments = database
+                    .StudentSkillSets
+                        .Where(s => s.SkillSetId == id)
+                        .Where(s => s.StudentId == student);
+                if(matchingAssignments.Count() >= 1)
+                    return Ok(); // skillset already assigned to student
+            
+                // obtain models for the specified by the given request
+                SkillSet skillSetModel = database.SkillSets  
+                    .Where(s => s.SkillSetId == id).Single();
+                Student studentModel = database.Students
+                    .Where(s => s.StudentId == student).Single();
+                
+                // assign the skillset to the student
+                StudentSkillSet assignment = new StudentSkillSet
+                {
+                    Student = studentModel,
+                    SkillSet = skillSetModel
+                };
+                database.StudentSkillSets.Add(assignment);
+                database.SaveChanges();
+            } 
+
+            return Ok();
+        }
     }
 }
