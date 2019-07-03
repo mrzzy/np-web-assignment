@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 using folio.Models;
 using folio.FormModels;
+using folio.Services.Auth;
 
 namespace folio.Controllers.API
 {
@@ -52,11 +53,11 @@ namespace folio.Controllers.API
             return Json(studentIds);
         }
 
-        [HttpGet("/api/students/{id}")]
+        // route to get student for given student id
+        [HttpGet("/api/student/{id}")]
         [Produces("application/json")]
         public ActionResult GetStudent(int id)
         {
-            Console.WriteLine("get id:", id.ToString());
             // Retrieve the Student for id
             Student student = null;
             using (EPortfolioDB database = new EPortfolioDB())
@@ -72,18 +73,25 @@ namespace folio.Controllers.API
             return Json(student);
         }
 
-        //Create new student
-        [HttpPost("/api/students/create")]
+        // route to create a student for student form model
+        [HttpPost("/api/student/create")]
         [Produces("application/json")]
         public ActionResult CreateStudent([FromBody] StudentFormModel formModel)
-        {
+       {
+            // check if not comflicting user(student/lecturer) already
+            // has the email address for the student that is about to be create
+            if(AuthService.FindUser(formModel.EmailAddr) != null)
+            {
+                return Conflict();
+            }
+
             // write the given student to database
             int studentId = -1;
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 // create student with form model values
                 Student student = new Student();
-                formModel.Apply(student);
+                formModel.Apply(student, method: "create");
 
                 // add new student to database
                 database.Students.Add(student);
@@ -96,8 +104,11 @@ namespace folio.Controllers.API
             return Json(response);
         }
 
-        //Update student
-        [HttpPost("/api/students/update/{id}")]
+        // update student with the given id with data from the student form model
+        // authentication required: only lecturers or the specific student
+        // (the student being updated) is allowed to update the student
+        [HttpPost("/api/student/update/{id}")]
+        [Authenticate()]
         public ActionResult UpdateStudent(
                 int id, [FromBody] StudentFormModel formModel)
         {
@@ -108,6 +119,14 @@ namespace folio.Controllers.API
                     .Where(s => s.StudentId == id)
                     .Single();
 
+                // Check authorized to perform update
+                Session session = AuthService.ExtractSession(HttpContext);
+                if(session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                     session.EmailAddr != student.EmailAddr) // this student
+                {
+                    return Unauthorized(); 
+                }
+
                 // perform Update using data in form model
                 formModel.Apply(student);
                 database.SaveChanges();
@@ -116,8 +135,11 @@ namespace folio.Controllers.API
             return Ok();
         }
 
-        //Delete student
-        [HttpPost("/api/students/delete/{id}")]
+        // route to delete the student the given id 
+        // authentication required: only lecturers or the specific student
+        // (the student being deleted) is allowed to delete the student
+        [HttpPost("/api/student/delete/{id}")]
+        [Authenticate()]
         public ActionResult DeleteStudent(int id)
         {
             using (EPortfolioDB database = new EPortfolioDB())
@@ -126,6 +148,14 @@ namespace folio.Controllers.API
                 Student student = database.Students
                     .Where(s => s.StudentId == id)
                     .Single();
+            
+                // check authorized to perform deletion
+                Session session = AuthService.ExtractSession(HttpContext);
+                if(session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                     session.EmailAddr != student.EmailAddr) // this student
+                {
+                    return Unauthorized(); 
+                }
 
                 // remove the student from db
                 database.Students.Remove(student);
