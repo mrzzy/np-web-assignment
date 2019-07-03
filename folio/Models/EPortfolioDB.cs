@@ -206,11 +206,11 @@ namespace folio.Models
                 entity.Property(e => e.StudentId).HasColumnName("StudentID");
 
                 // Foreign Key Lecturer - One Lecturer to Many Suggestions
-                // On Lecturer deletion: delete this suggestion too (cascade)
+                // On Lecturer deletion: set lecturer to null
                 entity.HasOne(d => d.Lecturer)
                     .WithMany(p => p.Suggestions)
                     .HasForeignKey(d => d.LecturerId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Suggestion_LecturerID");
 
                 // Foreign Key StudentID- One Student to Many Suggestions
@@ -218,7 +218,7 @@ namespace folio.Models
                 entity.HasOne(d => d.Student)
                     .WithMany(p => p.Suggestions)
                     .HasForeignKey(d => d.StudentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Suggestion_StudentID");
             });
 
@@ -233,18 +233,18 @@ namespace folio.Models
                 entity.Property(e => e.StudentId).HasColumnName("StudentID");
                 
                 // Foreign Key ProjectID - One Project to Many ProjectMembers
-                // On project deletion: delete this ProjectMember too
+                // On project deletion: manually delete this ProjectMember too
                 entity.HasOne<Project>(projectMember => projectMember.Project)
                     .WithMany(project => project.ProjectMembers)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasForeignKey(projectMember => projectMember.ProjectId)
                     .HasConstraintName("FK_ProjectMember_ProjectID");
 
                 // Foreign Key StudentID - One Student to Many ProjectMembers
-                // On student deletion: delete this ProjectMember too
+                // On student deletion: manually delete this ProjectMember too
                 entity.HasOne<Student>(projectMember => projectMember.Member)
                     .WithMany(student => student.ProjectMembers)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasForeignKey(projectMember => projectMember.StudentId)
                     .HasConstraintName("FK_ProjectMember_StudentID");
             });
@@ -261,18 +261,18 @@ namespace folio.Models
                 entity.Property(e => e.SkillSetId).HasColumnName("SkillSetID");
                 
                 // Foreign Key StudentID - One Student to Many StudentSkillSets
-                // On student deletion: delete this StudentSkillSets too
+                // On student deletion: manually delete this StudentSkillSets too
                 entity.HasOne<Student>(studentSkillSet => studentSkillSet.Student)
                     .WithMany(student => student.StudentSkillSets)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasForeignKey(studentSkillSet => studentSkillSet.StudentId)
                     .HasConstraintName("FK_StudentSkillSet_StudentID");
                 
                 // Foreign Key SkillSetID - One SkillSet to Many StudentSkillSets
-                // On student deletion: delete this StudentSkillSets too
+                // On student deletion: manually delete this StudentSkillSet too
                 entity.HasOne<SkillSet>(studentSkillSet => studentSkillSet.SkillSet)
                     .WithMany(skillset => skillset.StudentSkillSets)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasForeignKey(studentSkillSet => studentSkillSet.SkillSetId)
                     .HasConstraintName("FK_StudentSkillSet_SkillSetID");
             });
