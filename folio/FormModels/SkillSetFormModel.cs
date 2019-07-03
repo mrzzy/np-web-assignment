@@ -16,7 +16,7 @@ namespace folio.FormModels
     public class SkillSetFormModel
     {
         [MinLength(1)]
-        [DataType(DateType.Text)]
+        [DataType(DataType.Text)]
         [Required(ErrorMessage="Skillset name is required")]
         public string SkillSetName  { get; set; }
 
