@@ -20,54 +20,51 @@ namespace folio.Controllers.API
     [Route("api/[controller]")]
     public class LecturerController : Controller
     {
-        //GET: api/Lecturers
-        [HttpGet("/api/Lecturers")]
-        [Produces("application/json")]
-        public ActionResult Query(
-               [FromQuery] string name, [FromQuery] int? skip, [FromQuery] int? limit)
+
+        private ActionResult EmailAddrConflict
         {
-            // obtain the skillsets that match the query
-            List<int> matchIds = null;
-            using (EPortfolioDB database = new EPortfolioDB())
+            get
             {
-                IQueryable<Lecturer> matchingLecturers = database.Lecturers;
-                // apply filters (if any) in url parameters
-                if (!string.IsNullOrWhiteSpace(name))
+                return Conflict(new Dictionary<string, string>
                 {
-                    matchingLecturers = matchingLecturers
-                        .Where(s => s.Name == name);
-                }
-                if (skip != null && skip.Value >= 0)
-                {
-                    matchingLecturers = matchingLecturers
-                        .Skip(skip.Value);
-                }
-                if (limit != null && limit.Value >= 0)
-                {
-                    matchingLecturers = matchingLecturers
-                        .Take(limit.Value);
-                }
-
-                // convert matching skillsets to there corresponding ids
-                matchIds = matchingLecturers.Select(s => s.LecturerId).ToList();
+                    { "EmailAddr", "User with Email adddress already exists." }
+                });
             }
-
-            return Json(matchIds);
         }
 
-
-        // GET: api/lecturers/details
         [HttpGet("/api/lecturers/details")]
         [Produces("application/json")]
-        public ActionResult GetLecturers()
+        public ActionResult LecturersDetails()
         {
-            List<Lecturer> lecturerlist = null;
-            using (EPortfolioDB db = new EPortfolioDB())
-            {                
-                lecturerlist = db.Lecturers.ToList();
-                
+            List<Lecturer> l = new List<Lecturer>();
+            using(EPortfolioDB db = new EPortfolioDB())
+            {
+                l = db.Lecturers.ToList();
+                db.SaveChanges();
             }
-            return Json(lecturerlist);
+            return Json(l);
+        }
+
+        // GET: api/lecturers
+        [HttpGet("/api/lecturers")]
+        [Produces("application/json")]
+        public ActionResult GetLecturers([FromQuery] int? student)
+        {
+            List<int> lecturerIds = null;
+            using (EPortfolioDB db = new EPortfolioDB())
+            {
+                IQueryable<Lecturer> matchingLecturer = db.Lecturers;
+
+                if (student != null)
+                {
+                    matchingLecturer = matchingLecturer
+                        .Include(l => l.Students)
+                        .Where(l => l.Students.Any(ll => ll.StudentId == student));
+                }
+
+                lecturerIds = matchingLecturer.Select(l => l.LecturerId).ToList();
+            }
+            return Json(lecturerIds);
         }
 
         // GET api/lecturer/5
@@ -96,31 +93,30 @@ namespace folio.Controllers.API
         [HttpPost("/api/lecturer/create")]
         [Produces("application/json")]
         //[Authenticate("Lecturer")]
-        public ActionResult CreatLecture([FromBody] LecturerFormModel fm)
+        public ActionResult CreateLecture([FromBody] LecturerCreateFormModel fm)
         {
-            int lecturerId = -1;
-            Lecturer lecturer = new Lecturer();
-            fm.Apply(lecturer);
-            TryValidateModel(lecturer);
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
+            { return BadRequest(ModelState); }
+
+            // check if existing user already has email address
+            if (AuthService.FindUser(fm.EmailAddr) != null)
+            { return EmailAddrConflict; }
+
+
+            int lecturerId = -1;            
+            using (EPortfolioDB db = new EPortfolioDB())
             {
-                using (EPortfolioDB db = new EPortfolioDB())
-                {
+                Lecturer lecturer = fm.Create();
+                db.Lecturers.Add(lecturer);
+                db.SaveChanges();
 
-                    db.Lecturers.Add(lecturer);
-                    db.SaveChanges();
+                lecturerId = lecturer.LecturerId;
 
-                    lecturerId = lecturer.LecturerId;
-
-                }
-
-                Object response = new { lecturerId = lecturerId };
-                return Json(response);
             }
-            else
-            {
-                return NotFound();
-            }
+
+            Object response = new { lecturerId = lecturerId };
+            return Json(response);
 
         }
 
@@ -129,14 +125,24 @@ namespace folio.Controllers.API
         [HttpPost("/api/lecturer/update/{id}")]
         //[Authenticate("Lecturer")]
         public ActionResult UpdateLecturer(
-                int id, [FromBody] LecturerFormModel formModel)
+                int id, [FromBody] LecturerUpdateFormModel formModel)
         {
+            if (!ModelState.IsValid)
+            { return BadRequest(ModelState); }
+
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 // Find the lecturer specified by formModel
                 Lecturer lecturer = database.Lecturers
                     .Where(s => s.LecturerId == id)
                     .Single();
+                if (lecturer == null)
+                { return NotFound(); }
+
+                Session session = AuthService.ExtractSession(HttpContext);
+                if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                     session.EmailAddr != lecturer.EmailAddr) // this student
+                { return Unauthorized(); }
 
                 // perform Update using data in form model
                 formModel.Apply(lecturer);
@@ -160,6 +166,14 @@ namespace folio.Controllers.API
                     .Where(l => l.LecturerId == id)
                     .Single();
 
+                if (lecturer == null)
+                { return NotFound(); }
+
+                Session session = AuthService.ExtractSession(HttpContext);
+                if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                     session.EmailAddr != lecturer.EmailAddr) // this student
+                { return Unauthorized(); }
+
                 // remove the skillSet from db
                 database.Lecturers.Remove(lecturer);
                 database.SaveChanges();
@@ -167,6 +181,42 @@ namespace folio.Controllers.API
 
             return Ok();
         }
+
+
+        ////GET: api/Lecturers
+        //[HttpGet("/api/Lecturers")]
+        //[Produces("application/json")]
+        //public ActionResult Query(
+        //       [FromQuery] string name, [FromQuery] int? skip, [FromQuery] int? limit)
+        //{
+        //    // obtain the skillsets that match the query
+        //    List<int> matchIds = null;
+        //    using (EPortfolioDB database = new EPortfolioDB())
+        //    {
+        //        IQueryable<Lecturer> matchingLecturers = database.Lecturers;
+        //        // apply filters (if any) in url parameters
+        //        if (!string.IsNullOrWhiteSpace(name))
+        //        {
+        //            matchingLecturers = matchingLecturers
+        //                .Where(s => s.Name == name);
+        //        }
+        //        if (skip != null && skip.Value >= 0)
+        //        {
+        //            matchingLecturers = matchingLecturers
+        //                .Skip(skip.Value);
+        //        }
+        //        if (limit != null && limit.Value >= 0)
+        //        {
+        //            matchingLecturers = matchingLecturers
+        //                .Take(limit.Value);
+        //        }
+
+        //        // convert matching skillsets to there corresponding ids
+        //        matchIds = matchingLecturers.Select(s => s.LecturerId).ToList();
+        //    }
+
+        //    return Json(matchIds);
+        //}
 
     }
 }

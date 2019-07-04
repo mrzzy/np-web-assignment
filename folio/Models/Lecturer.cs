@@ -13,9 +13,7 @@ namespace folio.Models
         }
 
         public int LecturerId { get; set; }
-        [Required]
         public string Name { get; set; }
-        [Required]
         public string EmailAddr { get; set; }
         public string Password { get; set; }
         
