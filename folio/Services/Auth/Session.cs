@@ -6,9 +6,12 @@
 using Jose;
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Security.Authentication;
+using System.Text;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Security.Authentication;
+
 using folio.Models;
 using folio.FormModels;
 
@@ -23,6 +26,7 @@ namespace folio.Services.Auth
 
         /* properties */
         public string EmailAddr { get; set; }
+        public string Hash { get; set; }
         public Dictionary<string, string> MetaData { get; set; }
         private long IssueTimeStamp { get; set; }
         private long Expiry { get; set; }
@@ -130,6 +134,22 @@ namespace folio.Services.Auth
             DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             TimeSpan diff = date.ToUniversalTime() - origin;
             return (long)Math.Floor(diff.TotalSeconds);
+        }
+    
+        // hash the given string input using the SHA256 hashing algorithm
+        private static string ComputeHash(string input)
+        {
+            // extract bytes from the given string input 
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+
+            // perform hashing using SHA256 
+            SHA256Managed hashAlgorithm = new SHA256Managed();
+            byte[] hashBytes = hashAlgorithm.ComputeHash(inputBytes);
+
+            // convert hash to hexdecimal string
+            string hash = string.Join("", hashBytes
+                    .Select(b => string.Format("{0:x2}", b)));
+            return hash;
         }
     }
 }
