@@ -22,8 +22,8 @@ namespace folio.Tests.Services
         {
             Session session = new Session("joel@gmail.com", "p@ssw0rd");
             
-            Assert.Equal(session.EmailAddr, "joel@gmail.com");
-            Assert.Equal(session.MetaData, new Dictionary<string, string>());
+            Assert.Equal("joel@gmail.com",session.EmailAddr);
+            Assert.Equal(new Dictionary<string, string>(), session.MetaData);
         }
         
     

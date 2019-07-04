@@ -73,7 +73,7 @@ namespace folio.Tests.Services
             context.Request.Headers.Add("Authorization", "Bearer " + token);
             
             Session session = AuthService.ExtractSession(context);
-            Assert.Equal(session.EmailAddr, "s1234112@ap.edu.sg");
+            Assert.Equal( "s1234112@ap.edu.sg",session.EmailAddr);
             Assert.Equal("Student", session.MetaData["UserRole"]);
         }
     }

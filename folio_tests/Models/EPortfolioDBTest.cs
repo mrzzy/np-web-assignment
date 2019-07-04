@@ -76,7 +76,7 @@ namespace folio.Tests.Models
                         (p) => p.ProjectId == projectId).First();
                 Assert.False(ProjectTest.CheckSampleProject(obtainProject),
                         "Project update changes has not propogated to database");
-                Assert.Equal(obtainProject.Title, "Deep Learning Time Travel");
+                Assert.Equal("Deep Learning Time Travel", obtainProject.Title);
             
                 // cleanup
                 database.Projects.Remove(obtainProject);
@@ -107,7 +107,7 @@ namespace folio.Tests.Models
             {
                 int nMatches = database.Projects
                     .Where(p => p.ProjectId == projectId).Count();
-                Assert.Equal(nMatches, 0);
+                Assert.Equal(0, nMatches);
             }
         }
         
