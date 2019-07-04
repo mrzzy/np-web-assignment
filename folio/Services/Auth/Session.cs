@@ -133,6 +133,19 @@ namespace folio.Services.Auth
             return true;
         }
     
+        // compute & return hash code from object state
+        public override int GetHashCode()
+        {
+            int hashCode = 13;
+            hashCode = (hashCode * 7) ^ this.EmailAddr.GetHashCode();
+            hashCode = (hashCode * 7) ^ this.Hash.GetHashCode();
+            hashCode = (hashCode * 7) ^ this.MetaData.GetHashCode();
+            hashCode = (hashCode * 7) ^ this.IssueTimeStamp.GetHashCode();
+            hashCode = (hashCode * 7) ^ this.Expiry.GetHashCode();
+        
+            return hashCode;
+        }
+    
         /* private utilities */
         // utilities to convert to & from seconds since epoch and datetime
         private static DateTime ConvertFromUnixTimestamp(long timestamp)

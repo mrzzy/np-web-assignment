@@ -47,5 +47,15 @@ namespace folio.FormModels
 
             return true;
         }
+    
+        // compute & return hash code from object state 
+        public override int GetHashCode()
+        {
+            int hashCode = 13;
+            hashCode = (hashCode * 7) ^ this.EmailAddr.GetHashCode();
+            hashCode = (hashCode * 7) ^ this.Password.GetHashCode();
+            
+            return hashCode;
+        }
     }
 }
