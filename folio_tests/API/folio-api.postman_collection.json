@@ -526,6 +526,43 @@
 					"response": []
 				},
 				{
+					"name": "get student portfolio by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "005a3098-f7e4-475a-a0ce-43bb85c03ac6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/student/portfolio/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"student",
+								"portfolio",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get student by id",
 					"event": [
 						{
@@ -540,6 +577,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {

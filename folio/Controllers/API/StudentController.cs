@@ -64,8 +64,47 @@ namespace folio.Controllers.API
             }
             return Json(studentIds);
         }
+    
+        // route to get student portfolio infomation for given student id
+        // compared to GetStudent() this route does not require authentication
+        // but limits student infomation responded
+        [HttpGet("/api/student/portfolio/{id}")]
+        [Produces("application/json")]
+        public ActionResult GetStudentPortfolio(int id)
+        {
+            // Retrieve the Student for id
+            Student student = null;
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                student = database.Students
+                    .Where(s => s.StudentId == id)
+                    .FirstOrDefault();
+            }
+
+            // check if student has been found for targetId
+            if (student == null) return NotFound();
+        
+            // extract portfolio information from student
+            Object portfolio = new 
+            {
+                Name = student.Name,
+                Course = student.Course,
+                Photo = student.Photo,
+                Description = student.Description,
+                Achievement = student.Achievement,
+                ExternalLink = student.ExternalLink,
+                EmailAddr = student.EmailAddr,
+                MentorId = student.MentorId
+            };
+        
+            return Json(portfolio);
+        }
 
         // route to get student for given student id
+        // authentication required: only lecturers or the specific student
+        // (the student being updated) is allowed to update the student
+        // on validation failure responses with validation errors
+        [Authenticate]
         [HttpGet("/api/student/{id}")]
         [Produces("application/json")]
         public ActionResult GetStudent(int id)
@@ -81,6 +120,12 @@ namespace folio.Controllers.API
 
             // check if student has been found for targetId
             if (student == null) return NotFound();
+
+            // Check authorized to perform view student
+            Session session = AuthService.ExtractSession(HttpContext);
+            if(session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                 session.EmailAddr != student.EmailAddr) // this student
+            { return Unauthorized(); }
 
             return Json(student);
         }
