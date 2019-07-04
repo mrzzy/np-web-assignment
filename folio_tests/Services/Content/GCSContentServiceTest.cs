@@ -96,6 +96,27 @@ namespace folio.Tests.Services.Content
             Assert.True(hasDeleted, "Delete() did not delete object");
         }
         
+    
+        [Fact]
+        // test the conversion between encoding and decoding urls
+        public void TestEncodeDecodeUrlContentId()
+        {
+            DotNetEnv.Env.Load();
+            IContentService contentService = new GCSContentService();
+
+            // insert content
+            string contentId = contentService.Insert(
+                    this.CreateTestContentStream(), "text/plain", prefix:"txt");
+            
+            // encode to url
+            string url = contentService.EncodeUrl(contentId, prefix:"txt");
+            
+            // decode to content id
+            string decodedContentId = contentService.DecodeContentId(url);
+        
+            Assert.Equal(contentId, decodedContentId);
+        }
+    
         /* private utilities */
         // create a test in memory stream 
         private Stream CreateTestContentStream()

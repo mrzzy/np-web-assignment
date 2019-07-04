@@ -33,6 +33,7 @@ Current Project Status:
 - 2.6.1 | Skillset API | :heavy_check_mark:
 - 2.6.2 | CDN Service - Google Cloud | :heavy_check_mark:
 - 2.6.3 | Authentication API | :heavy_check_mark:
+- 2.6.4 | File API | :construction:
 
 ## Structure
 - db - database setup, container

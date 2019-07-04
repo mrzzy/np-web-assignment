@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
+using Google.Apis.Requests;
 using Google.Apis.Storage.v1;
 using Google.Cloud.Storage.V1;
 
@@ -92,16 +93,33 @@ namespace folio.Services.Content
             var storageObject = this.storage.GetObject(this.bucketName, objectName);
             return storageObject.MediaLink;
         }
-        
+    
         // Decode the content id from the given url (ie from EncodeUrl)
         public string DecodeContentId(string url)
         {
             // use regular expressions to extract content id
-            Regex regex = new Regex(@"\/o\/([0-9a-z-]+)\?");
+            Regex regex = new Regex(@"\/o\/[a-zA-Z0-9%]*%2F([a-z0-9-]+)");
             Match match = regex.Match(url);
             
-            string contentId = match.Groups[0].Value;
+            string contentId = match.Groups[1].Value;
             return contentId;
+        }
+    
+        // Check if the content service has the content given by content id 
+        // returns true if the content exists, otherwise false
+        public bool HasObject(string contentId, string prefix="")
+        {
+            try
+            {
+                string objectName = GCSContentService.BuildObjectName(prefix, contentId);
+                this.storage.GetObject(this.bucketName, objectName);
+            } 
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
         
         /* private utilities */

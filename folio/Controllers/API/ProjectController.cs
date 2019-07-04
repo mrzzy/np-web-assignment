@@ -87,11 +87,14 @@ namespace folio.Controllers.API
         {
 
             // check if authenticated
+            if (!ModelState.IsValid)
+            { return BadRequest(ModelState); }
 
             // write the given project to database
             int projectId = -1;
             using (EPortfolioDB database = new EPortfolioDB())
             {
+
                 // check if skillset name does not conflict with existing skillset
                 if (database.Projects
                     .Where(s => s.Title == formModel.Title)
@@ -118,6 +121,8 @@ namespace folio.Controllers.API
         public ActionResult UpdateProject(
                 int id, [FromBody] ProjectFormModel formModel)
         {
+            if (!ModelState.IsValid)
+            { return BadRequest(ModelState); }
 
             using (EPortfolioDB database = new EPortfolioDB())
             {
@@ -147,15 +152,18 @@ namespace folio.Controllers.API
      
             using (EPortfolioDB database = new EPortfolioDB())
             {
+                // Find the project specified by formModel
+                Project project = database.Projects
+                    .Where(s => s.ProjectId == id)
+                    .Include(s => s.ProjectMembers)
+                    .FirstOrDefault();
+                if (project == null)
+                { return NotFound(); }
+
                 // cascade delete any StudentSkillSet assignments
                 IQueryable<ProjectMember> assignments = database.ProjectMembers
                     .Where(s => s.ProjectId == id);
                 database.ProjectMembers.RemoveRange(assignments);
-
-                // Find the project specified by formModel
-                Project project = database.Projects
-                    .Where(s => s.ProjectId == id)
-                    .Single();
 
                 // remove the Project from db
                 database.Projects.Remove(project);
@@ -166,7 +174,7 @@ namespace folio.Controllers.API
         }
         [HttpPost("/api/project/assign/{id}")]
         [Authenticate("Student")]
-        public ActionResult AssignProjectSet(int id, [FromQuery] int student)
+        public ActionResult AssignProjectSet(int id, [FromQuery] int student, bool isLeader=false)
         {
             using (EPortfolioDB database = new EPortfolioDB())
             {
@@ -183,11 +191,14 @@ namespace folio.Controllers.API
                 Student studentModel = database.Students
                     .Where(s => s.StudentId == student).Single();
 
-
+                string role = "";
+                if (isLeader) role = "Leader";
+                else role = "Member";
                 ProjectMember assignment = new ProjectMember
                 {
                     Member = studentModel,
-                    Project = projectModel
+                    Project = projectModel,
+                    Role = role
                 };
                 database.ProjectMembers.Add(assignment);
                 database.SaveChanges();

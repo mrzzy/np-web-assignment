@@ -34,5 +34,9 @@ namespace folio.Services.Content
         
         // Decode the content id from the given url (ie from EncodeUrl)
         string DecodeContentId(string url);
+
+        // Check if the content service has the content given by content id 
+        // returns true if the content exists, otherwise false
+        bool HasObject(string contentId, string prefix="");
     }
 }

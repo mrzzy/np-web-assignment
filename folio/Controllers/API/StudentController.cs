@@ -53,7 +53,7 @@ namespace folio.Controllers.API
             
                 if(project != null)
                 {
-                    // filter by skillset id 
+                    // filter by project id 
                     matchingStudents = matchingStudents
                         .Include(s => s.ProjectMembers)
                         .Where(s => s.ProjectMembers
@@ -190,60 +190,6 @@ namespace folio.Controllers.API
             return Ok();
         }
 
-        //Search student by skillset
-        [HttpGet("/api/students/search")]
-        [Produces("application/json")]
-        public ActionResult Query([FromQuery] string name)
-        {
-            // obtain the skillsets that match the query
-            List<int> matchIds = null;
-            List<int> searchedIds = new List<int>();
-            List<List<string>> searchedStudents = new List<List<string>>();
-            using (EPortfolioDB database = new EPortfolioDB())
-            {
-                IQueryable<SkillSet> matchingSkillsets = database.SkillSets;
-                // apply filters (if any) in url parameters
-                if (!string.IsNullOrWhiteSpace(name))
-                {
-                    matchingSkillsets = matchingSkillsets
-                        .Where(s => s.SkillSetName == name);
-                }
-
-                // convert matching skillsets to there corresponding ids
-                matchIds = matchingSkillsets.Select(s => s.SkillSetId).ToList();
-
-                List<StudentSkillSet> studentSkillSet = database.StudentSkillSets
-                    .Where(s => s.SkillSetId == matchIds[0])
-                    .ToList();
-
-                System.Diagnostics.Debug.WriteLine(studentSkillSet);
-
-                //searchedIds.Add(studentSkillSet.StudentId);
-
-                List<string> studentInfo = new List<string>();
-
-                foreach (StudentSkillSet ss in studentSkillSet)
-                {
-                    searchedIds.Add(ss.StudentId);
-                }
-
-                for (int i = 0; i < searchedIds.Count; i++)
-                {
-                    Student student = database.Students
-                        .Where(s => s.StudentId == searchedIds[i])
-                        .Single();
-
-                    studentInfo.Add(student.Name);
-                    studentInfo.Add(student.StudentId.ToString());
-                    studentInfo.Add(student.ExternalLink);
-                }
-
-                searchedStudents.Add(studentInfo);
-
-                return Json(searchedStudents);
-            }
-        }        
         //Change profile picture
-
     }
 }
