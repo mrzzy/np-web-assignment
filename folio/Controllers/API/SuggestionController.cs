@@ -23,12 +23,13 @@ namespace folio.Controllers.API
         [Produces("application/json")]
         public ActionResult GetSuggestion()
         {
-            List<Suggestion> suggestionList = null;
+            List<int> suggestionIds = null;
             using (EPortfolioDB db = new EPortfolioDB())
             {
-                suggestionList = db.Suggestions.ToList();
+                suggestionIds = db.Suggestions
+                    .Select(s => s.SuggestionId).ToList();
             }
-            return Json(suggestionList);
+            return Json(suggestionIds);
         }
 
         //Create
