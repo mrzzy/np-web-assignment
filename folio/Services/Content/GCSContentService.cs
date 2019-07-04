@@ -97,10 +97,10 @@ namespace folio.Services.Content
         public string DecodeContentId(string url)
         {
             // use regular expressions to extract content id
-            Regex regex = new Regex(@"\/o\/([0-9a-z-]+)\?");
+            Regex regex = new Regex(@"\/o\/[a-zA-Z0-9%]*%2F([a-z0-9-]+)");
             Match match = regex.Match(url);
             
-            string contentId = match.Groups[0].Value;
+            string contentId = match.Groups[1].Value;
             return contentId;
         }
         
