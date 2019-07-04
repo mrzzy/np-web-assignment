@@ -20,7 +20,7 @@ namespace folio.Tests.Services
         [Fact]
         public void TestSessionConstructor()
         {
-            Session session = new Session("joel@gmail.com");
+            Session session = new Session("joel@gmail.com", "p@ssw0rd");
             
             Assert.Equal(session.EmailAddr, "joel@gmail.com");
             Assert.Equal(session.MetaData, new Dictionary<string, string>());
@@ -31,7 +31,7 @@ namespace folio.Tests.Services
         // test the conversion of a session to and from JWT
         public void TestToFromJWT()
         {
-            Session originalSession = new Session("joel@gmail.com");
+            Session originalSession = new Session("joel@gmail.com", "p@ssw0rd");
             originalSession.MetaData.Add("name", "Dr Joel");
 
             // convert to JWT token with hardcoded secret key

@@ -50,7 +50,9 @@ namespace folio.Services.Auth
         
             // create temporary session token for the user 
             // using dbLoginCreds because only dbLoginCreds has user role
-            Session session = new Session(dbLoginCreds.EmailAddr);
+            Session session = new Session(
+                    dbLoginCreds.EmailAddr, dbLoginCreds.Password);
+                    
             session.MetaData.Add("UserRole", dbLoginCreds.UserRole);
             string token = session.ToJWT(AuthService.GetSessionSecretKey());
         

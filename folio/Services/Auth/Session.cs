@@ -26,16 +26,23 @@ namespace folio.Services.Auth
 
         /* properties */
         public string EmailAddr { get; set; }
-        public string Hash { get; set; }
+        protected string Hash { get; set; }
         public Dictionary<string, string> MetaData { get; set; }
         private long IssueTimeStamp { get; set; }
         private long Expiry { get; set; }
+
+        public string Subject
+        {
+            get { return this.EmailAddr + " " + this.Hash; }
+        }
     
         /* constructor */
-        // create an authenticated session for the user given by their EmailAddr
-        public Session(string EmailAddr)
+        // create an authenticated session for the user given by their
+        // credentials EmailAddr and Password
+        public Session(string emailAddr, string password)
         {
-            this.EmailAddr = EmailAddr;
+            this.EmailAddr = emailAddr;
+            this.Hash = Session.ComputeHash(password);
             this.MetaData = new Dictionary<string, string>();
 
             // setup issue timestamp and expiry time of the session
@@ -53,17 +60,20 @@ namespace folio.Services.Auth
             // unpack payload from token
             string payloadJson = Jose.JWT.Decode(token, secretKey);
             dynamic payload = JObject.Parse(payloadJson);
-        
-            string emailAddr = payload.sub;
+
+            string subject = payload.sub;
             string issuer = payload.iss;
             string audience = payload.aud;
             long issueTimeStamp = payload.iat;
             long expiry = payload.exp;
             Dictionary<string, string> meta = payload.meta
                 .ToObject<Dictionary<string, string>>();
+        
+            // unpack subject into email address and hash from subjet
+            string[] contents = subject.Split();
+            string emailAddr = contents[0];
+            string hash = contents[1];
 
-            // check if the token is still valid 
-            // validate that the token has not yet expired
             DateTime expiryDateTime = Session.ConvertFromUnixTimestamp(expiry);
             if(DateTime.Now >= expiryDateTime)
                 throw new AuthenticationException("JWT token has already expired");
@@ -76,6 +86,7 @@ namespace folio.Services.Auth
             return new Session
             {
                 EmailAddr = emailAddr,
+                Hash = hash,
                 MetaData = meta,
                 Expiry = expiry,
                 IssueTimeStamp = issueTimeStamp
@@ -92,7 +103,7 @@ namespace folio.Services.Auth
             {
                 { "aud", Session.JWTAudience }, // audience
                 { "iss", Session.JWTIssuer }, // issuer
-                { "sub", this.EmailAddr }, // subject 
+                { "sub", this.Subject }, // subject 
                 { "exp", this.Expiry }, // expiry
                 { "iat", this.IssueTimeStamp }, // issued at timestamp
                 { "meta", this.MetaData }
@@ -113,10 +124,11 @@ namespace folio.Services.Auth
             
             // check object properties
             Session other = (Session)obj;
-            if(other.EmailAddr != other.EmailAddr) return false;
-            else if(other.MetaData != other.MetaData) return false;
-            else if(other.IssueTimeStamp != other.IssueTimeStamp) return false;
-            else if(other.Expiry != other.Expiry) return false;
+            if(this.EmailAddr != other.EmailAddr) return false;
+            if(this.Hash != other.Hash) return false;
+            else if(this.MetaData.Equals(other.MetaData)) return false;
+            else if(this.IssueTimeStamp != other.IssueTimeStamp) return false;
+            else if(this.Expiry != other.Expiry) return false;
 
             return true;
         }
