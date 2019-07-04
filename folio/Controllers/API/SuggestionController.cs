@@ -18,10 +18,8 @@ namespace folio.Controllers.API
     [Route("api/[controller]")]
     public class SuggestionController : Controller
     {
-       
-
         //View
-        [HttpGet("/api/suggestions/details")]
+        [HttpGet("/api/suggestions")]
         [Produces("application/json")]
         public ActionResult GetSuggestion()
         {
