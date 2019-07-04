@@ -123,7 +123,7 @@ namespace folio.Controllers.API
         // route to update Lecturers for LectureId and Lecturer form model
         // authentication lecturer is required
         [HttpPost("/api/lecturer/update/{id}")]
-        //[Authenticate("Lecturer")]
+        [Authenticate("Lecturer")]
         public ActionResult UpdateLecturer(
                 int id, [FromBody] LecturerUpdateFormModel formModel)
         {
@@ -180,42 +180,6 @@ namespace folio.Controllers.API
 
             return Ok();
         }
-
-
-        ////GET: api/Lecturers
-        //[HttpGet("/api/Lecturers")]
-        //[Produces("application/json")]
-        //public ActionResult Query(
-        //       [FromQuery] string name, [FromQuery] int? skip, [FromQuery] int? limit)
-        //{
-        //    // obtain the skillsets that match the query
-        //    List<int> matchIds = null;
-        //    using (EPortfolioDB database = new EPortfolioDB())
-        //    {
-        //        IQueryable<Lecturer> matchingLecturers = database.Lecturers;
-        //        // apply filters (if any) in url parameters
-        //        if (!string.IsNullOrWhiteSpace(name))
-        //        {
-        //            matchingLecturers = matchingLecturers
-        //                .Where(s => s.Name == name);
-        //        }
-        //        if (skip != null && skip.Value >= 0)
-        //        {
-        //            matchingLecturers = matchingLecturers
-        //                .Skip(skip.Value);
-        //        }
-        //        if (limit != null && limit.Value >= 0)
-        //        {
-        //            matchingLecturers = matchingLecturers
-        //                .Take(limit.Value);
-        //        }
-
-        //        // convert matching skillsets to there corresponding ids
-        //        matchIds = matchingLecturers.Select(s => s.LecturerId).ToList();
-        //    }
-
-        //    return Json(matchIds);
-        //}
-
+       
     }
 }

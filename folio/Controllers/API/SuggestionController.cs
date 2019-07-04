@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 using folio.Models;
 using folio.FormModels;
+using folio.Services.Auth;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,7 +36,7 @@ namespace folio.Controllers.API
         //Create
         [HttpPost("/api/suggestion/create")]
         [Produces("application/json")]
-        //[Authenticate("Lecturer")]
+        [Authenticate("Lecturer")]
         public ActionResult PostSuggestion([FromBody] SuggestionFormModel formModel)
         {
             EPortfolioDB context = new EPortfolioDB();
@@ -97,7 +98,7 @@ namespace folio.Controllers.API
         // GET api/suggestion/5
         [HttpGet("/api/suggestion/{id}")]
         [Produces("application/json")]
-        //[Authenticate("Lecturer")]
+        [Authenticate("Lecturer")]
         public ActionResult GetLectureById(int id)
         {
             Console.WriteLine("get id:", id.ToString());
@@ -118,7 +119,7 @@ namespace folio.Controllers.API
         // POST delete suggestion
         [HttpPost("/api/suggestion/delete/{id}")]
         [Produces("application/json")]
-        //[Authenticate("Lecturer")]
+        [Authenticate("Lecturer")]
         //[ValidateAntiForgeryToken]
         public ActionResult DeleteSuggestion(int id)
         {
@@ -138,20 +139,18 @@ namespace folio.Controllers.API
         }
 
         //Acknowledge suggestions
-        [HttpGet("/api/suggestion/ack/{id}")]
+        [HttpPost("/api/suggestion/ack/{id}")]
         [Produces("application/json")]
+        [Authenticate("Student")]
         public ActionResult Acknowledge(int id)
         {
-            Suggestion suggestion = null;
+            
             using (EPortfolioDB db = new EPortfolioDB())
             {
-                 suggestion = db.Suggestions
-                    .Where(s => s.SuggestionId == id)
-                    //.Include(s => s.Student)
-                    .Single();
+                 
                     
             }
-            return Json(suggestion);
+            return Ok();
         }
         
     }
