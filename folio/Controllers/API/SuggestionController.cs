@@ -12,22 +12,33 @@ using folio.Models;
 using folio.FormModels;
 using folio.Services.Auth;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace folio.Controllers.API
 {
-    [Route("api/[controller]")]
     public class SuggestionController : Controller
     {
         //View
+        // optional url filter url parameters:
+        // student - filter the suggestions by student (given by id) assigned to
         [HttpGet("/api/suggestions")]
         [Produces("application/json")]
-        public ActionResult GetSuggestion()
+        public ActionResult GetSuggestion([FromQuery] int? student)
         {
             List<int> suggestionIds = null;
             using (EPortfolioDB db = new EPortfolioDB())
             {
-                suggestionIds = db.Suggestions
+                IQueryable<Suggestion> matchingSuggestions = db.Suggestions;
+                
+                // apply filters if any
+                if(student != null)
+                {   
+                    // filter suggestions by student assigned the suggestion is 
+                    // assigned to
+                    matchingSuggestions = matchingSuggestions
+                        .Where(s => s.StudentId == student.Value);
+                }
+
+                // convert uggestions to suggestion ids
+                suggestionIds = matchingSuggestions
                     .Select(s => s.SuggestionId).ToList();
             }
             return Json(suggestionIds);
