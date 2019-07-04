@@ -129,7 +129,7 @@ namespace folio.Controllers.API
                 // check if skillset name does not conflict with existing skillset
                 if (database.Projects
                     .Where(s => s.Title == formModel.Title)
-                    .Count() >= 2)
+                    .Count() >= 1)
                 { return ProjectTitleConflict; }
 
                 // Find the project specified by formModel
