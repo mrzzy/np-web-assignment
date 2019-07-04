@@ -57,11 +57,12 @@ namespace folio.API.Controllers
         [Authenticate]
         [HttpPost("/api/file/update")]
         [Produces("application/json")]
-        public ActionResult UpdateFile([FromBody] FileUpdateFormModel formModel)
+        public ActionResult UpdateFile([FromForm] FileUpdateFormModel formModel)
         {
             // validate contents of form model
             if(!ModelState.IsValid)
             { return BadRequest(ModelState); }
+            
             
             // build stream of the uploaded file
             MemoryStream contentStream = new MemoryStream();
@@ -70,6 +71,12 @@ namespace folio.API.Controllers
             // update file with content service
             IContentService contentService = new GCSContentService();
             string contentId = contentService.DecodeContentId(formModel.FileUrl);
+            // check if content actually exists
+            if(!contentService.HasObject(contentId, prefix: "usr"))
+            { return NotFound(); }
+
+            Console.WriteLine("file : " + formModel.FileUrl) ;
+            Console.WriteLine("content id: " + contentId) ;
             contentId = contentService.Update(contentId, contentStream, prefix: "usr");
         
             // respond with content url
@@ -85,7 +92,7 @@ namespace folio.API.Controllers
         // authentication is required.
         [Authenticate]
         [HttpPost("/api/file/delete")]
-        public ActionResult DeleteFile([FromBody] FileDeleteFormModel formModel)
+        public ActionResult DeleteFile([FromForm] FileDeleteFormModel formModel)
         {
             // validate contents of form model
             if(!ModelState.IsValid)
@@ -95,10 +102,13 @@ namespace folio.API.Controllers
             IContentService contentService = new GCSContentService();
             string contentId = 
                 contentService.DecodeContentId(formModel.FileUrl);
-            contentService.Delete(contentId, prefix: "usr");
+            // delete only if content actually exists
+            if(contentService.HasObject(contentId, prefix: "usr"))
+            {
+                contentService.Delete(contentId, prefix: "usr");
+            }
 
             return Ok();
-
         }
     }
 }
