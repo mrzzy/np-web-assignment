@@ -36,7 +36,7 @@ namespace folio.Controllers.API
         // responds to request with the ids of all matching skillsets
         [HttpGet("/api/projects")]
         [Produces("application/json")]
-        public ActionResult Query([FromQuery] string name, [FromQuery] int? limit)
+        public ActionResult Query([FromQuery] string name, [FromQuery] int? limit, int? student)
         {
             // obtain the projects that match the query
             List<int> matchIds = null;
@@ -53,6 +53,14 @@ namespace folio.Controllers.API
                 {
                     matchingProjects = matchingProjects
                         .Take(limit.Value);
+                }
+                if (student != null)
+                {
+                    // filter by project id 
+                    matchingProjects = matchingProjects
+                        .Include(s => s.ProjectMembers)
+                        .Where(s => s.ProjectMembers
+                            .Any(pm => pm.StudentId == student));
                 }
 
                 // convert matching project to there corresponding ids
