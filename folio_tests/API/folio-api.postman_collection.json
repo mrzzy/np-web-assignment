@@ -890,6 +890,666 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "folio/api/lecturer",
+			"item": [
+				{
+					"name": "get lecturer ids",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/lecturers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"lecturers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get lecturer ids with filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/lecturers?student=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"lecturers"
+							],
+							"query": [
+								{
+									"key": "student",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get lecturer by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3277c375-4ece-4a53-8f4c-15aa67073185",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/lecturer/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"lecturer",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create lecturer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "756364d6-7161-4413-9eca-14f762847a21",
+								"exec": [
+									"// save lecturer id for future requests",
+									"var response = pm.response.json();",
+									"pm.globals.set(\"lecturerId\", response.lecturerId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"dr joel\",\n    \"emailAddr\": \"joel@ap.edu.sg\",\n    \"password\": \"p@55Lecturer\",\n    \"description\": \"Programming\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/lecturer/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"lecturer",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update lecturer by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Peter Ghim\",\n    \"emailAddr\": \"Peter_Ghim@ap.edu.sg\",\n    \"password\": \"p@55Mentor\",\n    \"description\": \"Programming\",\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/lecturer/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"lecturer",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete lecturer by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/lecturer/delete/{{lecturerId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"lecturer",
+								"delete",
+								"{{lecturerId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "folio/api/suggestion",
+			"item": [
+				{
+					"name": "get suggestion ids",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/suggestions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"suggestions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get suggestion by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/suggestion/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"suggestion",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create suggestion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2265d5bf-235d-49e6-b791-8484b624f4b7",
+								"exec": [
+									"// save suggestion id for future requests",
+									"var response = pm.response.json();",
+									"pm.globals.set(\"suggestionId\", response.suggestionId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lecturerId\": 1,\n    \"studentId\": 2,\n    \"description\": \"Hi Amy, you should change your profile photo..\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/suggestion/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"suggestion",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "acknowledge suggestion for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/suggestion/ack/{{suggestionId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"suggestion",
+								"ack",
+								"{{suggestionId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete suggestion by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/suggestion/delete/{{suggestionId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"suggestion",
+								"delete",
+								"{{suggestionId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "folio/api/project",
+			"item": [
+				{
+					"name": "get project ids",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/projects",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get project by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/project/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ea004e7-f308-473c-864a-6037817a9565",
+								"exec": [
+									"// save project id for future requests",
+									"var response = pm.response.json();",
+									"pm.globals.set(\"projectId\", response.projectId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Gipher\",\n    \"description\": \"Gipher, is a platformer fighting game developed within 4 weeks. The game's playable characters are created with a unique fighting style. The gameplay objective differs from those traditional fighters, by aiming to knock opponents off of the stage instead of depleting life bars. Instead of using physical combats to knock off the enemies, the characters are to use magical powers to shoot at their enemies, giving each character different style of fighting, different strategies and unique sets of moves.\",\n    \"projectPoster\": \"Project_1_Poster.jpg\",\n    \"projectUrl\": \"https://www.myweb.com/Gipher\",\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/project/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update project for id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Dipher\",\n    \"description\": \"Dipher, is a platformer fighting game developed within 4 weeks. The game's playable characters are created with a unique fighting style. The gameplay objective differs from those traditional fighters, by aiming to knock opponents off of the stage instead of depleting life bars. Instead of using physical combats to knock off the enemies, the characters are to use magical powers to shoot at their enemies, giving each character different style of fighting, different strategies and unique sets of moves.\",\n    \"projectPoster\": \"Project_1_Poster.jpg\",\n    \"projectUrl\": \"https://www.myweb.com/Dipher\",\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/project/update/{{projectId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"update",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete project for id ",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/project/delete/{{projectId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"delete",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign member to project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/project/assign/{{projectId}}?student=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"assign",
+								"{{projectId}}"
+							],
+							"query": [
+								{
+									"key": "student",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove member from project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/project/remove/{{projectId}}?student=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"remove",
+								"{{projectId}}"
+							],
+							"query": [
+								{
+									"key": "student",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
