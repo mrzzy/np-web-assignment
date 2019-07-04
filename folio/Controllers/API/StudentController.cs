@@ -114,7 +114,7 @@ namespace folio.Controllers.API
                 studentId = student.StudentId;
             }
 
-            // respond with sucess message with inserted student id
+            // respond with success message with inserted student id
             Object response = new { Id = studentId };
             return Json(response);
         }
@@ -156,6 +156,7 @@ namespace folio.Controllers.API
         }
 
         // route to delete the student the given id 
+        // cascade delete any StudentSkillSets assigned
         // authentication required: only lecturers or the specific student
         // (the student being deleted) is allowed to delete the student
         [HttpPost("/api/student/delete/{id}")]
@@ -167,9 +168,13 @@ namespace folio.Controllers.API
                 // Find the student specified by formModel
                 Student student = database.Students
                     .Where(s => s.StudentId == id)
+                    .Include(s => s.StudentSkillSets)
                     .FirstOrDefault();
                 if(student == null)
                 { return NotFound(); }
+
+                // cascade delete the students skillsets
+                database.StudentSkillSets.RemoveRange(student.StudentSkillSets);
             
                 // check authorized to perform deletion
                 Session session = AuthService.ExtractSession(HttpContext);
@@ -184,5 +189,61 @@ namespace folio.Controllers.API
 
             return Ok();
         }
+
+        //Search student by skillset
+        [HttpGet("/api/students/search")]
+        [Produces("application/json")]
+        public ActionResult Query([FromQuery] string name)
+        {
+            // obtain the skillsets that match the query
+            List<int> matchIds = null;
+            List<int> searchedIds = new List<int>();
+            List<List<string>> searchedStudents = new List<List<string>>();
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                IQueryable<SkillSet> matchingSkillsets = database.SkillSets;
+                // apply filters (if any) in url parameters
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    matchingSkillsets = matchingSkillsets
+                        .Where(s => s.SkillSetName == name);
+                }
+
+                // convert matching skillsets to there corresponding ids
+                matchIds = matchingSkillsets.Select(s => s.SkillSetId).ToList();
+
+                List<StudentSkillSet> studentSkillSet = database.StudentSkillSets
+                    .Where(s => s.SkillSetId == matchIds[0])
+                    .ToList();
+
+                System.Diagnostics.Debug.WriteLine(studentSkillSet);
+
+                //searchedIds.Add(studentSkillSet.StudentId);
+
+                List<string> studentInfo = new List<string>();
+
+                foreach (StudentSkillSet ss in studentSkillSet)
+                {
+                    searchedIds.Add(ss.StudentId);
+                }
+
+                for (int i = 0; i < searchedIds.Count; i++)
+                {
+                    Student student = database.Students
+                        .Where(s => s.StudentId == searchedIds[i])
+                        .Single();
+
+                    studentInfo.Add(student.Name);
+                    studentInfo.Add(student.StudentId.ToString());
+                    studentInfo.Add(student.ExternalLink);
+                }
+
+                searchedStudents.Add(studentInfo);
+
+                return Json(searchedStudents);
+            }
+        }        
+        //Change profile picture
+
     }
 }
