@@ -694,6 +694,202 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "folio/api/file",
+			"item": [
+				{
+					"name": "upload file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1086b88c-3f3c-49aa-8e38-b0b756250c5c",
+								"exec": [
+									"// save url of file for future requests",
+									"var response = pm.response.json();",
+									"pm.globals.set(\"fileUrl\", response.FileUrl);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/zzy/trx/doc/school/web/code/np-web-assignment-1/folio_tests/API/images/pic.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/file/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"file",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get file",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fileUrl}}",
+							"host": [
+								"{{fileUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update file for file url",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "47b9e0c9-0587-4e4c-b5e6-83fd0bc28e8f",
+								"exec": [
+									"// save url of file for future requests",
+									"var response = pm.response.json();",
+									"pm.globals.set(\"fileUrl\", response.FileUrl);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "FileUrl",
+									"value": "{{fileUrl}}",
+									"type": "text"
+								},
+								{
+									"key": "File",
+									"type": "file",
+									"src": "/home/zzy/trx/doc/school/web/code/np-web-assignment-1/folio_tests/API/images/pic_updated.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/file/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"file",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete file for file url",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "FileUrl",
+									"value": "{{fileUrl}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/file/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"file",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
