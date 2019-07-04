@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 using folio.Models;
 using folio.FormModels;
 using folio.Services.Auth;
-using folio.Services;
+using folio.Services.Content;
 
 namespace folio.API.Controllers
 {
@@ -39,18 +39,25 @@ namespace folio.API.Controllers
             // insert file into content service
             IContentService contentService = new GCSContentService();
             string contentId = contentService
-                .Insert(contentStream, fileContentType, prefix: "usr");
+                .Insert(contentStream, file.ContentType, prefix: "usr");
             
-            return contentService.EncodeUrl(contentId);
+            // respond with content url
+            string contentUrl = contentService.EncodeUrl(contentId);
+            return Ok(new Dictionary<string, string>
+            {
+                {"FileUrl", contentUrl}
+            });
         }
-        
+    
         // route to delete the file with the given url
         // authentication is required.
+        [Authenticate]
         [HttpPost("/api/file/delete")]
-        public ActionResult DeleteFile()
+        public ActionResult DeleteFile([FromBody] FileFormModel formModel)
         {
-
-
+            // validate contents of form model
+            if(!ModelState.IsValid)
+            { return BadRequest(ModelState); }
         }
     }
 }
