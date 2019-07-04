@@ -147,7 +147,11 @@ namespace folio.Controllers.API
             
             using (EPortfolioDB db = new EPortfolioDB())
             {
-                 
+                Suggestion status = db.Suggestions.FirstOrDefault(s => s.SuggestionId == id);
+
+                status.Status = "Y";
+                db.Update<Suggestion>(status);
+                db.SaveChanges();
                     
             }
             return Ok();
