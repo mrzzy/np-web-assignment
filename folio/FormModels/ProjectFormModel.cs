@@ -3,14 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using folio.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace folio.FormModels
 {
     public class ProjectFormModel
     {
+
+        [MinLength(1)]
+        [DataType(DataType.Text)]
+        [Required(ErrorMessage = "Skillset name is required")]
         public string Title { get; set; }
+
+        [DataType(DataType.Text)]
         public string Description { get; set; }
+
+        [DataType(DataType.ImageUrl)]
         public string ProjectPoster { get; set; }
+
+        [DataType(DataType.Url)]
         public string ProjectURL { get; set; }
 
         // Apply the the values of the properties of the Project form model

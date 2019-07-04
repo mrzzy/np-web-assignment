@@ -17,6 +17,17 @@ namespace folio.Controllers.API
 {
     public class ProjectController : Controller
     {
+        private ActionResult ProjectTitleConflict
+        {
+            get
+            {
+                return Conflict(new Dictionary<string, string>
+                {
+                    { "Title", "Name of Title conflicts with an existing project" }
+                });
+            }
+        }
+
         /* Controller Routes */
 
         // route to query projects, with optional specification in url params:
@@ -81,6 +92,12 @@ namespace folio.Controllers.API
             int projectId = -1;
             using (EPortfolioDB database = new EPortfolioDB())
             {
+                // check if skillset name does not conflict with existing skillset
+                if (database.Projects
+                    .Where(s => s.Title == formModel.Title)
+                    .Count() >= 1)
+                { return ProjectTitleConflict; }
+
                 // create project with form model values
                 Project project = new Project();
                 formModel.Apply(project);
@@ -104,6 +121,12 @@ namespace folio.Controllers.API
 
             using (EPortfolioDB database = new EPortfolioDB())
             {
+                // check if skillset name does not conflict with existing skillset
+                if (database.Projects
+                    .Where(s => s.Title == formModel.Title)
+                    .Count() >= 2)
+                { return ProjectTitleConflict; }
+
                 // Find the project specified by formModel
                 Project project = database.Projects
                     .Where(s => s.ProjectId == id)
@@ -124,6 +147,11 @@ namespace folio.Controllers.API
      
             using (EPortfolioDB database = new EPortfolioDB())
             {
+                // cascade delete any StudentSkillSet assignments
+                IQueryable<ProjectMember> assignments = database.ProjectMembers
+                    .Where(s => s.ProjectId == id);
+                database.ProjectMembers.RemoveRange(assignments);
+
                 // Find the project specified by formModel
                 Project project = database.Projects
                     .Where(s => s.ProjectId == id)
