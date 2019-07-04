@@ -36,6 +36,7 @@ namespace folio.Controllers.API
         //Create
         [HttpPost("/api/suggestion/create")]
         [Produces("application/json")]
+        //[Authenticate("Lecturer")]
         public ActionResult PostSuggestion([FromBody] SuggestionFormModel formModel)
         {
             EPortfolioDB context = new EPortfolioDB();
@@ -60,7 +61,6 @@ namespace folio.Controllers.API
                         ifLecturerExist = false;
                         
                     }
-
                 }
                 foreach (Student i in context.Students)
                 {
@@ -138,7 +138,7 @@ namespace folio.Controllers.API
             return Ok();
         }
 
-
+        //Acknowledge suggestions
         [HttpGet("/api/suggestion/ack/{id}")]
         [Produces("application/json")]
         public ActionResult Acknowledge(int id)
@@ -148,7 +148,7 @@ namespace folio.Controllers.API
             {
                  suggestion = db.Suggestions
                     .Where(s => s.SuggestionId == id)
-                    .Include(s => s.Student)
+                    //.Include(s => s.Student)
                     .Single();
                     
             }
