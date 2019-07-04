@@ -73,7 +73,7 @@ namespace folio.Controllers.API
         // GET api/lecturer/5
         [HttpGet("/api/lecturer/{id}")]
         [Produces("application/json")]
-        //[Authenticate("Lecturer")]
+        [Authenticate("Lecturer")]
         public ActionResult GetLectureById(int id)
         {
             Console.WriteLine("get id:", id.ToString());
@@ -95,7 +95,7 @@ namespace folio.Controllers.API
         //POST api/lecturer/create
         [HttpPost("/api/lecturer/create")]
         [Produces("application/json")]
-        //[Authenticate("Lecturer")]
+        [Authenticate("Lecturer")]
         public ActionResult CreatLecture([FromBody] LecturerFormModel fm)
         {
             int lecturerId = -1;
@@ -149,8 +149,7 @@ namespace folio.Controllers.API
         // route to delete lecturer for lecturer id
         [HttpPost("/api/lecturer/delete/{id}")]
         [Produces("application/json")]
-        //[Authenticate("Lecturer")]
-        //[ValidateAntiForgeryToken]
+        [Authenticate("Lecturer")]
         public ActionResult DeleteLecturer(int id)
         {
             using (EPortfolioDB database = new EPortfolioDB())
