@@ -103,7 +103,7 @@ namespace folio.Controllers.API
             using (EPortfolioDB database = new EPortfolioDB())
             {
 
-                // check if skillset name does not conflict with existing skillset
+                // check if project name does not conflict with existing project
                 if (database.Projects
                     .Where(s => s.Title == formModel.Title)
                     .Count() >= 1)
@@ -134,7 +134,7 @@ namespace folio.Controllers.API
 
             using (EPortfolioDB database = new EPortfolioDB())
             {
-                // check if skillset name does not conflict with existing skillset
+                // check if project name does not conflict with existing project
                 if (database.Projects
                     .Where(s => s.Title == formModel.Title)
                     .Count() >= 1)
@@ -168,7 +168,7 @@ namespace folio.Controllers.API
                 if (project == null)
                 { return NotFound(); }
 
-                // cascade delete any StudentSkillSet assignments
+                // cascade delete any ProjectMember assignments
                 IQueryable<ProjectMember> assignments = database.ProjectMembers
                     .Where(s => s.ProjectId == id);
                 database.ProjectMembers.RemoveRange(assignments);
@@ -186,6 +186,8 @@ namespace folio.Controllers.API
         {
             using (EPortfolioDB database = new EPortfolioDB())
             {
+                string role = "";
+
                 IQueryable<ProjectMember> matchingAssignments = database
                     .ProjectMembers
                         .Where(s => s.ProjectId == id)
@@ -199,9 +201,19 @@ namespace folio.Controllers.API
                 Student studentModel = database.Students
                     .Where(s => s.StudentId == student).Single();
 
-                string role = "";
-                if (isLeader) role = "Leader";
-                else role = "Member";
+                IQueryable<ProjectMember> roleleader = database
+                    .ProjectMembers
+                        .Where(s => s.ProjectId == id)
+                        .Where(s => s.StudentId == student);
+                if (roleleader.Count() <= 0)
+                {
+                    role = "Leader";
+                }
+                else
+                {
+                    role = "Member";
+                }
+                   
                 ProjectMember assignment = new ProjectMember
                 {
                     Member = studentModel,
