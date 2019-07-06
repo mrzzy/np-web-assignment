@@ -15,10 +15,6 @@ namespace folio_ui
         // configure services
         public void ConfigureServices(IServiceCollection services)
         {
-            // Setup in memory sessions in the app
-            services.AddDistributedMemoryCache();
-            services.AddSession();
-        
             // enforce lowercase routing
             services.AddRouting(options => options.LowercaseUrls = true);
 
@@ -34,9 +30,6 @@ namespace folio_ui
             { app.UseDeveloperExceptionPage(); }
             else { app.UseExceptionHandler("/Home/Error"); }
         
-            // use session middleware
-            app.UseSession();
-
             // serve static files in wwwroot
             app.UseStaticFiles();
         
