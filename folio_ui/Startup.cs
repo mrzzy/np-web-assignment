@@ -5,54 +5,42 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace folio_ui
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // configure services
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+            // Setup in memory sessions in the app
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+        
+            // enforce lowercase routing
+            services.AddRouting(options => options.LowercaseUrls = true);
 
-
+            // mvc routing service 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // configure middleware
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            // handing exceptions
             if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            { app.UseDeveloperExceptionPage(); }
+            else { app.UseExceptionHandler("/Home/Error"); }
+        
+            // use session middleware
+            app.UseSession();
 
-            app.UseHttpsRedirection();
+            // serve static files in wwwroot
             app.UseStaticFiles();
-            app.UseCookiePolicy();
-
+        
+            // MVC routing
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
