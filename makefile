@@ -10,7 +10,7 @@ TARGET_PATHS:=$(foreach p,$(TARGET_PROJECTS),$(p)/$(TARGET_CONFIG))
 
 # targets
 .DEFAULT: all
-.PHONY: all test test/api
+.PHONY: all test test/api clean
 
 all: $(TARGET_PATHS)
 
