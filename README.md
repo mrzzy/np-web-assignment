@@ -54,7 +54,7 @@ Current Project Status:
 - folio_ui - folio frontend source
     - Services - utility services
     - Controllers - controllers
-        - View- view controllers
+        - view controllers
     - Views - views
     - wwwroot - static assets
         -  css - stylesheets
