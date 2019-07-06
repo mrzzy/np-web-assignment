@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\folio\folio.csproj" />
+    <ProjectReference Include="..\folio_ui\folio_ui.csproj" />
   </ItemGroup>
 
 
