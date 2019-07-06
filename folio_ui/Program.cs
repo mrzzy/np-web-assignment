@@ -14,7 +14,18 @@ namespace folio_ui
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            // load environment variables from .env
+            DotNetEnv.Env.Load();
+        
+            // configure host to listen on all interfaces
+            // required to be able to reach the service from
+            // outside container
+            var host = WebHost.CreateDefaultBuilder(args)
+                .UseUrls("http://0.0.0.0:5001/")
+                .UseStartup<Startup>()
+                .Build();
+            
+            host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
