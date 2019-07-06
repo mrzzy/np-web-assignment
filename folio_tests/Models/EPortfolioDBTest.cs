@@ -171,7 +171,8 @@ namespace folio.Tests.Models
                 ProjectMember projectMember = new ProjectMember
                 {
                     Member = student,
-                    Project = project
+                    Project = project,
+                    Role = "Member"
                 };
                 database.ProjectMembers.Add(projectMember);
 
@@ -201,6 +202,8 @@ namespace folio.Tests.Models
                 
                 ProjectMember projectMember = lecturer.Students.First()
                                                 .ProjectMembers.First();
+                Assert.Equal("Member", projectMember.Role);
+
                 Project project = projectMember.Project;
                 Assert.True(ProjectTest.CheckSampleProject(project),
                     "project obtained from DB inconsistent with one inserted " +
