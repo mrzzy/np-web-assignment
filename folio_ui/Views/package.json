@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --mode production",
-    "build-dev": "webpack --mode production"
+    "build-dev": "webpack --mode development"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,9 @@
     "@babel/core": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
     "babel-loader": "^8.0.6",
+    "css-loader": "^3.0.0",
+    "file-loader": "^4.0.0",
+    "style-loader": "^0.23.1",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "^3.7.2"
