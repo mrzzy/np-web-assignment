@@ -38,7 +38,7 @@
 
   <Target Name="ProductionBuildClientApp" BeforeTargets="Publish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec WorkingDirectory="$(ClientApp)" Command="npm install" />
+    <Exec WorkingDirectory="$(ClientApp)" Command="npm install"/>
     <Exec WorkingDirectory="$(ClientApp)" Command="npm run build" />
   </Target>
 </Project>
