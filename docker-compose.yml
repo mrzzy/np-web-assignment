@@ -10,13 +10,12 @@ services:
       - "1433:1433"
 
   api:
-    image: mrzzy/np_web_folio_api:develop
+    image: mrzzy/np_web_folio_api
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./folio/Dockerfile
       args:
         PROJECT_NAME: "folio"
-      target: develop
     user: "${UID}:${GID}"
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
@@ -24,6 +23,7 @@ services:
       - "5000:5000"
     volumes:
       - ".:/src"
+      - "./.env:/app/.env"
     depends_on:
       - db
       
@@ -31,7 +31,7 @@ services:
     image: mrzzy/np_web_folio_ui:develop
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./folio_ui/Dockerfile
       args:
         PROJECT_NAME: "folio_ui"
       target: develop
@@ -42,5 +42,6 @@ services:
       - "5001:5001"
     volumes:
       - ".:/src"
+      - "./.env:/app/.env"
     depends_on:
-      - db
+      - api
