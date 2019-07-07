@@ -4,7 +4,7 @@
 */
 
 const path = require("path");
-
+ 
 module.exports = {
     // client scripts point 
     entry: path.resolve(__dirname, "index.js"),
@@ -41,7 +41,12 @@ module.exports = {
             }
         ]
     },
+    // unbundled modules
+    externals: {
+        jquery: '$',
+        bootstrap: '$'
+    },
     resolve: {
         extensions: [".js", ".json"]
     }
-};
+}; 
