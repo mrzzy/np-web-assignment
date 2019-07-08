@@ -31,14 +31,15 @@
     <Exec WorkingDirectory="$(ClientApp)" Command="npm install" />
   </Target>
 
+
   <Target Name="DevelopmentBuildClientApp" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
-    <Exec WorkingDirectory="$(ClientApp)" Command="npm install" />
+    <!-- development build JS resources -->
     <Exec WorkingDirectory="$(ClientApp)" Command="npm run build-dev" />
   </Target>
 
   <Target Name="ProductionBuildClientApp" BeforeTargets="Publish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec WorkingDirectory="$(ClientApp)" Command="npm install"/>
+    <Exec WorkingDirectory="$(ClientApp)" Command="npm install" />
     <Exec WorkingDirectory="$(ClientApp)" Command="npm run build" />
   </Target>
 </Project>
