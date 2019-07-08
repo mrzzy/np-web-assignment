@@ -34,13 +34,52 @@ Current Project Status:
 - 2.6.2 | CDN Service - Google Cloud | :heavy_check_mark:
 - 2.6.3 | Authentication API | :heavy_check_mark:
 - 2.6.4 | File API | :heavy_check_mark:
+- 2.7.1 | Landing Page | :construction:
+- 2.7.1 | Sign Up Page | :construction:
+- 2.7.1 | Login Page | :construction:
+- 2.7.1 | Student Porfolio Page | :construction:
+- 2.7.1 | Student Dashboard Page | :construction:
 
-## Structure
+## Design
+### Project Directory Structure
 - db - database setup, container
 - design - frontend design
 - dotenv - template for `.env` 
-- folio - folio project source code
+- folio - folio API/backend source
     - Controllers - controllers
         - API - api controllers
+    - Services - utility services
+        - Auth - Authentication
+        - Content - content delivery
+- folio_ui - folio frontend source
+    - Services - utility services
+    - Controllers - controllers
+        - View- view controllers
+    - Views - views
+    - wwwroot - static assets
+        -  css - stylesheets
+        -  js - javasript
+        -  img - images
 - folio_tests - folio project source code
 - README.md - this file
+
+### Stack
+```
+[Client]--[folio/api]---[DB]
+   \           |
+    \-----[folio]
+```
+
+- `[Client]` retrieve pages from `[folio]`
+    - `[folio/ui]` retrieves data from `[folio/api]`
+    - `[folio/api]` retrieves persistent data from `[DB]`
+- `[Client]` performs data manpulation operations on `[folio/api]`
+    - `[folio/api]` updates persistent data in `[DB]`
+
+> Note that `[folio]` only concerns itself with the rendering of the data but
+> does not handle data manuplation.
+
+### Security
+#### Authentication
+**TODO: elaborate**
+JWT Authorization Bearer token
