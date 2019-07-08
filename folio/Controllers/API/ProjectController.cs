@@ -182,38 +182,45 @@ namespace folio.Controllers.API
         }
         [HttpPost("/api/project/assign/{id}")]
         [Authenticate("Student")]
-        public ActionResult AssignProjectSet(int id, [FromQuery] int student, bool isLeader=false)
+        public ActionResult AssignProjectSet(int id, [FromQuery] int student)
         {
             using (EPortfolioDB database = new EPortfolioDB())
             {
-                string role = "";
 
+                // find if student is already assigned into project
                 IQueryable<ProjectMember> matchingAssignments = database
                     .ProjectMembers
                         .Where(s => s.ProjectId == id)
                         .Where(s => s.StudentId == student);
                 if (matchingAssignments.Count() >= 1)
-                    return Ok(); // it means that the project is already assigned to student
+                    return Ok(); // already assigned: nothing to do
 
+                // find if the project leader is already assigned into project.
+                ProjectMember roleleader = database
+                    .ProjectMembers
+                        .Where(s => s.ProjectId == id)
+                        .Where(s => s.Role == "Leader").FirstOrDefault();
 
+                // determine if project already has leader
+                // if already has leader, assign as normal member
+                // otherwise assign as project leader
+                string role = "";
+                if (roleleader == null)
+                {
+                    role = "Leader";
+                            
+                }
+                else
+                {
+                    role = "Member";   
+                }
+
+                //Create and save the project member to database
                 Project projectModel = database.Projects
                     .Where(s => s.ProjectId == id).Single();
                 Student studentModel = database.Students
                     .Where(s => s.StudentId == student).Single();
 
-                IQueryable<ProjectMember> roleleader = database
-                    .ProjectMembers
-                        .Where(s => s.ProjectId == id)
-                        .Where(s => s.StudentId == student);
-                if (roleleader.Count() <= 0)
-                {
-                    role = "Leader";
-                }
-                else
-                {
-                    role = "Member";
-                }
-                   
                 ProjectMember assignment = new ProjectMember
                 {
                     Member = studentModel,
