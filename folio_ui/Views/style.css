@@ -11,3 +11,60 @@ h1, h2, h3, h4, h5, h6 {
     font-family: "Roboto";
     font-weight: 900;
 }
+
+/* remove default button styling */
+button, input[type="submit"], input[type="reset"] {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+/* remove link default styling */
+a, a:hover {
+    color: black;
+    text-decoration: none;
+}
+/* Button Styling */
+.button {
+    font-family: "Roboto", sans-serif;
+    color: black;
+    padding: 0.8em;
+    padding-left: 1.4em;
+    padding-right: 1.4em;
+}
+.button.striking {
+    background-color: #FFD00B;
+}
+
+.button.search img {
+    object-fit: cover;
+    max-height: 1em;
+    max-width: 1em;
+}
+
+.button.call-to-action {
+    display: inline-flex;
+    position: relative;
+    color: white;
+    margin-bottom: 0.4em;
+    background-color: black;
+}
+
+.button.call-to-action .stack {
+    position: absolute;
+    left: 92%;
+    top: 30%;
+    padding: 0.6em;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+    background-color: #FFD00B;
+}
+
+.button.call-to-action .expand {
+    object-fit: contain;
+    height: 0.8em;
+}
