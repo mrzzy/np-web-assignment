@@ -25,7 +25,7 @@ namespace folio_ui.Controllers
         {
             // Make Web API call to get a list of votes related to a BookId
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:5000");
+            client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await
              client.GetAsync("/api/suggestion/" + id.ToString());
             if (response.IsSuccessStatusCode)
@@ -50,7 +50,7 @@ namespace folio_ui.Controllers
         // POST: Suggestion/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(IFormCollection collection)
+        public ActionResult Create(IFormCollection collection)
         {
             try
             {
@@ -111,4 +111,4 @@ namespace folio_ui.Controllers
         }
     }
 }
-}
+

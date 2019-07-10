@@ -1,0 +1,40 @@
+﻿@model IEnumerable<folio.Models.Lecturer>
+
+@{
+    ViewData["Title"] = "View Lecturers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="PageTitle">View Lecturers</h3>
+@if (Model.ToList().Count > 0)
+{
+    <div class="table-responsive">
+        <table id="viewLecturer" class="table table-striped taber-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.LecturerId)</th>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>Photo</th>
+                    <th>@Html.DisplayNameFor(model => model.EmailAddr)</th>
+                    <th>@Html.DisplayNameFor(model => model.Description)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model)
+                {
+                <tr>
+                    <td>@i.LecturerId</td>
+                    <td>@i.Name</td>
+                    <td>
+                        @{ string imageFileName = i.Name + ".jpg"; }
+                        <img src="~/images/@imageFileName"
+                             style="width:50px" />
+                    </td>
+                    <td>@i.EmailAddr</td>
+                    <td>@i.Description</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
