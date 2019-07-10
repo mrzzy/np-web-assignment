@@ -1,0 +1,11 @@
+﻿@model IEnumerable<folio_ui.Models.Student>
+
+@{
+    ViewData["Title"] = "Student";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Student</h1>
+
+<partial name="~/Views/Student/_ViewStudent.cshtml" model="@Model" />
+
