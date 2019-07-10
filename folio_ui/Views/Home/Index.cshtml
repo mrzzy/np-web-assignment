@@ -1,8 +1,38 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Navbar {
+<ul class="navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+  <li class="nav-item text-center mx-sm-3">
+    <button class="search button">
+      <img alt="Search" src="/img/search@2x.png"/>
+      <span class="d-sm-none"> Search </span>
+    </button>
+  </li>
+  <li class="nav-item text-center mx-sm-3">
+    <a class="button" asp-controller="Auth" asp-action="Login">
+      Login
+    </a>
+  </li>
+  <li class="nav-item text-center mx-sm-3">
+    <a class="button striking" asp-controller="Auth" asp-action="Join">
+      Join
+    </a>
+  </li>
+</ul>
+}
+
+<div class="landing container text-center"> 
+  <div class="row mx-2">
+    <img class="jumbotron-fluid" alt="Stand out from the crowd." src="/img/landing_header.png"/>
+  </div>
+  <div class="row">
+    <button class="button call-to-action">
+      <span class="text">View Porfolios.</span>
+      <div class="stack">
+        <img class="expand" src="/img/down@2x.png"/>
+      </div>
+    </button>
+  </div>
 </div>
