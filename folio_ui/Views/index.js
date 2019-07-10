@@ -7,7 +7,7 @@
 import "./style.css"
 
 // Layout
-import "./Layout.js"
+import "./Layout/Layout.js"
 
 // Home controller
 import "./Home/Index.js"
