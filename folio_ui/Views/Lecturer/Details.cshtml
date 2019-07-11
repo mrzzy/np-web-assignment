@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<folio.Models.Lecturer>
 
 @{
-    ViewData["Title"] = "View Lecturers";
+    ViewData["Title"] = "Edit Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Navbar
-{
+    {
     <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
         <li class="nav-item text-center mx-sm-3">
             <a class="button" href="">Profile</a>
@@ -22,7 +22,7 @@
         <li class="nav-item text-center mx-sm-3">
             <a class="button" href="">Change Password</a>
         </li>
-        
+
         <li class="nav-item text-center mx-sm-3">
             <button class="search button">
                 <img alt="Search" src="/img/search@2x.png" />
@@ -31,29 +31,33 @@
         </li>
     </ul>
 }
+
 <h1 class="text-center">View Lecturers</h1>
+
 @if (Model.ToList().Count > 0)
 {
     <div class="container">
-        <div class="d-flex justify-content-center flex-wrap">
-
+        <div class="d-flex justify-content-left flex-wrap">
             @foreach (var i in Model)
             {
-            <div class="LCards">
-                @{ string imageFileName = i.Name + ".jpg"; }
-                <img src="~/img/@imageFileName"
-                     style="width:100%;" alt="@i.Name" class="LSelect" />
+                <div>
+                    @{ string imageFileName = i.Name + ".jpg"; }
+                    <img src="~/img/@imageFileName"
+                        style="width:100%;" alt="@i.Name's Profile Photo" class="float-left" />
+                </div>
+               
 
-                <div class="LContainer">
+                <div class="d-flex justify-content-left">
                     <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.Name</h4>
                     <p class="text-md-left font-weight-light font-italic" style="margin: 5px;">@i.EmailAddr</p>
                     <p class="text-md-left font-weight-bold "
                        style="margin: 5px; color:#2d2d30">@i.Description</p>
                 </div>
-
-            </div>
             }
         </div>
-
     </div>
+}
+else
+{
+    <span class="text-center" style="color:red; font-size: 200px;">No record found!</span>
 }

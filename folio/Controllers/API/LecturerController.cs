@@ -169,7 +169,7 @@ namespace folio.Controllers.API
                 { return NotFound(); }
 
                 Session session = AuthService.ExtractSession(HttpContext);
-                if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                if (session.MetaData["userrole"] != "lecturer" && // any lecturer
                      session.EmailAddr != lecturer.EmailAddr) // this student
                 { return Unauthorized(); }
 

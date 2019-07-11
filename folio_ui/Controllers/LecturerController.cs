@@ -35,7 +35,7 @@ namespace folio_ui.Controllers
         // GET: Lecturer/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            // Make Web API call to get a list of votes related to a BookId
+            // Make Web API call to get a list of Lecturers related to a BookId
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await
@@ -53,13 +53,13 @@ namespace folio_ui.Controllers
             }
         }
 
-        // GET: Vote/Create
+        // GET: Lecturer/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Vote/Create
+        // POST: Lecturer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -76,13 +76,13 @@ namespace folio_ui.Controllers
             }
         }
 
-        // GET: Vote/Edit/5
+        // GET: Lecturer/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Vote/Edit/5
+        // POST: Lecturer/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -99,13 +99,13 @@ namespace folio_ui.Controllers
             }
         }
 
-        // GET: Vote/Delete/5
+        // GET: Lecturer/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Vote/Delete/5
+        // POST: Lecturer/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
