@@ -4,6 +4,7 @@
 */
 
 const path = require("path");
+const dotenv = require("dotenv-webpack");
  
 module.exports = {
     // client scripts point 
@@ -48,5 +49,9 @@ module.exports = {
     },
     resolve: {
         extensions: [".js", ".json"]
-    }
+    },
+    // plugins
+    plugins: [ 
+        new dotenv()
+    ]
 }; 
