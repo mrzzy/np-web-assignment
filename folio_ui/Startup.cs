@@ -21,7 +21,7 @@ namespace folio_ui
 
             // mvc routing service 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            // enable CORS for api server
+            // enable CORS for talking to api server
             string apiHost = "http://" + Environment.GetEnvironmentVariable(
                     "API_HOST");
             string apiIngress = "http://" + Environment.GetEnvironmentVariable(
