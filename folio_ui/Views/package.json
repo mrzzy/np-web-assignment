@@ -7,7 +7,7 @@
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
     "watch": "webpack --watch --mode development",
-    "test": "mocha --require @babel/register"
+    "test": "mocha --require @babel/register --require regenerator-runtime/runtime"
   },
   "keywords": [],
   "author": "",
@@ -16,9 +16,11 @@
     "@babel/preset-env": "^7.5.0",
     "@babel/register": "^7.4.4",
     "babel-loader": "^8.0.6",
+    "cross-fetch": "^3.0.4",
     "css-loader": "^3.0.0",
     "file-loader": "^4.0.0",
     "mocha": "^6.1.4",
+    "regenerator-runtime": "^0.13.2",
     "style-loader": "^0.23.1",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5"
