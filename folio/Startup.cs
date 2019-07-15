@@ -15,10 +15,8 @@ namespace folio
 {
     public class Startup
     {
-        
         public void ConfigureServices(IServiceCollection services)
         {
-     
             // support for MVC
             services.AddMvc();
             // force routes are all lowercase 

@@ -12,6 +12,7 @@ namespace folio_ui
 {
     public class Startup
     {
+        private const string APIHostPolicy = "AllowAPIHostPolicy";
         // configure services
         public void ConfigureServices(IServiceCollection services)
         {
@@ -20,15 +21,30 @@ namespace folio_ui
 
             // mvc routing service 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            // enable CORS for api server
+            string apiHost = "http://" + Environment.GetEnvironmentVariable("API_HOST");
+            services.AddCors(options =>
+            {  
+                options.AddPolicy(Startup.APIHostPolicy, builder => 
+                {
+                    builder.WithOrigins(apiHost)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // configure middleware
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            
             // handing exceptions
             if (env.IsDevelopment())
             { app.UseDeveloperExceptionPage(); }
             else { app.UseExceptionHandler("/Home/Error"); }
+
+            // set CORS headers
+            app.UseCors(Startup.APIHostPolicy); 
         
             // serve static files in wwwroot
             app.UseStaticFiles();
