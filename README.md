@@ -6,15 +6,15 @@ This repository contains our WEB assignment source code.
 1. Install `docker` and `docker-compose`
 2. Make a copy of the `dotenv` as `.env`and fill up the values to variables
     - reference: https://drive.google.com/file/d/1xDCzM8pVr4Fqk8lzOBl7K6GLFjE86RMT/view?usp=sharing
-        3. Copy the `.env` file into `folio`, `folio_ui/Views` and `folio_tests` folders
-    - if you have `make`, copy the files automaticaly using `make`
+        3. Copy the `.env` file into `folio`, `folio_ui`, `folio_tests`,`folio_ui/Views`folders
+    - if you have `make`, save the `.env` in project root and copy the files automaticaly using `make`
 4. Run `docker-compose up`
 5. Open the site at http://localhost:50
 ### Visual Studio
 1. Configure & Run SQL Server with script in `db\Student_EPortfolio_Db_SetUp_Script.sql`
 2. Make a copy of the `dotenv` as `.env.`and fill up the values to variables 
     - reference: https://drive.google.com/file/d/1EuTGCEuJMSgw-6AMFpyPTtbjgTF2hyhr/view?usp=sharing
-        3. Copy the `.env` file into `folio`, `folio_ui/Views` and `folio_tests` folders
+        3. Copy the `.env` file into `folio`, `folio_ui`, `folio_tests`,`folio_ui/Views`folders
 4. Open `/np-web-assignment-1.sln` using the Visual Studio
 5. Run the API by running the `folio` project
 5. Run the UI by runing the `folio_ui` project
