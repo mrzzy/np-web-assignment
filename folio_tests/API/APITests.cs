@@ -21,7 +21,7 @@ namespace folio.Tests.API
             string apiHost = Environment.GetEnvironmentVariable("API_HOST");
             
             // Attempt to access the api at the /api/students route
-            string apiUrl = "http://" + apiHost + "/api/students";
+            string apiUrl = apiHost + "/api/students";
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client
                 .GetAsync(apiUrl);
