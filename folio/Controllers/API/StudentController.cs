@@ -130,6 +130,19 @@ namespace folio.Controllers.API
             return Json(student);
         }
 
+        [HttpGet("/api/students/details")]
+        [Produces("application/json")]
+        public ActionResult AllStudentsDetails()
+        {
+            List<Student> studentList = new List<Student>();
+            using (EPortfolioDB db = new EPortfolioDB())
+            {
+                studentList = db.Students.ToList();
+                db.SaveChanges();
+            }
+            return Json(studentList);
+        }
+
         // route to create a student for student form model
         // on success, responses with id of newly created student form model
         // on validation failure  responses with validation errors

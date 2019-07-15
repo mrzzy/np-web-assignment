@@ -1,8 +1,29 @@
 ﻿@model IEnumerable<folio.Models.Student>
 
 @{
-    ViewData["Title"] = "Students";
-    Layout = "~/Views/Shared/Layout.cshtml";
+    ViewData["Title"] = "View Students";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navbar {
+    <ul class="navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <button class="search button">
+                <img alt="Search" src="/img/search@2x.png" />
+                <span class="d-sm-none"> Search </span>
+            </button>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Auth" asp-action="Login">
+                Login
+            </a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button striking" asp-controller="Auth" asp-action="Join">
+                Join
+            </a>
+        </li>
+    </ul>
 }
 
 <h4 class="PageTitle">View Students</h4>
@@ -31,7 +52,7 @@
                         <td>@item.StudentId</td>
                         <td>@item.Name</td>
                         <td>@item.Course</td>
-                        <td>@item.Photo</td>
+                        <td><img src="/img/@item.Photo" /></td>
                         <td>@item.Description</td>
                         <td>@item.Achievement</td>
                         <td>@item.ExternalLink</td>
@@ -43,8 +64,4 @@
             </tbody>
         </table>
     </div>
-}
-else
-{
-    <span style="color:red">No record found!</span>
 }
