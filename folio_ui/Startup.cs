@@ -22,12 +22,15 @@ namespace folio_ui
             // mvc routing service 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             // enable CORS for api server
-            string apiHost = "http://" + Environment.GetEnvironmentVariable("API_HOST");
+            string apiHost = "http://" + Environment.GetEnvironmentVariable(
+                    "API_HOST");
+            string apiIngress = "http://" + Environment.GetEnvironmentVariable(
+                    "API_INGRESS");
             services.AddCors(options =>
             {  
                 options.AddPolicy(Startup.APIHostPolicy, builder => 
                 {
-                    builder.WithOrigins(apiHost)
+                    builder.WithOrigins(apiHost, apiIngress)
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
