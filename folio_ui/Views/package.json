@@ -7,13 +7,14 @@
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
     "watch": "webpack --watch --mode development",
-    "test": "mocha"
+    "test": "mocha --require @babel/register"
   },
   "keywords": [],
   "author": "",
   "devDependencies": {
     "@babel/core": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
+    "@babel/register": "^7.4.4",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.0.0",
     "file-loader": "^4.0.0",
