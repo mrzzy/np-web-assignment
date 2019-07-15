@@ -6,13 +6,16 @@
 import "./Login.css";
 import Auth from "../Auth.js";
 
+// hide login messageon startup
+$("#login-message").hide();
+
 // trigger form submit on button click 
 $("#login-btn-submit").click(() => {
     $("#login.form").submit();
 });
 
 // submit the login form to perform login 
-$("#login-form").submit((event) => {
+$("#login-form").submit(async (event) => {
     event.preventDefault();
 
     // collect login credientials from form
@@ -21,5 +24,9 @@ $("#login-form").submit((event) => {
 
     // perform login
     const auth = new Auth("http://" + process.env.API_INGRESS);
-    auth.login(emailAddr, password);
+    if(await auth.login(emailAddr, password) == false){
+        // login was not successful
+        $("#login-message").show();
+        $("#login-message").text("Wrong email or password.");
+    }
 });
