@@ -4,7 +4,7 @@
 # Progates changes made in project configration to all projects
 #
 
-TARGET_PROJECTS:=folio folio_tests folio_ui
+TARGET_PROJECTS:=folio folio_tests folio_ui/Views
 TARGET_CONFIG:=.env
 TARGET_PATHS:=$(foreach p,$(TARGET_PROJECTS),$(p)/$(TARGET_CONFIG))
 
@@ -27,7 +27,7 @@ folio/%: %
 folio_tests/%: %
 	cp -af $< $@
 
-folio_ui/%: %
+folio_ui/Views/%: %
 	cp -af $< $@
 
 clean:
