@@ -22,6 +22,8 @@
 
     <ItemGroup>
       <Content Remove="Views\Lecturer\Details.cshtml" />
+      <Content Remove="Views\Lecturer\Edit.cshtml" />
+      <Content Remove="Views\Lecturer\ViewMentees.cshtml" />
       <Content Remove="wwwroot\img\Poh Jia Qi.jpg" />
     </ItemGroup>
 

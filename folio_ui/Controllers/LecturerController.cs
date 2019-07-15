@@ -43,13 +43,13 @@ namespace folio_ui.Controllers
             if (response.IsSuccessStatusCode)
             {
                 string data = await response.Content.ReadAsStringAsync();
-                List<Lecturer> lecturerList =
-                 JsonConvert.DeserializeObject<List<Lecturer>>(data);
+                 Lecturer lecturerList =
+                 JsonConvert.DeserializeObject<Lecturer>(data);
                 return View(lecturerList);
             }
             else
             {
-                return View(new List<Lecturer>());
+                return View(new Lecturer());
             }
         }
 
@@ -77,25 +77,46 @@ namespace folio_ui.Controllers
         }
 
         // GET: Lecturer/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            // Make Web API call to get a list of Lecturers related to a BookId
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.GetAsync("/api/lecturer/" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                Lecturer lecturerList =
+                JsonConvert.DeserializeObject<Lecturer>(data);
+                return View(lecturerList);
+            }
+            else
+            {
+                return View(new Lecturer());
+            }
         }
 
-        // POST: Lecturer/Edit/5
+        //POST: Lecturer/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(int id, Lecturer lecturer)
         {
-            try
-            {
-                // TODO: Add update logic here
+            //Transfer data read to a Lecturer object
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+            //Make Web API call to post the vote object
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.PostAsJsonAsync("/api/lecturer/update/" + id.ToString(), lecturer);
+            if (response.IsSuccessStatusCode)
             {
-                return View();
+                
+                return RedirectToAction("Details", id);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Lecturer");
             }
         }
 
@@ -119,6 +140,24 @@ namespace folio_ui.Controllers
             catch
             {
                 return View();
+            }
+        }
+
+        // GET: Lecturer/ViewMentees/5
+        public async Task<ActionResult> ViewMentees(int id)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await client.GetAsync("/api/lecturer/mentees/" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                List<Student> studentList = JsonConvert.DeserializeObject<List<Student>>(data);
+                return View(studentList);
+            }
+            else
+            {
+                return View(new List<Student>());
             }
         }
     }

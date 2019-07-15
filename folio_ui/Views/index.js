@@ -14,3 +14,4 @@ import "./Home/Index.js"
 
 // Lecturer controller
 import "./Lecturer/Index.js"
+import "./Lecturer/Details.js"
