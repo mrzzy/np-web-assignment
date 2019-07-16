@@ -110,7 +110,7 @@ namespace folio.Controllers.API
         [HttpGet("/api/suggestion/{id}")]
         [Produces("application/json")]
         [Authenticate("Lecturer")]
-        public ActionResult GetLectureById(int id)
+        public ActionResult GetSuggestionById(int id)
         {
             Console.WriteLine("get id:", id.ToString());
             // Retrieve the suggestion for id
@@ -119,6 +119,27 @@ namespace folio.Controllers.API
             {
                 suggestion = database.Suggestions
                     .Where(l => l.SuggestionId == id)
+                    .FirstOrDefault();
+            }
+
+            if (suggestion == null) return NotFound();
+
+            return Json(suggestion);
+        }
+
+        // GET api/suggestion/5
+        [HttpGet("/api/suggestion/student/{id}")]
+        [Produces("application/json")]
+        //[Authenticate("Lecturer")]
+        public ActionResult GetSuggestionByStudent(int id)
+        {
+            Console.WriteLine("get id:", id.ToString());
+            // Retrieve the suggestion for id
+            Suggestion suggestion = null;
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                suggestion = database.Suggestions
+                    .Where(l => l.StudentId == id)
                     .FirstOrDefault();
             }
 
