@@ -21,6 +21,19 @@ export default class Auth {
         if(gotToken != null) this.token = gotToken;
     }
 
+    /* Bless the given fetch API request object with the authentication 
+     * token, setting its authentication bearer token
+     * Use this if the API request you are making requires authentication
+     * Returns the blessed request
+    */
+    bless(request) {
+        // create headers if does not already exist
+        if(request.headers == null) request.headers = {}
+        // assign authentication bearer token
+        request.headers["Authorization"] =  "Bearer " + this.token;
+        return request;
+    }
+
     /* Perform API login with the given email and password asyncronously 
      * using the given API's login function
      * Saves the session token
@@ -61,18 +74,43 @@ export default class Auth {
     */
     async check() {
         // call auth check api with session token
-        const response = await fetch(this.endpoint + "/api/auth/check", {
+        var request = {
             method: "GET",
             mode: "cors",
-            cache: "no-cache",
-            headers : {
-                "Authorization": "Bearer " + this.token
-            },
-        });
+            cache: "no-cache"
+        };
+        this.bless(request);
+        const response = await fetch(this.endpoint + "/api/auth/check", request);
         
         // check if authentication with credientials successful
         if(response.status == 401) return false;
         else if(response.status == 200) return true;
         else throw "Failed to check session token with API /api/auth/check";
+    }
+
+    /* Obtain user info of the user currently authenticated by the API
+     * Returns the user info of the user currently authenticated,
+     * throws an exception if not authenticated at all
+    */
+    async info() {
+        // call auth info  api with session token
+        var request = {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache"
+        }
+        this.bless(request);
+        const response = await fetch(this.endpoint + "/api/auth/info", request);
+
+        // check response for API call failure
+        if(response.status == 401) {
+            throw "Illegal attempt to obtain user info without authentication"
+        } 
+        else if(response.status != 200) {
+            throw "Failed to obtain user info with API /api/auth/info";
+        }
+
+        const userinfo = await response.json();
+        return userinfo;
     }
 }
