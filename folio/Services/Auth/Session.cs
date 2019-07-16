@@ -33,6 +33,9 @@ namespace folio.Services.Auth
 
         public string Subject
         {
+            // subject is defined as a combination of emailAddr and hash
+            // so that token will be invalid in the event the users password 
+            // is changed
             get { return this.EmailAddr + " " + this.Hash; }
         }
     

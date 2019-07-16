@@ -5,28 +5,38 @@
   "private": true,
   "scripts": {
     "build": "webpack --mode production",
-    "build-dev": "webpack --mode development"
+    "build-dev": "webpack --mode development",
+    "watch": "webpack --watch --mode development",
+    "test": "mocha --require dotenv/config --require @babel/register"
   },
   "keywords": [],
   "author": "",
   "devDependencies": {
     "@babel/core": "^7.5.0",
+    "@babel/plugin-transform-runtime": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
+    "@babel/register": "^7.4.4",
     "babel-loader": "^8.0.6",
+    "cross-fetch": "^3.0.4",
     "css-loader": "^3.0.0",
+    "dotenv": "^8.0.0",
+    "dotenv-webpack": "^1.7.0",
     "file-loader": "^4.0.0",
+    "mocha": "^6.1.4",
     "style-loader": "^0.23.1",
     "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5",
-    "webpack-dev-server": "^3.7.2"
+    "webpack-cli": "^3.3.5"
   },
   "babel": {
     "presets": [
       "@babel/preset-env"
-    ]
+    ],
+    "plugins": ["@babel/plugin-transform-runtime"]
   },
   "dependencies": {
+    "@babel/runtime": "^7.5.4",
     "bootstrap": "^4.3.1",
+    "core-js": "^3.1.4",
     "jquery": "^1.9.1",
     "popper.js": "^1.15.0"
   }

@@ -1,0 +1,32 @@
+@{
+ViewData["Title"] = "Login";
+ViewData["IsNavbarDisabled"] = true;
+}
+
+<div id="login-container" class="container">
+  <div class="row my-5">
+    <img class="faded logo mx-auto" alt="folio" src="/img/logo.png">
+  </div>
+  <div class="row"> 
+    <!-- login card -->
+    <div id="login-card" class="card col-10 col-sm-8 col-md-6 col-lg-4 mx-auto my-5">
+      <div class="card-body">
+        <div class="card-title">
+          Login.
+        </div>
+        <div id="login-message" class="alert alert-danger" role="alert">
+        </div>
+        <!-- login form -->
+        <form id="login-form" accept-charset="utf-8">
+          <input type="email" name="EmailAddr" id="login-EmailAddr" placeholder="email">
+          <input type="password" name="Password" id="login-Password" placeholder="password">
+          <input class="button striking" type="submit" name="submit-btn" id="login-btn-submit" value="Login">
+        </form>
+        <!-- sign up link -->
+        <a id="sign-up" class="button faded" asp-controller="Auth" asp-action="SignUp">
+          Sign Up
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
