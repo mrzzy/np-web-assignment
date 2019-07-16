@@ -5,6 +5,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -40,7 +41,7 @@ namespace folio.API.Controllers
         }
         
         // route to check if the user is currently in a valid given 
-        // Authorization Bearin the SessionToken provided by Login()
+        // Authorization bearer the SessionToken provided by Login()
         [HttpGet("/api/auth/check")]
         public ActionResult Check()
         {
@@ -50,6 +51,40 @@ namespace folio.API.Controllers
 
             // authenticated
             return Ok();
+        }
+
+        // route to obtain infomation about the authorization bearer
+        // token for the server
+        [HttpGet("/api/auth/info")]
+        public ActionResult GetTokenInfo()
+        {
+            // check by trying load session from token
+            Session session = null;
+            try{ session = AuthService.ExtractSession(HttpContext); }
+            catch { return Unauthorized(); }
+
+            // find user that matches the session's emailAddr
+            HashSet<UserInfo> matchingUserInfos = new HashSet<UserInfo>();
+            using(EPortfolioDB database = new EPortfolioDB())
+            {
+            
+                if(session.MetaData["UserRole"] == "Lecturer")
+                {
+                    matchingUserInfos.UnionWith( database.Lecturers
+                            .Where(l => l.EmailAddr == session.EmailAddr)
+                            .Select(l => new UserInfo(l)));
+                }
+                else if(session.MetaData["UserRole"] == "Student")
+                {
+                    matchingUserInfos.UnionWith( database.Students
+                            .Where(s => s.EmailAddr == session.EmailAddr)
+                            .Select(s => new UserInfo(s)));
+                }
+            }
+
+            // return matching user info as JSON
+            if(matchingUserInfos.Count() <= 0) return Unauthorized();
+            else return Json(matchingUserInfos.Single());
         }
     }
 }

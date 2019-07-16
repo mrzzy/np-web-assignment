@@ -1,6 +1,6 @@
 /*
  * Folio UI
- * Autentication UI Controlle
+ * Authentication UI Controller
 */
 
 using System;
