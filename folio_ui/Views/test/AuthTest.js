@@ -5,6 +5,7 @@
 
 import Auth from "../Auth.js"
 import assert from "assert";
+import * as Cookies from "js-cookie";
 
 // tests for Auth class
 describe("Auth", () => {
@@ -30,7 +31,7 @@ describe("Auth", () => {
         });
     });
     
-    // tests if Auth.info() can obtain user infomatio
+    // tests if Auth.info() can obtain user infomation
     // NOTE: requires existing data in the database as defined in setup SQL
     describe(".info()", () => {
         const auth = new Auth("http://" +  process.env.API_INGRESS);
@@ -41,6 +42,18 @@ describe("Auth", () => {
             assert.equal(userinfo.name, "Amy Ng");
             assert.equal(userinfo.userRole, "Student");
             assert.equal(userinfo.emailAddr, "s1234112@ap.edu.sg");
+        });
+    });
+
+    // tests if Auth.logout() can perform logout cleanly
+    describe("logout()", () => {
+        const auth = new Auth("http://" +  process.env.API_INGRESS);
+        auth.login("s1234112@ap.edu.sg", "p@55Student");
+
+        it("should logout cleanly", async () => {
+            auth.logout();
+            assert.equal(auth.token, null);
+            assert.equal(Cookies.get("Auth.token"), null);
         });
     });
 });

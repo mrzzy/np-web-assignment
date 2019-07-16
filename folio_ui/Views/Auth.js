@@ -70,9 +70,10 @@ export default class Auth {
     }
 
     /* Checks if authenticationed using API's check function asyncronously 
-     * Returns  if authentication check is successful otherwise false 
+     * Returns if authentication check is successful otherwise false 
     */
     async check() {
+        if(this.token == null) return false; // no token means not authenticated
         // call auth check api with session token
         var request = {
             method: "GET",
@@ -88,7 +89,7 @@ export default class Auth {
         else throw "Failed to check session token with API /api/auth/check";
     }
 
-    /* Obtain user info of the user currently authenticated by the API
+    /* Obtain user info of the user currently authenticated by the API asyncronously
      * Returns the user info of the user currently authenticated,
      * throws an exception if not authenticated at all
     */
@@ -112,5 +113,14 @@ export default class Auth {
 
         const userinfo = await response.json();
         return userinfo;
+    }
+
+    /* Perform logout of the currently authenticated user 
+     * If not already authenticated, would do nothing
+    */
+    async logout(){
+        // clear bearer auth tokens to reset to state before login
+        this.token = null;
+        Cookies.remove("Auth.token");
     }
 }
