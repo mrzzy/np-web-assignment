@@ -88,6 +88,18 @@ namespace folio.Controllers.API
 
             return Json(project);
         }
+        [HttpGet("/api/projects/details")]
+        [Produces("application/json")]
+        public ActionResult AllProjects(int id)
+        {
+            List<Project> projectList = new List<Project>();
+            using (EPortfolioDB db = new EPortfolioDB())
+            {
+                projectList = db.Projects.ToList();
+                db.SaveChanges();
+            }
+            return Json(projectList);
+        }
         [HttpPost("/api/project/create")]
         [Authenticate("Student")]
         [Produces("application/json")]

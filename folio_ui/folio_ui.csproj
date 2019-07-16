@@ -21,6 +21,37 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Remove="Views\Project\Index.cshtml" />
+      <Content Remove="wwwroot\img\bell.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Views\Project\assets\Project_1_Poster.jpg" />
+      <None Remove="Views\Project\assets\Project_2_Poster.jpg" />
+      <None Remove="Views\Project\assets\Project_3_Poster.jpg" />
+      <None Remove="Views\Project\assets\Project_4_Poster.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Views\Project\assets\Project_1_Poster.jpg">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Include="Views\Project\assets\Project_2_Poster.jpg">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Include="Views\Project\assets\Project_3_Poster.jpg">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Include="Views\Project\assets\Project_4_Poster.jpg">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\img\bell.png" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\folio\folio.csproj" />
     </ItemGroup>
 
