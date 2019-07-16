@@ -16,7 +16,7 @@ namespace folio_ui
         public static void Main(string[] args)
         {
             // load environment variables from .env
-            DotNetEnv.Env.Load();
+            
         
             // configure host to listen on all interfaces
             // required to be able to reach the service from

@@ -70,7 +70,7 @@ namespace folio.Controllers.API
         // GET api/lecturer/5
         [HttpGet("/api/lecturer/{id}")]
         [Produces("application/json")]
-        [Authenticate("Lecturer")]
+        //[Authenticate("Lecturer")]
         public ActionResult GetLectureById(int id)
         {
             Console.WriteLine("get id:", id.ToString());
@@ -123,7 +123,7 @@ namespace folio.Controllers.API
         // route to update Lecturers for LectureId and Lecturer form model
         // authentication lecturer is required
         [HttpPost("/api/lecturer/update/{id}")]
-        [Authenticate("Lecturer")]
+        //[Authenticate("Lecturer")]
         public ActionResult UpdateLecturer(
                 int id, [FromBody] LecturerUpdateFormModel formModel)
         {
@@ -139,10 +139,10 @@ namespace folio.Controllers.API
                 if (lecturer == null)
                 { return NotFound(); }
 
-                Session session = AuthService.ExtractSession(HttpContext);
-                if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
-                     session.EmailAddr != lecturer.EmailAddr) // this student
-                { return Unauthorized(); }
+                //Session session = AuthService.ExtractSession(HttpContext);
+                //if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                //     session.EmailAddr != lecturer.EmailAddr) // this student
+                //{ return Unauthorized(); }
 
                 // perform Update using data in form model
                 formModel.Apply(lecturer);
@@ -169,7 +169,7 @@ namespace folio.Controllers.API
                 { return NotFound(); }
 
                 Session session = AuthService.ExtractSession(HttpContext);
-                if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                if (session.MetaData["userrole"] != "lecturer" && // any lecturer
                      session.EmailAddr != lecturer.EmailAddr) // this student
                 { return Unauthorized(); }
 
@@ -180,6 +180,29 @@ namespace folio.Controllers.API
 
             return Ok();
         }
-       
+
+        // GET api/lecturer/mentees/5/
+        [HttpGet("/api/lecturer/mentees/{id}")]
+        [Produces("application/json")]
+        //[Authenticate("Lecturer")]
+        public ActionResult GetMentees(int id)
+        {
+            Console.WriteLine("get id:", id.ToString());
+            // Retrieve the lecturer for id
+            List<Student> studentList = new List<Student>();
+            using (EPortfolioDB database = new EPortfolioDB())
+            {               
+                studentList = database.Students
+                    .Where(s => s.MentorId == id).ToList();
+                database.SaveChanges();
+                    
+            }
+
+            // check if skill has been found for targetId
+            if (studentList == null) return NotFound();
+
+            return Json(studentList);
+        }
+
     }
 }
