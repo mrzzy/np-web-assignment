@@ -8,7 +8,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Roboto";
+    font-family: "Roboto", sans-serif;
     font-weight: 900;
 }
 
@@ -30,12 +30,13 @@ a, a:hover {
 }
 /* Button Styling */
 .button {
-    font-family: "Roboto", sans-serif;
+    font-family: "Roboto", sans-serif !important;
     color: black;
-    padding: 0.8em;
-    padding-left: 1.4em;
-    padding-right: 1.4em;
+    padding: 0.6em !important;
+    padding-left: 1.2em !important;
+    padding-right: 1.2em !important;
 }
+
 .button.striking {
     background-color: #FFD00B;
 }
@@ -67,4 +68,24 @@ a, a:hover {
 .button.call-to-action .expand {
     object-fit: contain;
     height: 0.8em;
+}
+
+/* faded */
+.faded {
+    opacity: 0.32;
+}
+
+/* Forms */
+input:not([type="submit"]) {
+    padding-bottom: 0.6em;
+    border-style: none;
+    border-bottom-style: solid;
+    border-bottom-width: 1.6pt;
+    border-bottom-color: #888;
+    
+    transition: border-bottom-color 0.3s ease;
+}
+
+input:not([type="submit"]):focus {
+    border-bottom-color:  #FFD00B;
 }

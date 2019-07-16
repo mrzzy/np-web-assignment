@@ -16,9 +16,6 @@ services:
       dockerfile: ./folio/Dockerfile
       args:
         PROJECT_NAME: "folio"
-    user: "${UID}:${GID}"
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=1
     ports:
       - "5000:5000"
     volumes:
@@ -35,7 +32,6 @@ services:
       args:
         PROJECT_NAME: "folio_ui"
       target: develop
-    user: "${UID}:${GID}"
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
     ports:

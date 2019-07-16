@@ -28,8 +28,12 @@ FROM build-runtime AS develop
 ARG PROJECT_NAME
 # dotnet watch requires these directories to be accessable
 RUN chmod a=rwx /tmp
-ENV HOME=/src
+# setup home directory
+RUN chmod a=rwx /home
+ENV HOME=/home
+# run hot reload service
 ENV PROJECT_NAME=$PROJECT_NAME
+RUN touch .env # dummy dotenv file manually insert to /src
 ENTRYPOINT dotnet watch --project ${PROJECT_NAME}.csproj run
 
 # stage: build project

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@{
+}
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -6,7 +8,7 @@
     <title>@ViewData["Title"] - folio_ui</title>
 
     <!-- google fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Merriweather|Roboto:500,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:500|Roboto:500,900&display=swap" rel="stylesheet">
 
     <!-- jquery -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
@@ -29,14 +31,15 @@
     <script defer src="~/js/bundle.js"></script>
   </head>
   <body>
+    <!-- check if navbar is enabled -->
+    @if(ViewData["IsNavbarDisabled"] == null || (bool)ViewData["IsNavbarDisabled"] == false){
     <header class="my-4">
       <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
         <div class="container flex-col flex-sm-row">
           <!-- logo -->
           <a class="navbar-left" asp-controller="Home" asp-action="Index">
             <img class="brand-logo" alt="folio" src="/img/logo.png"/>
-          </a>
-
+          </a>  
           <!-- navbar collapse toggle button --->
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="navbar-toggler-icon"></span>
@@ -44,20 +47,18 @@
 
           <!-- navigation items -->
           <div class="navbar-collapse collapse flex-sm-row mt-2 mt-sm-0">
-            @RenderSection("Navbar")
+            @RenderSection("Navbar", required: false)
           </div>
         </div>
       </nav>
     </header>
+    }
 
     <main>
       @RenderBody()
     </main>
 
     <footer class="border-top footer text-muted">
-      <div class="container">
-        &copy; 2019 - folio_ui
-      </div>
     </footer>
   </body>
 </html>
