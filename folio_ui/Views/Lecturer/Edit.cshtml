@@ -1,0 +1,123 @@
+﻿@model folio.Models.Lecturer
+
+@{
+    ViewData["Title"] = "Lecturer Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Navbar
+    {
+    <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" style="border-bottom: 1px solid #FFD00B;" href="">View Profile</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" href="">Post Suggestion</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" href="">View Mentees</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" href="">Skill Sets</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" href="">Change Password</a>
+        </li>
+
+        <li class="nav-item text-center mx-sm-3">
+            <button class="search button">
+                <img alt="Search" src="/img/search@2x.png" />
+                <span class="d-sm-none"> Search </span>
+            </button>
+        </li>
+    </ul>
+}
+
+<form asp-action="Edit" method="post">
+    <div class="container">
+        <div class="d-flex flex-row">
+            <div class="p-2" style="width:35%;">
+                @{ string imageFileName = Model.Name + ".jpg"; }
+                <img src="~/img/@imageFileName"
+                     style="width:100%;" alt="@Model.Name's Profile Photo" />
+            </div>
+
+            <div class="float-left" style="margin: 50px;">
+
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text font-weight-bold" id="basic-addon1"
+                              style="background-color:#fff; border:none; color:#111;">Name</span>
+                    </div>
+                    <input type="text" class="form-control" asp-for="Name" placeholder="@Model.Name">
+                </div>
+                <br />
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text font-weight-bold" id="basic-addon1"
+                              style="background-color:#fff; border:none; color:#111;">Email</span>
+                    </div>
+                    <input type="text" class="form-control" asp-for="EmailAddr" placeholder="@Model.EmailAddr">
+                </div>
+                <br />
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text font-weight-bold"
+                              style="background-color:#fff; border:none; color:#111;">Description</span>
+                    </div>
+                    <textarea class="form-control" asp-for="Description">@Model.Description</textarea>
+                </div>
+
+            </div>
+
+        </div>
+        <br />
+        <div class="d-flex justify-content-center flex-row">
+            <button type="submit" class="submitBtn font-weight-bold">
+                <span>Submit</span>
+            </button>
+
+            <button type="submit" class="submitBtn font-weight-bold" asp-action="Index"
+                    style="background-color:#000; color:#fff;">
+                <span>Back</span>
+            </button>
+        </div>
+    </div>
+</form>
+
+
+
+<style>
+    .submitBtn {
+        margin: 7px;
+        font-size: 25px;
+        background-color: #FFD00B;
+        border-color: #FFD00B;
+        padding: 7px 15px;
+        width: 150px;
+        transition: all 0.5s;
+    }
+    .submitBtn span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.submitBtn span:after {
+  content: '\25b6';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.submitBtn:hover span {
+  padding-right: 30px;
+}
+
+.submitBtn:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>

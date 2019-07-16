@@ -12,5 +12,5 @@ import "./Layout/Layout.js"
 // Home controller
 import "./Home/Index.js"
 
-// Auth controller
+// Auth - Login page
 import "./Auth/Login.js"

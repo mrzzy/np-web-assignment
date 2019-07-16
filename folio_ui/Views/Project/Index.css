@@ -1,0 +1,21 @@
+/*
+ * Home Index View CSS
+*/
+
+.container.landing {
+    margin-top: 6vmax;
+    margin-bottom: 6vmax;
+}
+
+.jumbotron-fluid {
+    margin-top: 8vmin;
+    margin-bottom: 8vmin;
+}
+
+/* align navigation contents properly */
+.nav-item > * {
+    display: inline-block;
+}
+.h4 > PageTitle{
+    text-align:center;
+}

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<folio.Models.Project>
+@{
+    ViewData["Title"] = "Project";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navbar {
+    <ul class="navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <button class="search button">
+                <img alt="Search" src="~/img/bell.png" />
+                <span class="d-sm-none"> Search </span>
+            </button>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Auth" asp-action="Portfolio">
+                Portfolio
+            </a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Auth" asp-action="Projects">
+                Projects
+            </a>
+        </li>
+    </ul>
+}
+
+<h4 class="PageTitle">View Projects</h4>
+@if (Model.ToList().Count > 0)
+{
+    <div class="table-responsive">
+        <table id="viewStudent" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.ProjectId)</th>
+                    <th>@Html.DisplayNameFor(model => model.Title)</th>
+                    <th>@Html.DisplayNameFor(model => model.Description)</th>
+                    <th>@Html.DisplayNameFor(model => model.ProjectPoster)</th>
+                    <th>@Html.DisplayNameFor(model => model.ProjectUrl)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProjectId</td>
+                        <td>@item.Title</td>
+                        <td>@item.Description</td>
+                        <td>@{string imageFileName = item.ProjectPoster;}
+                        <img src="~/images/@imageFileName" style="width:50px"/>
+                        </td>
+                        <td>@item.ProjectUrl</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <span style="color:red">No record found!</span>
+}
