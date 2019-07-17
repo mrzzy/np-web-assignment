@@ -12,8 +12,10 @@ export default class Auth {
     /* Contructs a new auth instance that talks to the given API endpoint
      * Attempts to read state in document.cookie 
     */
-    constructor(endpoint) {
-        this.endpoint = "http://" + endpoint;
+    constructor(endpoint=null) {
+        this.endpoint = "http://"  + ( 
+            (endpoint == null) ? process.env.API_INGRESS : endpoint
+        );
         
         // load session token from cookie
         this.token = null;

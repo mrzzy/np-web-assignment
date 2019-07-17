@@ -23,11 +23,17 @@ $("#login-form").submit(async (event) => {
     const password = $("#login-Password").val();
 
     // perform login   
-    console.log(process.env.API_INGRESS);
-    const auth = new Auth(process.env.API_INGRESS);
+    const auth = new Auth();
     if(await auth.login(emailAddr, password) == false){
         // login was not successful
         $("#login-message").show();
         $("#login-message").text("Wrong email or password.");
-    }
+        return;
+    } 
+
+    // obtain info about the user being authenticated
+    const userinfo = await auth.info();
+    console.log("logged in as:", userinfo);
+    console.log(userinfo);
+    //TODO: go somewhere after being logggein
 });
