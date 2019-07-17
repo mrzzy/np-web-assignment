@@ -1,14 +1,13 @@
 /*
- * Authentication
+ * API client
  * JS
 */
 
 import * as Cookies from "js-cookie";
 import fetch from 'cross-fetch';
 
-// defines client side authentication functionality
-// for working with Auth API
-export default class Auth {
+// defines API client for talking to the api
+export default class API {
     /* Contructs a new auth instance that talks to the given API endpoint
      * Attempts to read state in document.cookie 
     */
@@ -19,10 +18,11 @@ export default class Auth {
         
         // load session token from cookie
         this.token = null;
-        const gotToken = Cookies.get("Auth.token");
+        const gotToken = Cookies.get("API.token");
         if(gotToken != null) this.token = gotToken;
     }
 
+    /* API calls */
     /* Bless the given fetch API request object with the authentication 
      * token, setting its authentication bearer token
      * Use this if the API request you are making requires authentication
@@ -34,6 +34,52 @@ export default class Auth {
         // assign authentication bearer token
         request.headers["Authorization"] =  "Bearer " + this.token;
         return request;
+    }
+
+    /* perform an API call using the given http method on the given
+     * API call route, optionally, passing http headers, content body
+     * Automatically attaches auth token as bearer token if present
+     * Throws exception when API call givens http status that is not success
+     * Returns the response body as a string
+    */
+    async call(method, route, headers={}, content=null) {
+        // build the request
+        var request = headers;
+        request.method = method;
+        request.mode = "cors";
+        if(content != null) request.body = content;
+        this.bless(request);
+
+        // make the API call
+        const response = await fetch(this.endpoint + route, request);
+
+        // check API status
+        if(response.status !== 200) {
+            throw "API: Failed to complete api request: " + route;
+        }
+    
+        return await response.text();
+    }
+
+    /* Authorization & Authentication */
+    /* Checks if authenticationed using API's check function asyncronously 
+     * Returns if authentication check is successful otherwise false 
+    */
+    async check() {
+        if(this.token == null) return false; // no token means not authenticated
+        // call auth check api with session token
+        var request = {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache"
+        };
+        this.bless(request);
+        const response = await fetch(this.endpoint + "/api/auth/check", request);
+        
+        // check if authentication with credientials successful
+        if(response.status == 401) return false;
+        else if(response.status == 200) return true;
+        else throw "Failed to check session token with API /api/auth/check";
     }
 
     /* Perform API login with the given email and password asyncronously 
@@ -71,6 +117,15 @@ export default class Auth {
         return true;
     }
 
+    /* Perform logout of the currently authenticated user 
+     * If not already authenticated, would do nothing
+    */
+    async logout(){
+        // clear bearer auth tokens to reset to state before login
+        this.token = null;
+        Cookies.remove("Auth.token");
+    }
+
     /* Checks if authenticationed using API's check function asyncronously 
      * Returns if authentication check is successful otherwise false 
     */
@@ -95,34 +150,12 @@ export default class Auth {
      * Returns the user info of the user currently authenticated,
      * throws an exception if not authenticated at all
     */
-    async info() {
+    async getUser() {
         // call auth info  api with session token
-        var request = {
-            method: "GET",
-            mode: "cors",
-            cache: "no-cache"
-        }
-        this.bless(request);
-        const response = await fetch(this.endpoint + "/api/auth/info", request);
-
-        // check response for API call failure
-        if(response.status == 401) {
-            throw "Illegal attempt to obtain user info without authentication"
-        } 
-        else if(response.status != 200) {
-            throw "Failed to obtain user info with API /api/auth/info";
-        }
-
-        const userinfo = await response.json();
+        const response = await this.call("GET", "/api/auth/info");
+        // parse response
+        const userinfo = JSON.parse(response);
         return userinfo;
     }
 
-    /* Perform logout of the currently authenticated user 
-     * If not already authenticated, would do nothing
-    */
-    async logout(){
-        // clear bearer auth tokens to reset to state before login
-        this.token = null;
-        Cookies.remove("Auth.token");
-    }
 }
