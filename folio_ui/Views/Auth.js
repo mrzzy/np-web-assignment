@@ -13,7 +13,7 @@ export default class Auth {
      * Attempts to read state in document.cookie 
     */
     constructor(endpoint) {
-        this.endpoint = endpoint;
+        this.endpoint = "http://" + endpoint;
         
         // load session token from cookie
         this.token = null;

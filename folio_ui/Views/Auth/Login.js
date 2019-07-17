@@ -24,7 +24,7 @@ $("#login-form").submit(async (event) => {
 
     // perform login   
     console.log(process.env.API_INGRESS);
-    const auth = new Auth("http://" + process.env.API_INGRESS);
+    const auth = new Auth(process.env.API_INGRESS);
     if(await auth.login(emailAddr, password) == false){
         // login was not successful
         $("#login-message").show();
