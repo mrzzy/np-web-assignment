@@ -12,7 +12,7 @@ describe("Auth", () => {
     // tests if Auth.login() can perform login
     // NOTE: requires existing data in the database as defined in setup SQL
     describe(".login()", () => {
-        const auth = new Auth("http://" + process.env.API_INGRESS);
+        const auth = new Auth(process.env.API_INGRESS);
         it("should perform login successfully and return true", async () => {
             const result = await auth.login("s1234112@ap.edu.sg", "p@55Student");
             assert.equal(result, true);
@@ -22,7 +22,7 @@ describe("Auth", () => {
     // tests if Auth.check() can check login token
     // NOTE: requires existing data in the database as defined in setup SQL
     describe(".check()", () => {
-        const auth = new Auth("http://" +  process.env.API_INGRESS);
+        const auth = new Auth(process.env.API_INGRESS);
         auth.login("s1234112@ap.edu.sg", "p@55Student");
 
         it("should check auth token successfully", async () => {
@@ -34,7 +34,7 @@ describe("Auth", () => {
     // tests if Auth.info() can obtain user infomation
     // NOTE: requires existing data in the database as defined in setup SQL
     describe(".info()", () => {
-        const auth = new Auth("http://" +  process.env.API_INGRESS);
+        const auth = new Auth(process.env.API_INGRESS);
         auth.login("s1234112@ap.edu.sg", "p@55Student");
 
         it("should obtain user infomation of currently authenticated user", async () => {
@@ -48,7 +48,7 @@ describe("Auth", () => {
 
     // tests if Auth.logout() can perform logout cleanly
     describe("logout()", () => {
-        const auth = new Auth("http://" +  process.env.API_INGRESS);
+        const auth = new Auth(process.env.API_INGRESS);
         auth.login("s1234112@ap.edu.sg", "p@55Student");
 
         it("should logout cleanly", async () => {
