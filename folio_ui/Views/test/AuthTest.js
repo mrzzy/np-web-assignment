@@ -39,6 +39,7 @@ describe("Auth", () => {
 
         it("should obtain user infomation of currently authenticated user", async () => {
             const userinfo = await auth.info();
+            assert.equal(userinfo.id, 2);
             assert.equal(userinfo.name, "Amy Ng");
             assert.equal(userinfo.userRole, "Student");
             assert.equal(userinfo.emailAddr, "s1234112@ap.edu.sg");
