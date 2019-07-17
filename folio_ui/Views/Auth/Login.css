@@ -3,6 +3,10 @@
  * Styling
 */
 
+#home-logo { 
+    display: block;
+}
+
 #login-card {
     position: relative;
     border-radius: 0;
@@ -28,19 +32,23 @@
     margin-bottom: 4.2em;
 }
 
+/*
 #login-form input:not([type="submit"]) {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 2.2em;
     width: 100%;
 }
+*/
 
-#login-form input[type="submit"] {
+#login-form button[type="submit"] {
     position: absolute;
     top: 92%;
     left: 68%;
     font-size: 1.2em;
+    font-weight: 500;
     box-shadow: 0 3px 9px rgba(0,0,0,0.06), 0 3px 9px rgba(0,0,0,0.06);
+    text-transform: none;
 }
 
 #login-card #sign-up.button {
