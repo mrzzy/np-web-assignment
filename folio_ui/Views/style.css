@@ -82,16 +82,6 @@ a, a:hover {
 }
 
 /* Forms */
-input:not([type="submit"]) {
-    padding-bottom: 0.6em;
-    border-style: none;
-    border-bottom-style: solid;
-    border-bottom-width: 1.6pt;
-    border-bottom-color: #888;
-    
-    transition: border-bottom-color 0.3s ease;
-}
-
 input:not([type="submit"]):focus {
     border-bottom-color:  #FFD00B;
 }
