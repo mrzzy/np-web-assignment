@@ -8,6 +8,18 @@ import fetch from 'cross-fetch';
 
 // defines API client for talking to the api
 export default class API {
+    // constant api status codes
+    static get status() {
+        return {
+            success: 200,
+            badRequest: 400,
+            unauthorized: 401,
+            notFound: 404,
+            conflict: 409,
+            serverError: 500
+        }
+    }
+    
     /* Contructs a new auth instance that talks to the given API endpoint
      * Attempts to read state in document.cookie 
     */
@@ -40,25 +52,28 @@ export default class API {
      * API call route, optionally, passing http headers, content body
      * Automatically attaches auth token as bearer token if present
      * Throws exception when API call givens http status that is not success
-     * Returns the response body as a string
+     * Returns the response with response.status as the status code
+     * response.content as the content body of the request
     */
     async call(method, route, headers={}, content=null) {
         // build the request
-        var request = headers;
+        var request = {}
+        request.headers = headers;
         request.method = method;
         request.mode = "cors";
         if(content != null) request.body = content;
         this.bless(request);
 
         // make the API call
-        const response = await fetch(this.endpoint + route, request);
+        const fetchResponse = await fetch(this.endpoint + route, request);
 
-        // check API status
-        if(response.status !== 200) {
-            throw "API: Failed to complete api request: " + route;
-        }
-    
-        return await response.text();
+        // process fetch response to create response object
+        const response = {
+            status: fetchResponse.status,
+            content: await fetchResponse.text()
+        };
+        
+        return response;
     }
 
     /* Authorization & Authentication */
@@ -77,8 +92,8 @@ export default class API {
         const response = await fetch(this.endpoint + "/api/auth/check", request);
         
         // check if authentication with credientials successful
-        if(response.status == 401) return false;
-        else if(response.status == 200) return true;
+        if(response.status == API.status.unauthorized) return false;
+        else if(response.status == API.status.success) return true;
         else throw "Failed to check session token with API /api/auth/check";
     }
 
@@ -105,7 +120,7 @@ export default class API {
             body: JSON.stringify(credentials) // convert creds to json
         });
         // check if authentication with credientials successful
-        if(response.status != 200) return false;
+        if(response.status != API.status.success) return false;
 
         // parse reply from response
         const reply = await response.json();
@@ -141,11 +156,12 @@ export default class API {
         const response = await fetch(this.endpoint + "/api/auth/check", request);
         
         // check if authentication with credientials successful
-        if(response.status == 401) return false;
-        else if(response.status == 200) return true;
+        if(response.status == API.status.unauthorized) return false;
+        else if(response.status == API.status.success) return true;
         else throw "Failed to check session token with API /api/auth/check";
     }
 
+    /* Utility methods */
     /* Obtain user info of the user currently authenticated by the API asyncronously
      * Returns the user info of the user currently authenticated,
      * throws an exception if not authenticated at all
@@ -154,8 +170,7 @@ export default class API {
         // call auth info  api with session token
         const response = await this.call("GET", "/api/auth/info");
         // parse response
-        const userinfo = JSON.parse(response);
+        const userinfo = JSON.parse(response.content);
         return userinfo;
     }
-
 }
