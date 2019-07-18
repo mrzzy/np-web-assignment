@@ -1,0 +1,26 @@
+﻿@model IEnumerable<folio.Models.Project>
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navbar {
+    <ul class="navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <button class="search button">
+                <img alt="Search" src="~/img/bell.png" />
+                <span class="d-sm-none"> Search </span>
+            </button>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Auth" asp-action="Portfolio">
+                Portfolio
+            </a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Auth" asp-action="Projects">
+                Projects
+            </a>
+        </li>
+    </ul>
+}
