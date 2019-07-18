@@ -25,38 +25,51 @@
     </ul>
 }
 
+
 <h4 class="PageTitle">View Projects</h4>
+<li class="nav-item text-center mx-sm-3">
+    <a class="button striking" asp-controller="Auth" asp-action="Create">
+        Create
+    </a>
+</li>
 @if (Model.ToList().Count > 0)
 {
-    <div class="table-responsive">
-        <table id="viewStudent" class="table table-striped table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.ProjectId)</th>
-                    <th>@Html.DisplayNameFor(model => model.Title)</th>
-                    <th>@Html.DisplayNameFor(model => model.Description)</th>
-                    <th>@Html.DisplayNameFor(model => model.ProjectPoster)</th>
-                    <th>@Html.DisplayNameFor(model => model.ProjectUrl)</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.ProjectId</td>
-                        <td>@item.Title</td>
-                        <td>@item.Description</td>
-                        <td>@{string imageFileName = item.ProjectPoster;}
-                        <img src="~/images/@imageFileName" style="width:50px"/>
-                        </td>
-                        <td>@item.ProjectUrl</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <div class="container">
+        <div class="d-flex justify-content-center flex-wrap">
+
+            @foreach (var i in Model)
+            {
+                <div class="LCards">
+                    @{ string imageFileName = i.ProjectPoster; }
+                    <img src="~/images/@imageFileName"
+                         style="width:100%;" alt="@i.ProjectPoster" class="LSelect" />
+
+                    <div class="LContainer">
+                        <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.Title</h4>
+                        <p class="text-md-left font-weight-light font-italic" style="margin: 5px;"></p>
+                        <p class="text-md-left font-weight-bold "
+                           style="margin: 5px; color:#2d2d30"></p>
+                    </div>
+
+                </div>
+            }
+        </div>
+
     </div>
+
 }
-else
-{
-    <span style="color:red">No record found!</span>
-}
+<style>
+    div.LCards {
+        margin: 50px;
+        float: left;
+        width: 250px;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: left;
+    }
+    div.LContainer.text-lg-left {
+        text-align:center;
+    }
+    a.button.striking {
+        text-align:right;
+    }
+</style>

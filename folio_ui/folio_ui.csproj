@@ -25,6 +25,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Views\Project\Create.cshtml.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Views\Project\Create.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\folio\folio.csproj" />
     </ItemGroup>
 
