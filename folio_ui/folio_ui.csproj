@@ -30,6 +30,8 @@
 
     <ItemGroup>
       <Content Remove="Views\Project\Create.cshtml" />
+      <Content Remove="Views\Project\Detail.cshtml" />
+      <Content Remove="Views\Project\Edit.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

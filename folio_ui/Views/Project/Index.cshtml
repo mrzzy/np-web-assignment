@@ -27,11 +27,11 @@
 
 
 <h4 class="PageTitle">View Projects</h4>
-<li class="nav-item text-center mx-sm-3">
-    <a class="button striking" asp-controller="Auth" asp-action="Create">
+<div class="nav-item text-center mx-sm-3">
+    <a class="button striking" asp-controller="Project" asp-action="Create">
         Create
     </a>
-</li>
+</div>
 @if (Model.ToList().Count > 0)
 {
     <div class="container">
@@ -46,6 +46,8 @@
 
                     <div class="LContainer">
                         <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.Title</h4>
+                        <a class="button striking" id="editbtn" asp-controller="Project" asp-action="Edit" asp-route-id="@i.ProjectId">Edit</a>
+                        <a class="button striking" id="editbtn1" asp-controller="Project" asp-action="Detail" asp-route-id="@i.ProjectId">View</a>
                         <p class="text-md-left font-weight-light font-italic" style="margin: 5px;"></p>
                         <p class="text-md-left font-weight-bold "
                            style="margin: 5px; color:#2d2d30"></p>
@@ -70,6 +72,13 @@
         text-align:center;
     }
     a.button.striking {
-        text-align:right;
+        float:right;
+
+    }
+    h4.PageTitle{
+        text-align:center;
+    }
+    #editbtn {
+        float:left;
     }
 </style>

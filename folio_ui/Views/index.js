@@ -14,3 +14,6 @@ import "./Home/Index.js"
 
 // Auth - Login page
 import "./Auth/Login.js"
+
+// Project - Create page
+import "./Project/Create.js"
