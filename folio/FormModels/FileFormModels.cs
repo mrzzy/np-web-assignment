@@ -17,7 +17,7 @@ namespace folio.FormModels
     public class FileUpdateFormModel
     {
         [Required]
-        public string FileUrl  { get; set; }
+        public string FileId  { get; set; }
     
         [Required]
         public IFormFile File { get; set; }
@@ -27,6 +27,6 @@ namespace folio.FormModels
     public class FileDeleteFormModel
     {
         [Required]
-        public string FileUrl  { get; set; }
+        public string FileId  { get; set; }
     }
 }
