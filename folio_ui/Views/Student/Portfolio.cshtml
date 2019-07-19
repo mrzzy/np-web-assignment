@@ -4,4 +4,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Model.Name
+<div class="portfolio container">
+  <div class="header">
+    <div class="row d-flex flex-nowrap flex-column flex-md-row justify-content-around align-items-center">
+      <div class="picture-container">
+        <img class="frame frame-upper-right" src="/img/upper_right_picture_frame.png" />
+        <img class="frame frame-bottom-left" src="/img/bottom_left_picture_frame.png" />
+        <img class="picture" src="@ViewData["API_ENDPOINT"]/api/file/@Model.Photo" />
+      </div>
+      
+      <div class="userinfo-container my-5 col-11 col-md-6">
+        <div class="usertype faded">Student</div>
+        <h1 class="name">@Model.Name</h1>
+      </div>
+    </div>
+  </div>
+  
+  <div class="content">
+    
+  </div>
+</div>

@@ -19,15 +19,19 @@ namespace folio_ui.Controllers
     // ui controller: /student
     public class StudentController : Controller
     {
+        private APIClient api = new APIClient();
         // display student portfolio for the given id
         [HttpGet("/student/portfolio/{id}")]
         public ActionResult Portfolio(int id)
         {
+            // add reference to api ingress endpoint
+            ViewData["API_ENDPOINT"] =
+                "http://"  + Environment.GetEnvironmentVariable("API_INGRESS");
+
             // pull student portfolio data for id
-            APIClient apiClient = new APIClient();
-            string portfolioJson = apiClient .CallAPI("GET", 
+            APIResponse response = this.api.CallAPI("GET", 
                     "/api/student/portfolio/" + id);
-            Student student = JsonConvert.DeserializeObject<Student>(portfolioJson);
+            Student student = JsonConvert.DeserializeObject<Student>(response.Content);
             return View(student);
         }
     }
