@@ -94,17 +94,6 @@ namespace folio.Services.Content
             return storageObject.MediaLink;
         }
     
-        // Decode the content id from the given url (ie from EncodeUrl)
-        public string DecodeContentId(string url)
-        {
-            // use regular expressions to extract content id
-            Regex regex = new Regex(@"\/o\/[a-zA-Z0-9%]*%2F([a-z0-9-]+)");
-            Match match = regex.Match(url);
-            
-            string contentId = match.Groups[1].Value;
-            return contentId;
-        }
-    
         // Check if the content service has the content given by content id 
         // returns true if the content exists, otherwise false
         public bool HasObject(string contentId, string prefix="")
