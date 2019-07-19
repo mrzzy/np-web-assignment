@@ -39,6 +39,14 @@
     font-weight: 600;
 }
 
+/* skillset section */
+.portfolio .skillsets .skillset {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.3em;
+    font-weight: 500;
+    color: black;
+}
+
 /* project section */
 .portfolio .projects .project.card {
     box-shadow: none;

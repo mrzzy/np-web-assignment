@@ -34,7 +34,6 @@ namespace folio_ui.Controllers
 
             // pull student projects
             response = this.API.CallAPI("GET", "/api/projects?student=" + id);
-            Console.WriteLine(response.Content);
             List<int> projectIds = JsonConvert.DeserializeObject<List<int>>(response.Content);
             IEnumerable<Project> projects = projectIds.Select((projectId) => 
             {
@@ -52,6 +51,16 @@ namespace folio_ui.Controllers
                 return project;
             });
             ViewData["Projects"] = projects;
+
+            // pull student's skilsets
+            response = this.API.CallAPI("GET", "/api/skillsets?student=" + id);
+            List<int> skillSetIds = JsonConvert.DeserializeObject<List<int>>(response.Content);
+            Console.WriteLine("HERE:...." + skillSetIds);
+            IEnumerable<SkillSet> skillSets = skillSetIds.Select((skillSetId) => {
+                response = this.API.CallAPI("GET", "/api/skillset/" + skillSetId);
+                return JsonConvert.DeserializeObject<SkillSet>(response.Content);
+            });
+            ViewData["SkillSets"] = skillSets;
             
             return View(student);
         }
