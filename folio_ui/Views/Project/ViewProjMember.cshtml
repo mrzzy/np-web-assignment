@@ -1,0 +1,57 @@
+﻿@model IEnumerable<folio.Models.ProjectMember>
+@{
+    ViewData["Title"] = "Project Member";
+}
+
+@section Navbar {
+    <ul class="navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <button class="search button">
+                <img alt="Search" src="~/img/bell.png" />
+                <span class="d-sm-none"> Search </span>
+            </button>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Auth" asp-action="Portfolio">
+                Portfolio
+            </a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Auth" asp-action="Projects">
+                Projects
+            </a>
+        </li>
+    </ul>
+}
+@if (Model.ToList().Count > 0)
+{
+    <div class="container">
+        <div class="d-flex justify-content-center flex-wrap">
+
+            @foreach (var i in Model)
+            {
+                <div class="LCards">
+
+                    <div class="LContainer">
+                        <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.StudentId</h4>
+                        <p class="text-md-left font-weight-bold "
+                           style="margin: 5px; color:#2d2d30;
+                            overflow: hidden;text-overflow: ellipsis;
+                            width: 240px; white-space: nowrap; ">@i.Role</p>
+                        </div>
+
+                    </div>
+                }
+        </div>
+
+    </div>
+}
+    <style>
+        div.LCards {
+            margin: 50px;
+            float: left;
+            width: 250px;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-align: left;
+        }
+    </style>

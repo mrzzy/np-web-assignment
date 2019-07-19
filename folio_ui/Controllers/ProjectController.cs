@@ -89,7 +89,37 @@ namespace folio_ui.Controllers
         }
         public async Task<ActionResult> Detail(int id, Project project , [FromQuery] int student)
         {
-            return View();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.GetAsync("/api/project/" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                Project projectList =
+                JsonConvert.DeserializeObject<Project>(data);
+                return View(projectList);
+            }
+            else
+            {
+                return View(new Project());
+            }
+        }
+        public async Task<ActionResult> ViewProjMember(int id)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await client.GetAsync("/api/project/member" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                List<ProjectMember> projectMemberList = JsonConvert.DeserializeObject<List<ProjectMember>>(data);
+                return View(projectMemberList);
+            }
+            else
+            {
+                return View(new ProjectMember());
+            }
         }
     }
 }

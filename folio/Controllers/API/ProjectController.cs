@@ -245,7 +245,7 @@ namespace folio.Controllers.API
 
             return Ok();
         }
-         [HttpPost("/api/project/remove/{id}")]
+        [HttpPost("/api/project/remove/{id}")]
         [Authenticate("Student")]
         public ActionResult RemoveProject(int id, [FromQuery] int student)
         {
@@ -263,6 +263,29 @@ namespace folio.Controllers.API
             }
 
             return Ok();
+        }
+        // GET api/lecturer/mentees/5/
+        [HttpGet("/api/project/member/{id}")]
+        [Produces("application/json")]
+        //[Authenticate("Student")]
+        public ActionResult GetMember(int id)
+        {
+            Console.WriteLine("get id:", id.ToString());
+            // Retrieve the lecturer for id
+            List<ProjectMember> projectList = new List<ProjectMember>();
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                projectList = database.ProjectMembers
+                    .Where(s => s.ProjectId == id).ToList();
+                    
+                database.SaveChanges();
+
+            }
+
+            // check if skill has been found for targetId
+            if (projectList == null) return NotFound();
+
+            return Json(projectList);
         }
     }
 }
