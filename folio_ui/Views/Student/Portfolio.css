@@ -31,14 +31,50 @@
     width: 12em;
     height: 12em;
     object-fit: cover;
-    box-shadow: 0 6px 42px rgba(0,0,0,0.12);
+    box-shadow: 0 32px 42px rgba(0,0,0,0.12);
 }
 
 .portfolio .header .userinfo-container .usertype {
     font-family: "Roboto", sans-serif;
-    font-size: 0.8em;
     font-weight: 600;
 }
 
+/* project section */
+.portfolio .projects .project.card {
+    box-shadow: none;
+    position: relative;
+    width: 24em;
+    padding-top: 10em;
+    padding-bottom: 8em;
+}
 
-/* about section */
+.portfolio .projects .project.card .frame {
+    position: absolute;
+}
+
+.portfolio .projects .project.card .frame-upper-right {
+    top: 0%;
+    right: 0%;
+}
+
+.portfolio .projects .project.card .frame-bottom-left {
+    bottom: 0%;
+    left: 0%;
+}
+
+.portfolio .projects .project.card .card-title {
+    margin-left: auto;
+    margin-right: auto;
+    width: 14em;
+    z-index: 2;
+}
+
+.portfolio .projects .project.card .card-text {
+    width: 16em;
+    z-index: 2;
+}
+
+.portfolio .projects .project.card .btn-view .right {
+    object-fit: contain;
+    height: 0.6em;
+}
