@@ -1,7 +1,6 @@
 ﻿@model folio.Models.Project
 @{
-    ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Edit";
 }
 
 @section Navbar {
@@ -18,7 +17,7 @@
             </a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" asp-controller="Auth" asp-action="Project">
+            <a class="button" asp-controller="Auth" asp-action="Projects">
                 Projects
             </a>
         </li>
@@ -28,25 +27,25 @@
 <section class="mb-4">
 
     <!--Section heading-->
-    <h2 class="h1-responsive font-weight-bold text-center my-4">Create Project</h2>
+    <h2 class="h1-responsive font-weight-bold text-center my-4">Edit Project</h2>
     <!--Section description-->
     <p class="text-center w-responsive mx-auto mb-5">
-        
+
     </p>
 
     <div class="row">
 
         <!--Grid column-->
         <div class="col-md-9 mb-md-0 mb-5">
-            <form id="create-form">
-
+            <form asp-action="Edit" method="post">
+               
                 <!--Grid row-->
                 <div class="row">
 
                     <!--Grid column-->
                     <div class="col-md-4">
                         <div class="md-form mb-0">
-                            <input type="text" id="ProjTitle" name="name" class="form-control" asp-for="@Model.Title">
+                            <input type="text" id="ProjTitle" class="form-control" asp-for="@Model.Title">
                             <label for="name" class="ProjTitle">Project Title</label>
                         </div>
                     </div>
@@ -89,37 +88,27 @@
                         </div>
                     </div>
                 </div>
-                
+                <div class="buttonsubmit">
+                    <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit">
+                        Confirm
+                    </button>
+                </div>
             </form>
 
-            <div class="buttonsubmit">
-                <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit"> 
-                Create
-                </button>
-            </div>
-            <div class="status"></div>
-        </div>
-        <!--Grid column-->
-        <!--Grid column-->
-        <div class="col-md-3 text-center">
-            <ul class="list-unstyled mb-0">
-
-            </ul>
-        </div>
+          
         <!--Grid column-->
 
     </div>
-
+</div>
 </section>
 
 <style>
-    .row{
-        justify-content:center;
-        margin-left:160px;
+    .row {
+        justify-content: center;
     }
-    
-    .buttonsubmit{
-        text-align:center;
-        margin-left:130px;
+
+    .buttonsubmit {
+        text-align: center;
+       
     }
 </style>
