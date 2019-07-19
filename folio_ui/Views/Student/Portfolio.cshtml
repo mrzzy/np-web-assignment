@@ -13,14 +13,22 @@
         <img class="picture" src="@ViewData["API_ENDPOINT"]/api/file/@Model.Photo" />
       </div>
       
-      <div class="userinfo-container my-5 col-11 col-md-6">
+      <div class="userinfo-container my-5 col-md-6">
         <div class="usertype faded">Student</div>
         <h1 class="name">@Model.Name</h1>
       </div>
     </div>
   </div>
   
-  <div class="content">
-    
+  <div class="about">
+    <div class="row">
+      <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
+        <h3 class="title text-center"> About </h3>
+        <p>
+          @Model.Description
+        </p>
+
+      </div>
+    </div>
   </div>
 </div>

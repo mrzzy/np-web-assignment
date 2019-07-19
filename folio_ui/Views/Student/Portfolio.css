@@ -3,6 +3,7 @@
  * Student Portfolio View  Styling
 */
 
+/* header section */
 .portfolio .header .picture-container {
     position: relative;
     text-align: center;
@@ -38,3 +39,6 @@
     font-size: 0.8em;
     font-weight: 600;
 }
+
+
+/* about section */
