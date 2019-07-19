@@ -22,15 +22,23 @@ namespace folio.Tests.Services.API
             DotNetEnv.Env.Load();
             APIClient apiClient = new APIClient();
             
+            // make get students api call
+            APIResponse response = apiClient.CallAPI("GET", "/api/students");
+            Assert.Equal(200, response.StatusCode);
+            Console.WriteLine("Test APIClient: TestCallAPI: got response for students: " 
+                    + response.Content);
+            
             // make login api call
             string credientialsJson = 
                 "{ 'EmailAddr': 's1234112@ap.edu.sg', 'Password': 'p@55Student' }";
             StringContent content = new StringContent(
                     credientialsJson, Encoding.UTF8, "application/json");
 
-            string responseJson = apiClient.CallAPI("POST", "/api/auth/login", 
+            response = apiClient.CallAPI("POST", "/api/auth/login", 
                     content);
-            Console.WriteLine("Test APIClient: TestCallAPI: got response: " + responseJson);
+            Assert.Equal(200, response.StatusCode);
+            Console.WriteLine("Test APIClient: TestCallAPI: got response for login: " 
+                    + response.Content);
         }
     }
 }
