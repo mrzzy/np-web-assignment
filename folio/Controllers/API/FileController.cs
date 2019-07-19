@@ -33,6 +33,11 @@ namespace folio.API.Controllers
         [HttpGet("/api/file/{fileId}")]
         public ActionResult GetFile(string fileId)
         {
+            // check if content service has file with the given file id
+            if(!this.ContentService
+                    .HasObject(fileId, FileController.ContentPrefix))
+            { return NotFound(); }
+
             // determine url for file with the given file id using content service
             string fileUrl = this.ContentService
                 .EncodeUrl(fileId, FileController.ContentPrefix);
@@ -95,18 +100,17 @@ namespace folio.API.Controllers
             });
         }
     
-        // route to delete the file with the given url
+        // route to delete the file with the given id
         // authentication is required.
         [Authenticate]
-        [HttpPost("/api/file/delete")]
-        public ActionResult DeleteFile([FromForm] FileDeleteFormModel formModel)
+        [HttpPost("/api/file/delete/{fileId}")]
+        public ActionResult DeleteFile(string  fileId)
         {
             // validate contents of form model
             if(!ModelState.IsValid)
             { return BadRequest(ModelState); }
         
             // remove file using content service
-            string fileId = formModel.FileId;
             // delete only if content actually exists
             if(this.ContentService
                     .HasObject(fileId, FileController.ContentPrefix))
