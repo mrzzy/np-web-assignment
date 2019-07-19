@@ -55,7 +55,6 @@ namespace folio_ui.Controllers
             // pull student's skilsets
             response = this.API.CallAPI("GET", "/api/skillsets?student=" + id);
             List<int> skillSetIds = JsonConvert.DeserializeObject<List<int>>(response.Content);
-            Console.WriteLine("HERE:...." + skillSetIds);
             IEnumerable<SkillSet> skillSets = skillSetIds.Select((skillSetId) => {
                 response = this.API.CallAPI("GET", "/api/skillset/" + skillSetId);
                 return JsonConvert.DeserializeObject<SkillSet>(response.Content);
