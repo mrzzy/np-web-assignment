@@ -1,0 +1,88 @@
+/*
+ * NP web assignment
+ * Student Portfolio View  Styling
+*/
+
+/* header section */
+.portfolio .header .picture-container {
+    position: relative;
+    text-align: center;
+    padding: 4em;
+}
+
+.portfolio .header .picture-container .frame {
+    position: absolute;
+    z-index: -1;
+}
+
+.portfolio .header .picture-container .frame-upper-right {
+    top: 0%;
+    right: 0%;
+    object-fit: contain;
+}
+
+.portfolio .header .picture-container .frame-bottom-left {
+    bottom: 0%;
+    left: 0%;
+    object-fit: contain;
+}
+
+.portfolio .header .picture-container .picture {
+    width: 12em;
+    height: 12em;
+    object-fit: cover;
+    box-shadow: 0 32px 42px rgba(0,0,0,0.12);
+}
+
+.portfolio .header .userinfo-container .usertype {
+    font-family: "Roboto", sans-serif;
+    font-weight: 600;
+}
+
+/* skillset section */
+.portfolio .skillsets .skillset {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.3em;
+    font-weight: 500;
+    color: black;
+}
+
+/* project section */
+.portfolio .projects .project.card {
+    box-shadow: none;
+    position: relative;
+    width: 24em;
+    padding-top: 10em;
+    padding-bottom: 8em;
+}
+
+.portfolio .projects .project.card .frame {
+    position: absolute;
+}
+
+.portfolio .projects .project.card .frame-upper-right {
+    top: 0%;
+    right: 0%;
+}
+
+.portfolio .projects .project.card .frame-bottom-left {
+    bottom: 0%;
+    left: 0%;
+}
+
+.portfolio .projects .project.card .card-title {
+    margin-left: auto;
+    margin-right: auto;
+    width: 14em;
+    z-index: 2;
+}
+
+.portfolio .projects .project.card .card-text {
+    width: 16em;
+    z-index: 2;
+}
+
+.portfolio .projects .project.card .btn-view .right {
+    object-fit: contain;
+    height: 0.6em;
+}

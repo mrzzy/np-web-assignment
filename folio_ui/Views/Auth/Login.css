@@ -32,15 +32,6 @@
     margin-bottom: 4.2em;
 }
 
-/*
-#login-form input:not([type="submit"]) {
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 2.2em;
-    width: 100%;
-}
-*/
-
 #login-form button[type="submit"] {
     position: absolute;
     top: 92%;
