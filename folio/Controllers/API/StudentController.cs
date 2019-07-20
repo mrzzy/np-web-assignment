@@ -32,11 +32,12 @@ namespace folio.Controllers.API
         // route to get student ids, governed by optional query parameters:
         // skillset - filter by skillset (given by id) assigned (StudentSkillSet)
         // project - filter by project (given by id) assigned (ProjectMember)
+        // names - if 1, will include names of students together with response
         [HttpGet("/api/students")]
         [Produces("application/json")]
-        public ActionResult GetStudents([FromQuery] int? skillset, int? project)
+        public ActionResult GetStudents([FromQuery] int? skillset, 
+                [FromQuery]int? names, [FromQuery]int? project)
         {
-            List<int> studentIds = null;
             using (EPortfolioDB db = new EPortfolioDB())
             {
                 IQueryable<Student> matchingStudents = db.Students;
@@ -60,9 +61,25 @@ namespace folio.Controllers.API
                             .Any(pm => pm.ProjectId == project));
                 }
             
-                studentIds = matchingStudents.Select(s => s.StudentId).ToList();
+                // construct response with matching students
+                if(names != null && names.Value == 1) // id + names of students
+                {
+                    List<Object> results = matchingStudents
+                    .Select(s => new 
+                    {
+                        Id = s.StudentId,
+                        Name = s.Name
+                    } as Object ).ToList();
+                    
+                    return Json(results);
+                }
+                else // ids only
+                { 
+                    List<int> results = matchingStudents
+                        .Select(s => s.StudentId).ToList();
+                    return Json(results);
+                }
             }
-            return Json(studentIds);
         }
     
         // route to get student portfolio infomation for given student id
