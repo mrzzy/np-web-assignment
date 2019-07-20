@@ -65,21 +65,14 @@ namespace folio_ui.Controllers
         }
         
         // edit student profile for the student with the given id
-        [HttpGet("/student/profile/{id}")]
+        [HttpGet("/student/profile")]
         [PassUserInfo]
-        public Profile(int id)
+        public ActionResult Profile()
         {
             APIClient api = new APIClient(HttpContext);
             // add reference to api endpoint to view data
             ViewData["API_ENDPOINT"] = api.APIEndpoint;
-
-            // pull student profile
-            APIResponse response = api.CallAPI("GET", "/api/student/" + id);
-            // check api call went through successfully
-            if(response.StatusCode != 200) return NotFound();
-            Student student = JsonConvert.DeserializeObject<Student>(response.Content);
-
-            return View(student);
+            return View();
         }
     }
 }
