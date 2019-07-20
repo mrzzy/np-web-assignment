@@ -52,6 +52,17 @@
           <!-- navigation items -->
           <div class="navbar-collapse collapse flex-sm-row mt-2 mt-sm-0">
             @RenderSection("Navbar", required: false)
+            @if (!IsSectionDefined("Navbar"))
+            {
+              @if((ViewData["UserInfo"] as UserInfo).UserRole == "Anonymous")
+              {
+              <partial name="_NavbarAnonymous" />
+              }
+              @if((ViewData["UserInfo"] as UserInfo).UserRole == "Student")
+              {
+              <partial name="_NavbarStudent" />
+              }
+            }
           </div>
         </div>
       </nav>
