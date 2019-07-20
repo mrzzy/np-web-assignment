@@ -135,7 +135,7 @@ export default class API {
     /* Perform logout of the currently authenticated user 
      * If not already authenticated, would do nothing
     */
-    async logout(){
+    logout(){
         // clear bearer auth tokens to reset to state before login
         this.token = null;
         Cookies.remove(process.env.API_TOKEN_KEY);

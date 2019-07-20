@@ -32,6 +32,11 @@ h1 {
     box-shadow: none;
 }
 
+/* fix for link appearing higher than buttons in navbar */
+.navbar a {
+    padding-top: 0.95em !important;
+}
+ 
 /* remove default button styling */
 button, input[type="submit"], input[type="reset"] {
 	background: none;

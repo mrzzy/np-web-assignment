@@ -9,6 +9,9 @@ import "./style.css"
 // Layout
 import "./Layout/Layout.js"
 
+// Navbars
+import "./Shared/_NavbarStudent.js"
+
 // Auth - Login page
 import "./Auth/Login.js"
 
