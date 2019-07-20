@@ -108,5 +108,4 @@ a, a:hover {
 
 /* Forms */
 input:not([type="submit"]):focus {
-    border-bottom-color:  #FFD00B;
 }

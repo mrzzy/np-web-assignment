@@ -1,0 +1,63 @@
+<!-- student form -->
+<div class="Login.student-from-container">
+  <div id="student-form-message" class="alert alert-danger" role="alert">
+  </div>
+  <form id="student-form" accept-charset="utf-8">
+    <div class="form-group-portfolio">
+      <h4 class="from-group-header"> Portfolio </h4>
+
+      <div class="md-form">
+        <label for="student-name">Name</label>
+        <input type="text" name="Name" class="form-control" id="student-name" />
+      </div>
+    
+      <div class="md-form">
+        <label for="student-course">Course</label>
+        <input type="text" name="Course" class="form-control" id="student-course" />
+      </div>
+
+      <div class="md-form">
+        <label for="student-description">Description</label>
+        <textarea class="form-control md-textarea" id="student-description" rows="8"></textarea>
+      </div>
+
+      <div class="md-form">
+        <label for="student-external-link">External Link</label>
+        <input type="text" name="Course" class="form-control" id="student-external-link" />
+      </div>
+
+
+    </div>
+
+    <div class="form-group-account">
+      <h4 class="form-group-header"> Account </h4>
+      @if(ViewData["Mode"] as string == "Create")
+      {
+
+      <div class="md-form">
+        <label for="student-mentor">Mentor</label>
+        <input type="text" name="Mentor" class="form-control" id="student-mentor" />
+      </div>
+
+      <div class="md-form">
+        <label for="student-email">Email</label>
+        <input type="email" name="Email" class="form-control" id="student-email" />
+      </div>
+
+      }
+
+      <div class="md-form">
+        <label for="student-password">Password</label>
+        <input type="password" name="Password" class="form-control" id="student-password">
+      </div>
+      <div class="md-form">
+        <label for="student-confirm-password">Confirm Password</label>
+        <input type="password" name="Password" class="form-control" id="student-confirm-password">
+      </div>
+    </div>
+
+    <button class="btn button striking" type="submit" name="submit-btn" id="btn-submit-student">
+      Save
+    </button>
+  </form>
+</div>
