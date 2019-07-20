@@ -10,7 +10,7 @@ ViewData["StudentId"] = (ViewData["UserInfo"] as UserInfo).Id;
     </button>
   </li>
   <li class="nav-item text-center">
-    <a class="button btn-outline-link" asp-controller="Student" asp-action="Profile">
+    <a class="button btn-outline-link" asp-controller="Student" asp-action="Profile" asp-route-id="@ViewData["StudentId"]">
       Profile
     </a>
   </li>
