@@ -9,7 +9,7 @@ namespace folio.Models
     // user info model defines properties common to all users
     public class UserInfo
     {    
-        public int id;
+        public int Id;
         public string EmailAddr;
         public string UserRole;
         public string Name;
@@ -17,7 +17,7 @@ namespace folio.Models
         // construct a userinfo given a lecturer model
         public UserInfo(Lecturer lecturer)
         {
-            this.id = lecturer.LecturerId;
+            this.Id = lecturer.LecturerId;
             this.EmailAddr = lecturer.EmailAddr;
             this.UserRole = "Lecturer";
             this.Name = lecturer.Name;
@@ -26,7 +26,7 @@ namespace folio.Models
         // construct a userinfo given a student model
         public UserInfo(Student student)
         {
-            this.id = student.StudentId;
+            this.Id = student.StudentId;
             this.EmailAddr = student.EmailAddr;
             this.UserRole = "Student";
             this.Name = student.Name;
