@@ -55,7 +55,7 @@ namespace folio.Services.API
         // Attempts to extract the authentication token from the http context if given
         // If service is null, attempts to obtain service from environment 
         // variable API_SERVICE
-        public APIClient(HttpContext context=null, string service=null) 
+        public APIClient(HttpContext context, string service=null) 
             : this(APIClient.LoadToken(context), service) { }
         
         /* API calls */
