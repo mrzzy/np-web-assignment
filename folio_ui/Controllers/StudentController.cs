@@ -25,7 +25,7 @@ namespace folio_ui.Controllers
         public ActionResult Portfolio(int id)
         {
             APIClient api = new APIClient(HttpContext);
-            // add reference to api ingress endpoint
+            // add reference to api endpoint to view data
             ViewData["API_ENDPOINT"] = api.APIEndpoint;
 
             // pull student portfolio data for id
@@ -61,6 +61,24 @@ namespace folio_ui.Controllers
             });
             ViewData["SkillSets"] = skillSets;
             
+            return View(student);
+        }
+        
+        // edit student profile for the student with the given id
+        [HttpGet("/student/profile/{id}")]
+        [PassUserInfo]
+        public Profile(int id)
+        {
+            APIClient api = new APIClient(HttpContext);
+            // add reference to api endpoint to view data
+            ViewData["API_ENDPOINT"] = api.APIEndpoint;
+
+            // pull student profile
+            APIResponse response = api.CallAPI("GET", "/api/student/" + id);
+            // check api call went through successfully
+            if(response.StatusCode != 200) return NotFound();
+            Student student = JsonConvert.DeserializeObject<Student>(response.Content);
+
             return View(student);
         }
     }
