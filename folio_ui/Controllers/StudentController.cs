@@ -21,6 +21,7 @@ namespace folio_ui.Controllers
     {
         // display student portfolio for the given id
         [HttpGet("/student/portfolio/{id}")]
+        [PassUserInfo]
         public ActionResult Portfolio(int id)
         {
             APIClient api = new APIClient(HttpContext);

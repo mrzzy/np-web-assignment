@@ -38,7 +38,7 @@
     <!-- check if navbar is enabled -->
     @if(ViewData["IsNavbarDisabled"] == null || (bool)ViewData["IsNavbarDisabled"] == false){
     <header class="my-4">
-      <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
+      <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light">
         <div class="container flex-col flex-sm-row">
           <!-- logo -->
           <a class="navbar-left" asp-controller="Home" asp-action="Index">
@@ -52,7 +52,7 @@
           <!-- navigation items -->
           <div class="navbar-collapse collapse flex-sm-row mt-2 mt-sm-0">
             @RenderSection("Navbar", required: false)
-            @if (!IsSectionDefined("Navbar"))
+            @if (!IsSectionDefined("Navbar") && ViewData["UserInfo"] != null)
             {
               @if((ViewData["UserInfo"] as UserInfo).UserRole == "Anonymous")
               {
