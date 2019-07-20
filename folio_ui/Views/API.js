@@ -25,7 +25,7 @@ export default class API {
     */
     constructor(endpoint=null) {
         this.endpoint = "http://"  + ( 
-            (endpoint == null) ? process.env.API_INGRESS : endpoint
+            (endpoint == null) ? process.env.API_ENDPOINT : endpoint
         );
         
         // load session token from cookie
@@ -59,10 +59,10 @@ export default class API {
         // build the request
         var request = {}
         request.headers = headers;
+        this.bless(request); // set auth header
         request.method = method;
         request.mode = "cors";
         if(content != null) request.body = content;
-        this.bless(request);
 
         // make the API call
         const fetchResponse = await fetch(this.endpoint + route, request);
@@ -127,7 +127,7 @@ export default class API {
         this.token = reply.sessionToken;
 
         // save token for future object authentications
-        Cookies.set("Auth.token", this.token);
+        Cookies.set("API.token", this.token);
 
         return true;
     }

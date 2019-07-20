@@ -36,15 +36,16 @@ namespace folio.Services.API
         /* constructor */
         // construct a new API client that talks to the given endpoint. 
         // If endpoint is null, attempts to obtain endpoint from environment 
-        // variable API_HOST
+        // variable API_SERVICE
         // If provided, will use authentication token to authenticate requests
         public APIClient(string token=null, string endpoint=null)
         {
             this.APIEndpoint = "http://" + ((endpoint == null) ?  
-                    Environment.GetEnvironmentVariable("API_HOST") : endpoint);
+                    Environment.GetEnvironmentVariable("API_SERVICE") : endpoint);
             this.AuthToken = token;
         }
         
+        /* API calls */
         // make an API call specified by the given call route using the given http method
         // Includes the content as the request body
         // Attaches an authentication token if APIClient has authentication token
@@ -79,5 +80,6 @@ namespace folio.Services.API
             
             return response;
         }
+        
     }
 }

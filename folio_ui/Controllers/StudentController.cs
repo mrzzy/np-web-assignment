@@ -19,25 +19,25 @@ namespace folio_ui.Controllers
     // ui controller: /student
     public class StudentController : Controller
     {
-        private APIClient API = new APIClient();
         // display student portfolio for the given id
         [HttpGet("/student/portfolio/{id}")]
         public ActionResult Portfolio(int id)
         {
+            APIClient api = new APIClient();
             // add reference to api ingress endpoint
             ViewData["API_ENDPOINT"] =
-                "http://"  + Environment.GetEnvironmentVariable("API_INGRESS");
+                "http://"  + Environment.GetEnvironmentVariable("API_ENDPOINT");
 
             // pull student portfolio data for id
-            APIResponse response = this.API.CallAPI("GET", "/api/student/portfolio/" + id);
+            APIResponse response = api.CallAPI("GET", "/api/student/portfolio/" + id);
             Student student = JsonConvert.DeserializeObject<Student>(response.Content);
 
             // pull student projects
-            response = this.API.CallAPI("GET", "/api/projects?student=" + id);
+            response = api.CallAPI("GET", "/api/projects?student=" + id);
             List<int> projectIds = JsonConvert.DeserializeObject<List<int>>(response.Content);
             IEnumerable<Project> projects = projectIds.Select((projectId) => 
             {
-                response = this.API.CallAPI("GET", "/api/project/" + projectId);
+                response = api.CallAPI("GET", "/api/project/" + projectId);
                 Project project = JsonConvert.DeserializeObject<Project>(response.Content);
                 
                 //clamp description down for rendering in small view
@@ -53,10 +53,10 @@ namespace folio_ui.Controllers
             ViewData["Projects"] = projects;
 
             // pull student's skilsets
-            response = this.API.CallAPI("GET", "/api/skillsets?student=" + id);
+            response = api.CallAPI("GET", "/api/skillsets?student=" + id);
             List<int> skillSetIds = JsonConvert.DeserializeObject<List<int>>(response.Content);
             IEnumerable<SkillSet> skillSets = skillSetIds.Select((skillSetId) => {
-                response = this.API.CallAPI("GET", "/api/skillset/" + skillSetId);
+                response = api.CallAPI("GET", "/api/skillset/" + skillSetId);
                 return JsonConvert.DeserializeObject<SkillSet>(response.Content);
             });
             ViewData["SkillSets"] = skillSets;
