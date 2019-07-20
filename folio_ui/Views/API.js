@@ -30,7 +30,7 @@ export default class API {
         
         // load session token from cookie
         this.token = null;
-        const gotToken = Cookies.get("API.token");
+        const gotToken = Cookies.get(process.env.API_TOKEN_KEY);
         if(gotToken != null) this.token = gotToken;
     }
 
@@ -127,7 +127,7 @@ export default class API {
         this.token = reply.sessionToken;
 
         // save token for future object authentications
-        Cookies.set("API.token", this.token);
+        Cookies.set(process.env.API_TOKEN_KEY, this.token);
 
         return true;
     }
@@ -138,7 +138,7 @@ export default class API {
     async logout(){
         // clear bearer auth tokens to reset to state before login
         this.token = null;
-        Cookies.remove("Auth.token");
+        Cookies.remove(process.env.API_TOKEN_KEY);
     }
 
     /* Checks if authenticationed using API's check function asyncronously 

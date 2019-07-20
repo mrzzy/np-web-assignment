@@ -85,7 +85,7 @@ describe("API", () => {
             await api.login("s1234112@ap.edu.sg", "p@55Student");
             api.logout();
             assert.equal(api.token, null);
-            assert.equal(Cookies.get("API.token"), null);
+            assert.equal(Cookies.get(process.env.API_TOKEN_KEY), null);
         });
     });
 });
