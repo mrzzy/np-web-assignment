@@ -4,13 +4,18 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using folio.Services.API;
 using folio_ui.Models;
+using folio.Models;
 
 namespace folio_ui.Controllers
 {
     public class HomeController : Controller
     {
-        // Landing Page
+        // Landing page of the side
+        [PassUserInfo]
         public IActionResult Index()
         {
             return View();
