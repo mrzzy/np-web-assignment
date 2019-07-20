@@ -11,6 +11,8 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Collections.Generic;
+using folio.Models;
+using Newtonsoft.Json;
 
 namespace folio.Services.API
 {
@@ -90,6 +92,19 @@ namespace folio.Services.API
             };
             
             return response;
+        }
+        
+        // get the user info of the user that owns this api clients's api token
+        // returns the user info or null if token is invalid or not present
+        public UserInfo GetUserInfo() 
+        {
+            if(this.AuthToken == null) return null;
+            // pull user infomation from using api
+            APIResponse response = this.CallAPI("GET", "/api/auth/info");
+            // check if token is valid
+            if(response.StatusCode == 401) return null;
+            UserInfo userInfo = JsonConvert.DeserializeObject<UserInfo>(response.Content);
+            return userInfo;
         }
         
         /* private utilities */
