@@ -8,6 +8,7 @@ using DotNetEnv;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -29,21 +30,31 @@ namespace folio.Services.API
     public class APIClient
     {
         /* constructor */
-        public string APIEndpoint { get; }
+        public string APIService { get; } // access api from internal network
+        public string APIEndpoint { get; } // access api from external network
         private string AuthToken { get; set; }
         private static HttpClient Client = new HttpClient();
 
         /* constructor */
-        // construct a new API client that talks to the given endpoint. 
-        // If endpoint is null, attempts to obtain endpoint from environment 
+        // construct a new API client that talks to the given api service. 
+        // If provided, use the given token for authentication when making calls
+        // If service is null, attempts to obtain service from environment 
         // variable API_SERVICE
-        // If provided, will use authentication token to authenticate requests
-        public APIClient(string token=null, string endpoint=null)
+        public APIClient(string token=null, string service=null)
         {
-            this.APIEndpoint = "http://" + ((endpoint == null) ?  
-                    Environment.GetEnvironmentVariable("API_SERVICE") : endpoint);
+            this.APIService = "http://" + ((service == null) ?  
+                    Environment.GetEnvironmentVariable("API_SERVICE") : service);
+            this.APIEndpoint = 
+                "http://" + Environment.GetEnvironmentVariable("API_ENDPOINT");
             this.AuthToken = token;
         }
+        
+        // construct a new API client that talks to the given api service. 
+        // Attempts to extract the authentication token from the http context if given
+        // If service is null, attempts to obtain service from environment 
+        // variable API_SERVICE
+        public APIClient(HttpContext context=null, string service=null) 
+            : this(APIClient.LoadToken(context), service) { }
         
         /* API calls */
         // make an API call specified by the given call route using the given http method
@@ -56,7 +67,7 @@ namespace folio.Services.API
             // construct the request
             HttpRequestMessage request = new HttpRequestMessage {
                 Method = new HttpMethod(method),
-                RequestUri = new Uri(this.APIEndpoint + callRoute)
+                RequestUri = new Uri(this.APIService + callRoute)
             };
 
             // configure headers 
@@ -81,5 +92,20 @@ namespace folio.Services.API
             return response;
         }
         
+        /* private utilities */
+        // extracts the API authentication token from the givnn http context
+        // returns the extracted token or null if no token could be extracted
+        private static string LoadToken(HttpContext context)
+        {
+            // check token present to extract
+            string authTokenKey = Environment.GetEnvironmentVariable("API_TOKEN_KEY");
+            string authToken = context.Request.Cookies[authTokenKey];
+            if(context == null || authToken == null)
+            {
+                return null;
+            }
+            
+            return authToken;
+        }
     }
 }

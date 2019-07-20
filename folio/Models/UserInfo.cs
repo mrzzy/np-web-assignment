@@ -14,6 +14,8 @@ namespace folio.Models
         public string UserRole;
         public string Name;
 
+        // dummy constructor 
+        public UserInfo() {}
         // construct a userinfo given a lecturer model
         public UserInfo(Lecturer lecturer)
         {
