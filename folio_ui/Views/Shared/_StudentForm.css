@@ -1,0 +1,26 @@
+/* 
+ * Student Form
+ * Styling
+*/
+
+#student-form {
+    position: relative;
+}
+
+#student-form .tt-menu {
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 3px 9px rgba(0,0,0,0.06), 0 3px 9px rgba(0,0,0,0.06);
+}
+
+#student-form .tt-menu .tt-suggestion {  
+    padding: 0.6em;
+}
+
+#student-form .tt-menu .tt-suggestion:hover {
+    background-color: #f4f4f4;
+}
+
+#student-form .twitter-typeahead {
+    display: block !important;
+}

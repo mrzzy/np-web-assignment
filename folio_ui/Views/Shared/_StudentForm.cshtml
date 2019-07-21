@@ -1,59 +1,67 @@
 <!-- student form -->
 <div class="student-from-container">
-  <div id="student-form-message" class="alert alert-danger d-none" role="alert">
+  <div class="alert alert-danger d-none" id="form-message-template" role="alert">
   </div>
   <form id="student-form" class="d-none" accept-charset="utf-8">
     <!-- NOTE: name attributes of input fields MUST match the names in Student model (as lowercase) -->
-    <input type="hidden" value="@ViewData["StudentFormMode"]" name="mode" id="form-mode"/>
+    <input type="hidden" value="@ViewData["StudentFormMode"]"  id="form-mode"/>
 
     <div class="form-group-portfolio">
       <h4 class="from-group-header"> Portfolio </h4>
 
-      <div class="md-form">
+      <div class="md-form form-field">
         <label for="student-name">Name</label>
-        <input type="text" name="name" class="form-control" id="student-name" />
+        <input required type="text" name="name" class="form-control" id="student-name" />
       </div>
     
-      <div class="md-form">
+      <div class="md-form form-field">
         <label for="student-course">Course</label>
-        <input type="text" name="course" class="form-control" id="student-course" />
+        <input required type="text" name="course" class="form-control" id="student-course" />
       </div>
 
-      <div class="md-form">
+      <div class="md-form form-field">
         <label for="student-description">Description</label>
         <textarea name="description" class="form-control md-textarea" id="student-description" rows="8"></textarea>
       </div>
 
-      <div class="md-form">
+      <div class="md-form form-field">
+        <label for="student-achievement">Achievement</label>
+        <textarea name="achievement" class="form-control md-textarea" id="student-achievement" rows="2"></textarea>
+      </div>
+
+      <div class="md-form form-field">
         <label for="student-external-link">External Link</label>
-        <input type="text" name="externallink" class="form-control" id="student-external-link" />
+        <input type="text" name="externalLink" class="form-control" id="student-external-link" />
+      </div>
+    
+      <div class="md-form form-field">
+        <input type="text" name="mentorId" class="form-control" id="student-mentor" placeholder="Mentor" />
+      </div>
+      
+      <div class="md-form form-field">
+        <input type="text" name="skillSets" class="form-control" id="student-skillsets" placeholder="Skillsets" />
       </div>
     </div>
 
     <div class="form-group-account">
       <h4 class="form-group-header"> Account </h4>
-      <div class="md-form">
-        <label for="student-mentor">Mentor</label>
-        <input type="text" name="mentor" class="form-control" id="student-mentor" />
-      </div>
 
-      <div class="md-form">
+      <div class="md-form form-field">
         <label for="student-email">Email</label>
-        <input type="email" name="email" class="form-control" id="student-email" />
+        <input type="email" name="emailAddr" class="form-control" id="student-email" />
       </div>
 
-
-      <div class="md-form">
+      <div class="md-form form-field">
         <label for="student-password">Password</label>
         <input type="password" class="form-control" id="student-password">
       </div>
-      <div class="md-form">
+      <div class="md-form form-field">
         <label for="student-confirm-password">Confirm Password</label>
-        <input type="password" class="form-control" id="student-confirm-password">
+        <input type="password" name="password" class="form-control" id="student-confirm-password">
       </div>
     </div>
 
-    <button class="btn button striking" type="submit" name="submit-btn" id="btn-submit-student">
+    <button class="btn button striking" id="btn-submit-student">
       Save
     </button>
   </form>
