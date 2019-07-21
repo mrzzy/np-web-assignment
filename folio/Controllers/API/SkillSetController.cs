@@ -27,9 +27,9 @@ namespace folio.API.Controllers
         {
             get
             {
-                return Conflict(new Dictionary<string, string>
+                return Conflict(new Dictionary<string, List<string>>
                 {
-                    { "SkillSetName", "Name of skillset conflicts with an existing skillset" }
+                    { "SkillSetName", new List<string>{"Name of skillset conflicts with an existing skillset" }}
                 });
             }
         }

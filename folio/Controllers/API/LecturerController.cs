@@ -25,9 +25,9 @@ namespace folio.Controllers.API
         {
             get
             {
-                return Conflict(new Dictionary<string, string>
+                return Conflict(new Dictionary<string, List<string>>
                 {
-                    { "EmailAddr", "User with Email adddress already exists." }
+                    { "EmailAddr", new List<string>{ "User with Email adddress already exists." }}
                 });
             }
         }
