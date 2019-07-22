@@ -3,7 +3,7 @@
  * NP Web Assignment 
 */
 
-import API from "../API.js"
+import API from "../../API.js"
 
 // perform logout on click logout button
 $("#btn-logout").click(() => {

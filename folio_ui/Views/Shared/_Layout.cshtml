@@ -56,11 +56,11 @@
             {
               @if(ViewData["UserInfo"] == null)
               {
-              <partial name="_NavbarAnonymous" />
+              <partial name="~/Views/Shared/Navbars/_NavbarAnonymous.cshtml" />
               }
               else if((ViewData["UserInfo"] as UserInfo).UserRole == "Student")
               {
-              <partial name="_NavbarStudent" />
+              <partial name="~/Views/Shared/Navbars/_NavbarStudent.cshtml" />
               }
             }
           </div>

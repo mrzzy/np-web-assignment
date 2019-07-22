@@ -10,7 +10,7 @@ import "./style.css"
 import "./Layout/Layout.js"
 
 // Navbars
-import "./Shared/_NavbarStudent.js"
+import "./Shared/Navbars/_NavbarStudent.js"
 
 // Forms
 import "./Shared/_StudentForm.js"
