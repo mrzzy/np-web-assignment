@@ -135,12 +135,12 @@ namespace folio.Controllers.API
         {
             Console.WriteLine("get id:", id.ToString());
             // Retrieve the suggestion for id
-            Suggestion suggestion = null;
+            List<Suggestion> suggestion = null;
             using (EPortfolioDB database = new EPortfolioDB())
             {
                 suggestion = database.Suggestions
                     .Where(l => l.StudentId == id)
-                    .FirstOrDefault();
+                    .ToList();
             }
 
             if (suggestion == null) return NotFound();
@@ -188,6 +188,29 @@ namespace folio.Controllers.API
             }
             return Ok();
         }
-        
+
+        //[HttpGet("/api/suggestion/view/{id}")]
+        //[Produces("application/json")]
+        ////[Authenticate("Lecturer")]
+        //public ActionResult SuggestionView(int id)
+        //{
+        //    Console.WriteLine("get id:", id.ToString());
+        //    MenteesViewModel mvm = new MenteesViewModel();
+        //    mvm.studentList = new List<Student>();
+        //    mvm.suggestionList = new List<Suggestion>();
+
+        //    using (EPortfolioDB db = new EPortfolioDB())
+        //    {
+        //        mvm.studentList = db.Students
+        //            .Where(s => s.MentorId == id).ToList();
+
+        //        mvm.suggestionList = db.Suggestions
+        //            .Where(s => s.LecturerId == id).ToList();
+
+        //        db.SaveChanges();
+        //    }
+
+        //    return Json(mvm);
+        //}
     }
 }

@@ -1,7 +1,8 @@
-﻿@model IEnumerable<folio.Models.Suggestion>
+﻿
+@model IEnumerable<folio.Models.Student>
 
 @{
-    ViewData["Title"] = "View Mentees";
+    ViewData["Title"] = "Select Student";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Navbar
@@ -31,10 +32,44 @@
         </li>
     </ul>
 }
+<h1 class="text-center">Select Student</h1>
+@if (Model.ToList().Count > 0)
+{
+    <div class="container">
+        <div class="d-flex justify-content-center flex-wrap">
 
-<div class="container">
-    <div>
+            @foreach (var i in Model)
+            {
+            <a href="">
+                <div class="LCards">
+                    @{ string imageFileName = i.Name + ".jpg"; }
+                    <img src="~/img/@imageFileName"
+                         style="width:100%;" alt="@i.Name" class="LSelect" />
+
+                    <div class="LContainer">
+                        <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.Name</h4>
+                        <p class="text-md-left font-weight-bold "
+                           style="margin: 5px; color:#2d2d30;
+                            overflow: hidden;text-overflow: ellipsis;
+                            width: 240px; white-space: nowrap; ">@i.Description</p>
+                        </div>
+
+                    </div>
+                </a>
+                
+                }
+        </div>
 
     </div>
-    <div></div>
-</div>
+}
+
+<style>
+    div.LCards {
+        margin: 50px;
+        float: left;
+        width: 250px;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: left;
+    }
+</style>
+

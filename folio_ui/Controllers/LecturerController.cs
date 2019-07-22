@@ -35,7 +35,7 @@ namespace folio_ui.Controllers
         // GET: Lecturer/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            // Make Web API call to get a list of Lecturers related to a BookId
+            
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await
@@ -99,7 +99,7 @@ namespace folio_ui.Controllers
 
         //POST: Lecturer/Edit/5
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, Lecturer lecturer)
         {
             //Transfer data read to a Lecturer object

@@ -15,9 +15,21 @@ namespace folio_ui.Controllers
     public class SuggestionController : Controller
     {
         // GET: Suggestions
-        public ActionResult Index()
+        public async Task<ActionResult> Index(int id)
         {
-            return View();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await client.GetAsync("/api/lecturer/mentees/" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                List<Student> studentList = JsonConvert.DeserializeObject<List<Student>>(data);
+                return View(studentList);
+            }
+            else
+            {
+                return View(new List<Student>());
+            }
         }
 
         // GET: Suggestion/Details/5
@@ -27,7 +39,7 @@ namespace folio_ui.Controllers
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await
-             client.GetAsync("/api/suggestion/" + id.ToString());
+             client.GetAsync("/api/suggestion/student/" + id.ToString());
             if (response.IsSuccessStatusCode)
             {
                 string data = await response.Content.ReadAsStringAsync();

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<folio.Models.Suggestion>
+
+@{
+    ViewData["Title"] = "View Mentees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Navbar
+    {
+    <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" style="border-bottom: 1px solid #FFD00B;" href="">View Profile</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" href="">Post Suggestion</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" href="">View Mentees</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" href="">Skill Sets</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" href="">Change Password</a>
+        </li>
+
+        <li class="nav-item text-center mx-sm-3">
+            <button class="search button">
+                <img alt="Search" src="/img/search@2x.png" />
+                <span class="d-sm-none"> Search </span>
+            </button>
+        </li>
+    </ul>
+}
+
+<h1 class="text-center">Suggestion Details</h1>
+
+<div class="container d-flex flex-row">
+    <div class="d-flex flex-column" style="overflow:scroll; width:35%; height:500px; border:5px;">
+        @foreach (var i in Model)
+        {
+         <a class="" href="#">
+            <ul class="list-group ">
+                <li class="font-weight-bold list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    ID: @i.SuggestionId
+                    <div class="font-weight-bold p-2 bd-highlight" style="border-color:darkslategrey">@i.Description </div>
+                    <div class="font-weight-bold badge badge-primary badge-pill"
+                         style="color:#000; background:#FFD00B">@i.Status</div>
+                </li>               
+            </ul>
+        </a>
+ 
+        }
+    </div>
+</div>
