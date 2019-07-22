@@ -122,7 +122,19 @@ namespace folio_ui.Controllers
                 return View(new List<ProjectMember>());
             }
         }
-  
+        public async Task<ActionResult> AssignProjMember(int id)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await client.GetAsync("/api/project/assign/" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                List<ProjectMember> projectMemberList = JsonConvert.DeserializeObject<List<ProjectMember>>(data);
+                return View(projectMemberList);
+            }
+            return View();
+        }  
 
     }
 }
