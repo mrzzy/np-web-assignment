@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using folio.Models;
+using folio.Services.API;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -13,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace folio_ui.Controllers
 {
-    public class ProjectController : Controller
+    public class ProjectController : Controller 
     {
         // GET: /<controller>/
         public async Task<ActionResult> Index()
@@ -109,7 +110,7 @@ namespace folio_ui.Controllers
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await client.GetAsync("/api/project/member" + id.ToString());
+            HttpResponseMessage response = await client.GetAsync("/api/project/member/" + id.ToString());
             if (response.IsSuccessStatusCode)
             {
                 string data = await response.Content.ReadAsStringAsync();
@@ -118,8 +119,10 @@ namespace folio_ui.Controllers
             }
             else
             {
-                return View(new ProjectMember());
+                return View(new List<ProjectMember>());
             }
         }
+  
+
     }
 }
