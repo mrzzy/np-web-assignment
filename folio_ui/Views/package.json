@@ -39,6 +39,7 @@
   "dependencies": {
     "@babel/runtime": "^7.5.4",
     "@yaireo/tagify": "^2.23.0",
+    "autosize": "^4.0.2",
     "bootstrap": "^4.3.1",
     "core-js": "^3.1.4",
     "jquery": "^1.9.1",

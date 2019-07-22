@@ -6,9 +6,11 @@
 import "./_StudentForm.css"
 
 import API from "../../API.js"
-// tagify 
+// tagify inputsj
 import "@yaireo/tagify/dist/tagify.css";
 import Tagify from "@yaireo/tagify"
+// autoresizing textareas
+import autosize from "autosize";
 
 class StudentForm {
     // construct a student form  object
@@ -157,10 +159,16 @@ class StudentForm {
         // pull data
         await this.pullData();
     
+        // configure auto resizing textarea
+        autosize($("textarea[name]"));
+        $("textarea[name").change((e) => {
+            const input = e.target;
+            autosize.update(input)
+        });
+    
         if(mode === "Edit") {
             // load existing student data info form
             this.load();
-            
         } else if(mode == "Create") {
             // setup default values for password
             $("input[type='password']")
