@@ -202,7 +202,6 @@ namespace folio.API.Controllers
         // route to assign the skillset with the specified id to the student 
         // with the specified student id in query
         [HttpPost("/api/skillset/assign/{id}")]
-        [Authenticate("Student")]
         public ActionResult AssignSkillSet(int id, [FromQuery] int student)
         {
             using(EPortfolioDB database = new EPortfolioDB())

@@ -47,8 +47,6 @@ namespace folio.API.Controllers
 
         // route to upload the given file to the server
         // on success, returns the content id of the file
-        // authentication is required.
-        [Authenticate]
         [HttpPost("/api/file/upload")]
         [Produces("application/json")]
         public ActionResult UploadFile(IFormFile file)
