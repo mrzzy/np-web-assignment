@@ -25,15 +25,12 @@ namespace folio_ui
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             // enable CORS for talking to api server
-            string apiHost = "http://" + Environment.GetEnvironmentVariable(
-                    "API_SERVICE");
-            string apiIngress = "http://" + Environment.GetEnvironmentVariable(
-                    "API_ENDPOINT");
+            APIClient api = new APIClient();
             services.AddCors(options =>
             {  
                 options.AddPolicy(Startup.APIHostPolicy, builder => 
                 {
-                    builder.WithOrigins(apiHost, apiIngress)
+                    builder.WithOrigins(api.APIService, api.APIEndpoint)
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -55,12 +52,13 @@ namespace folio_ui
             // serve static files in wwwroot
             app.UseStaticFiles();
 
-            // middleware to inject userinfo into http context
+            // middleware to inject userinfo & api endpoint into http context
             app.Use(async (context, next) =>
             {
                 // pull user info form api and pass as http context items
                 APIClient api = new APIClient(context);
                 context.Items["UserInfo"] = api.GetUserInfo();
+                context.Items["APIEndpoint"] = api.APIEndpoint;
 
                 await next.Invoke();
             });

@@ -24,8 +24,6 @@ namespace folio_ui.Controllers
         public ActionResult Portfolio(int id)
         {
             APIClient api = new APIClient(HttpContext);
-            // add reference to api endpoint to view data
-            ViewData["API_ENDPOINT"] = api.APIEndpoint;
 
             // pull student portfolio data for id
             APIResponse response = api.CallAPI("GET", "/api/student/portfolio/" + id);
