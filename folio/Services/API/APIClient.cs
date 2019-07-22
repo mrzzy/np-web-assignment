@@ -13,6 +13,12 @@ using System.Collections.Generic;
 
 namespace folio.Services.API
 {
+    public class APIResponse {
+        public int StatusCode { get; set; } // status code of the response
+        public string Content { get; set; } // content of the response if any
+    }
+
+    // defines an exception that occurs when doing an api call
     public class APIClientCallException : Exception 
     {
         public APIClientCallException(string message)
@@ -39,12 +45,12 @@ namespace folio.Services.API
             this.AuthToken = token;
         }
         
-        // make an API call specified by the given call route using the given
-        // the given content if provided with the given http method
+        // make an API call specified by the given call route using the given http method
+        // Includes the content as the request body
         // Attaches an authentication token if APIClient has authentication token
         // throws and APIClientCallException if the call fail
-        // Returns the response of the call as a string
-        public string CallAPI(string method, string callRoute, string content=null)
+        // Returns the response as an APIResponse
+        public APIResponse CallAPI(string method, string callRoute, HttpContent content=null)
         {
             // construct the request
             HttpRequestMessage request = new HttpRequestMessage {
@@ -52,29 +58,26 @@ namespace folio.Services.API
                 RequestUri = new Uri(this.APIEndpoint + callRoute)
             };
 
-            // configure headers - add authorization token if required
+            // configure headers 
+            // - add authorization token if required
             if(this.AuthToken != null)
             { 
                 request.Headers.Authorization = 
                     new AuthenticationHeaderValue("Bearer", this.AuthToken);
             }
 
-            // add request content 
-            if(content != null)  request.Content = new StringContent(content);
-        
+            // add request content if provided
+            if(content != null) request.Content = content;
 
             // perform api call and capture response
-            HttpResponseMessage response = APIClient.Client.SendAsync(request).Result;
-            if(response.StatusCode != HttpStatusCode.OK)
+            HttpResponseMessage httpResponse = APIClient.Client.SendAsync(request).Result;
+            APIResponse response = new APIResponse
             {
-                throw new APIClientCallException(
-                    "API call failed: got status code: " 
-                    + response.StatusCode 
-                    + " got response: " 
-                    + response.Content.ToString());
-            }
-
-            return response.Content.ReadAsStringAsync().Result;
+                StatusCode = (int) httpResponse.StatusCode,
+                Content = httpResponse.Content.ReadAsStringAsync().Result
+            };
+            
+            return response;
         }
     }
 }

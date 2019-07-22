@@ -17,16 +17,9 @@ namespace folio.FormModels
     public class FileUpdateFormModel
     {
         [Required]
-        public string FileUrl  { get; set; }
+        public string FileId  { get; set; }
     
         [Required]
         public IFormFile File { get; set; }
-    }
-
-    // model defines the properties required to delete a file
-    public class FileDeleteFormModel
-    {
-        [Required]
-        public string FileUrl  { get; set; }
     }
 }

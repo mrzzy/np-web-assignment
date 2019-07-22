@@ -1,0 +1,125 @@
+﻿@model folio.Models.Project
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navbar {
+    <ul class="navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <button class="search button">
+                <img alt="Search" src="~/img/bell.png" />
+                <span class="d-sm-none"> Search </span>
+            </button>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Auth" asp-action="Portfolio">
+                Portfolio
+            </a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Auth" asp-action="Project">
+                Projects
+            </a>
+        </li>
+    </ul>
+}
+<!--Section: Contact v.2-->
+<section class="mb-4">
+
+    <!--Section heading-->
+    <h2 class="h1-responsive font-weight-bold text-center my-4">Create Project</h2>
+    <!--Section description-->
+    <p class="text-center w-responsive mx-auto mb-5">
+        
+    </p>
+
+    <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-9 mb-md-0 mb-5">
+            <form id="create-form">
+
+                <!--Grid row-->
+                <div class="row">
+
+                    <!--Grid column-->
+                    <div class="col-md-4">
+                        <div class="md-form mb-0">
+                            <input type="text" id="ProjTitle" name="name" class="form-control" asp-for="@Model.Title">
+                            <label for="name" class="ProjTitle">Project Title</label>
+                        </div>
+                    </div>
+                    <!--Grid column-->
+                    <!--Grid column-->
+                    <div class="col-md-4">
+                        <div class="md-form mb-0">
+                            <input type="text" id="ProjURL" name="email" class="form-control" asp-for="@Model.ProjectUrl">
+                            <label for="email" class="projURL">Project URL</label>
+                        </div>
+                    </div>
+
+
+                    <!--Grid column-->
+
+                </div>
+                <!--Grid row-->
+                <!--Grid row-->
+                <!--Grid row-->
+                <!--Grid row-->
+
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-md-8">
+
+                        <div class="md-form">
+                            <textarea type="text" id="description" name="message" rows="1" class="form-control md-textarea" asp-for="@Model.Description"></textarea>
+                            <label for="message">Project Description</label>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!--Grid row-->
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" asp-for="@Model.ProjectPoster">
+                            <label class="custom-file-label" for="fileInput">File Label</label>
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+
+            <div class="buttonsubmit">
+                <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit"> 
+                Create
+                </button>
+            </div>
+            <div class="status"></div>
+        </div>
+        <!--Grid column-->
+        <!--Grid column-->
+        <div class="col-md-3 text-center">
+            <ul class="list-unstyled mb-0">
+
+            </ul>
+        </div>
+        <!--Grid column-->
+
+    </div>
+
+</section>
+
+<style>
+    .row{
+        justify-content:center;
+        margin-left:160px;
+    }
+    
+    .buttonsubmit{
+        text-align:center;
+        margin-left:130px;
+    }
+</style>
