@@ -66,22 +66,37 @@ class StudentForm {
         await Promise.all(promises);
     }
 
-    // configure mentor field in form with the given mentors
+    // configure tagify input the given input element and config
+    // returns tagify instance for further configuration
+    configureTagify(input, config) {
+        const tagify = new Tagify(input, config);
+        // manually triggering blur event required 
+        // as tagify overwrites default input
+        const callback = () => {
+            $(input).blur();
+        }
+
+        tagify.on("dropdown:hide", callback);
+
+        return tagify;
+    }
+
+    // configure mentor field in form with the given mentors 
     configureMentor(mentors) {
         const input = $("#student-mentor").get(0);
         // populate mentor options list
-        const mentorNames = this.mentors.map((m) => m.name);
+        const mentorNames = mentors.map((m) => m.name);
     
         // setup tagify on input field
         const config = {
             whitelist: mentorNames,
+            enforceWhitelist: true,
             maxTags: 1,
             dropdown: {
                 enabled: 0
             }
         }
-        new Tagify(input, config);
-    
+        this.configureTagify(input, config);
     }
 
     // configure skillsets field in form with the given skillsets
@@ -92,28 +107,38 @@ class StudentForm {
         // setup tagify on input field
         const config = {
             whitelist: skillsetNames,
+            enforceWhitelist: true,
             dropdown: {
                 enabled: 0
             }
         }
-        const tagify = new Tagify(input, config);
-    
-        // removal of skillsets from students happens on the fly
-        if(this.mode === "Edit") {
-            tagify.on("remove", (e) => {
+        const tagify = this.configureTagify(input, config)
+
+        tagify.on("dropdown:hide", () => {
+            // unmark skillsets field as touched if no skillsets are
+            // available, allowing form to submited with empty skillsets
+            if(tagify.value.length <= 0) $(input).removeData("touched");
+        });
+
+        tagify.on("remove", (e) => {
+            if(this.mode === "Edit") {
+                // removal of skillsets from students happens on the fly
                 const skillsetName = e.detail.data.value;
-                const skillset = this.skillsets
-                    .filter(ss => ss.name == skillsetName)[0];
-                if(skillset != null) {
-                    this.api.call("POST", "/api/skillset/remove/" + skillset.id
-                        + "?student=" + this.student.studentId);
+                if(skillsetName != null) {
+                    const skillset = this.skillsets
+                        .filter(ss => ss.name == skillsetName)[0];
+                    if(skillset != null) {
+                        this.api.call("POST", "/api/skillset/remove/" + skillset.id
+                            + "?student=" + this.student.studentId);
+                    }
                 }
-            })
-        }
+            }
+        });
     }
 
     // configure on the fly  client side validation
     configureValidation() {
+        // on blur - validate input
         $("[name]").blur((event) => {
             // mark event target input as touched
             $(event.target).data("touched", "true");
@@ -207,6 +232,14 @@ class StudentForm {
             isValid = false;
         }
 
+        // check if skillsets selected are valid
+        // only if any skillsets has been added
+        const skillsets = this.extractSkillsets();
+        if(skillsets == null && $("#student-skillsets").data("touched") == "true") {
+            this.show("skillSets", "Please select skillsets only the provided skillsets");
+            isValid = false;
+        }
+
         if(isValid === false) this.scrollFirstShown();
 
         return isValid;
@@ -246,13 +279,17 @@ class StudentForm {
             return;
         }
 
-        // save student as new student mode & update id
-        const receipt = JSON.parse(response.content);
-        student.studentId = receipt.id;
+        // save student as new student mode 
+        if(this.mode == "Create") {
+            const receipt = JSON.parse(response.content);
+            student.studentId = receipt.id;
+        }
         this.student = student;
         
         // submit the students skillsets
-        this.submitSkillsets(student, student.skillsets);
+        if(student.skillsets != null) {
+            this.submitSkillsets(student, student.skillsets);
+        }
     }
 
     // submit the given skillsets, assigning them to the given student
@@ -304,9 +341,9 @@ class StudentForm {
         if(input.length <= 0) return null;
         const tags = JSON.parse(input);
         const skillsetNames = tags.map(t => t.value);
-        const skillsets = this.skillsets
-            .filter(ss => skillsetNames.includes(ss.name));
 
+        // match user input with available skillsets
+        const skillsets = this.skillsets.map(ss => skillsetNames.includes(ss.name));
         return skillsets;
     }
 
