@@ -5,9 +5,10 @@
 
 import "./_StudentForm.css"
 
+import API from "../../API.js"
+// tagify 
 import "@yaireo/tagify/dist/tagify.css";
 import Tagify from "@yaireo/tagify"
-import API from "../API.js"
 
 class StudentForm {
     // construct a student form  object

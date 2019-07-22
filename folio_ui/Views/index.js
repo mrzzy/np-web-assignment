@@ -13,7 +13,7 @@ import "./Layout/Layout.js"
 import "./Shared/Navbars/_NavbarStudent.js"
 
 // Forms
-import "./Shared/_StudentForm.js"
+import "./Shared/Forms/_StudentForm.js"
 
 // Auth - Login page
 import "./Auth/Login.js"
