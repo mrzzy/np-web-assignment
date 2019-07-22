@@ -298,16 +298,17 @@ class StudentForm {
     /* submiting data */
     // submit the contents of this form, performing the action as as configured
     // by configure()
+    // Returns true on successful submit, otherwise false
     async submit() {
         // clear previous errors
         this.clearShown();
 
         // client side validation 
-        if(this.validate("all") == false) return;
+        if(this.validate("all") == false) return false;
         
         // commit changes using API
         const student = this.extract();
-        if(student == null) return; // failed to extract student
+        if(student == null) return false; // failed to extract student
 
         this.showSubmitMessage("saving");
         
@@ -335,7 +336,7 @@ class StudentForm {
             const errors = JSON.parse(response.content);
             this.showErrors(errors);
             this.showSubmitMessage("errors");
-            return;
+            return false;
         }
 
         // save student as new student mode 
@@ -347,10 +348,11 @@ class StudentForm {
         
         // submit the students skillsets
         if(student.skillsets != null) {
-            this.submitSkillsets(student, student.skillsets);
+            await this.submitSkillsets(student, student.skillsets);
         }
 
         this.showSubmitMessage("success");
+        return true;
     }
 
     // submit the given skillsets, assigning them to the given student
@@ -454,7 +456,7 @@ class StudentForm {
         const skillsetNames = tags.map(t => t.value);
 
         // match user input with available skillsets
-        const skillsets = this.skillsets.map(ss => skillsetNames.includes(ss.name));
+        const skillsets = this.skillsets.filter(ss => skillsetNames.includes(ss.name));
         return skillsets;
     }
 
@@ -566,9 +568,15 @@ class StudentForm {
             form.formElement.submit();
         });
 
-        form.formElement.submit((e) => {
+        form.formElement.submit(async (e) => {
             e.preventDefault();
-            form.submit();
+            const result = await form.submit();
+            if(result === true && form.mode == "Create") {
+                // redirect to login page
+                setTimeout(() => {
+                    window.location.href = "/auth/login/";
+                }, 1500);
+            }
         });
     }
 })();
