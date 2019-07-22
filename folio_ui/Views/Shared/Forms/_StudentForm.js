@@ -3,15 +3,23 @@
  * Student Form Js
 */
 
-import "./_StudentForm.css"
+/* imports */
+// styling import
+import "./form.css"
 
+// imprt assets import
+import "./assets/Yes.png"
+import "./assets/Warning.png"
+
+// js imports
 import API from "../../API.js"
 // tagify inputsj
-import "@yaireo/tagify/dist/tagify.css";
+import "@yaireo/tagify/dist/tagify.css"
 import Tagify from "@yaireo/tagify"
 // autoresizing textareas
-import autosize from "autosize";
+import autosize from "autosize"
 
+/* student form client side script */
 class StudentForm {
     // construct a student form  object
     constructor() {
@@ -260,6 +268,7 @@ class StudentForm {
     async submit() {
         // clear previous errors
         this.clearShown();
+
         // client side validation 
         if(this.validate("all") == false) return;
         
@@ -267,6 +276,8 @@ class StudentForm {
         const student = this.extract();
         if(student == null) return; // failed to extract student
 
+        this.showSubmitMessage("saving");
+        
         var route = null;
         if(this.mode === "Edit") {
             route = "/api/student/update/" + this.student.studentId;
@@ -284,6 +295,7 @@ class StudentForm {
             // load errors into form
             const errors = JSON.parse(response.content);
             this.showErrors(errors);
+            this.showSubmitMessage("errors");
             return;
         }
 
@@ -298,6 +310,8 @@ class StudentForm {
         if(student.skillsets != null) {
             this.submitSkillsets(student, student.skillsets);
         }
+
+        this.showSubmitMessage("success");
     }
 
     // submit the given skillsets, assigning them to the given student
@@ -308,6 +322,32 @@ class StudentForm {
         });
     }
 
+    
+    // show the submit message of kind:
+    // "success" - show success submit message
+    // "errors" - show errors in form submit message
+    // "saving" - show errors in form submit message
+    showSubmitMessage(kind) {
+        // clear previous submit messages
+        $(".submit-message .success").addClass("d-none");
+        $(".submit-message .errors").addClass("d-none");
+        $(".submit-message .saving").addClass("d-none");
+
+        // show submit message of given kind
+        if(kind == "success") {
+            $(".submit-message .success").removeClass("d-none");
+        }
+        else if(kind == "errors") {
+            $(".submit-message .errors").removeClass("d-none");
+        }
+        else if(kind == "saving") {
+            $(".submit-message .saving").removeClass("d-none");
+        }
+        else {
+            throw "Unknown submit message kind: " + kind;
+        }
+    }
+    
     /* loading & extracting data */
     // loads the data for editing this.student
     load() {

@@ -1,13 +1,13 @@
 <!-- student form -->
-<div class="student-from-container">
+<div class="student-form-container">
   <div class="alert alert-danger d-none" id="form-message-template" role="alert">
   </div>
   <form id="student-form" class="d-none" accept-charset="utf-8">
     <!-- NOTE: name attributes of input fields MUST match the names in Student model (as lowercase) -->
     <input type="hidden" value="@ViewData["StudentFormMode"]"  id="form-mode"/>
 
-    <div class="form-group-portfolio">
-      <h4 class="from-group-header"> Portfolio </h4>
+    <div class="form-group-portfolio form-group">
+      <h4 class="form-group-header"> Portfolio </h4>
 
       <div class="md-form form-field">
         <label for="student-name">Name</label>
@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <div class="form-group-account">
+    <div class="form-group-account form-group">
       <h4 class="form-group-header"> Account </h4>
 
       <div class="md-form form-field">
@@ -60,9 +60,24 @@
         <input type="password" name="password" class="form-control" id="student-confirm-password">
       </div>
     </div>
-
-    <button class="btn button striking" id="btn-submit-student">
-      Save
-    </button>
+    
+    <div class="form-group-submit form-group row align-items-center">
+      <button class="btn button striking" id="btn-submit-student">
+        Save
+      </button>
+      <div class="submit-message faded ml-2">
+        <div class="saving d-none"> 
+          Saving ...
+        </div>
+        <div class="success d-none">
+          <img src="/img/Yes.png" alt="Saved"/>
+          Saved
+        </div>
+        <div class="errors d-none"> 
+          <img src="/img/Warning.png" alt="Not Saved"/>
+          Errors Found
+        </div>
+      </div>
+    </div>
   </form>
 </div>
