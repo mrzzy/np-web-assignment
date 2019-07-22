@@ -18,6 +18,7 @@ import "@yaireo/tagify/dist/tagify.css"
 import Tagify from "@yaireo/tagify"
 // autoresizing textareas
 import autosize from "autosize"
+// drop file
 
 /* student form client side script */
 class StudentForm {
@@ -134,15 +135,36 @@ class StudentForm {
             if(this.mode === "Edit") {
                 // removal of skillsets from students happens on the fly
                 const skillsetName = e.detail.data.value;
-                if(skillsetName != null) {
-                    const skillset = this.skillsets
-                        .filter(ss => ss.name == skillsetName)[0];
-                    if(skillset != null) {
-                        this.api.call("POST", "/api/skillset/remove/" + skillset.id
-                            + "?student=" + this.student.studentId);
-                    }
+                if(skillsetName == null) return;
+
+                const skillset = this.skillsets
+                    .filter(ss => ss.name == skillsetName)[0];
+                if(skillset == null) return;
+
+                this.api.call("POST", "/api/skillset/remove/" + skillset.id
+                    + "?student=" + this.student.studentId);
                 }
+        });
+    }
+
+    // configure photo field
+    configurePhoto() { 
+        const input = $("#student-photo").get(0);
+        $(input).change(() => {
+            // manually confiure validation for photo
+            $(input).data("touched", "true");
+            $(input).blur();
+            
+            // setup preview on select image
+            const reader = new FileReader();
+            reader.onload = (event) => { 
+                // preview loaded photo
+                const dataUrl = event.target.result;
+                $("#student-photo-preview").attr("src", dataUrl);
             }
+            
+            const file = this.extractPhoto();
+            reader.readAsDataURL(file);
         });
     }
 
@@ -167,13 +189,6 @@ class StudentForm {
         // pull data
         await this.pullData();
     
-        // configure auto resizing textarea
-        autosize($("textarea[name]"));
-        $("textarea[name").change((e) => {
-            const input = e.target;
-            autosize.update(input)
-        });
-    
         if(mode === "Edit") {
             // load existing student data info form
             this.load();
@@ -185,12 +200,22 @@ class StudentForm {
         } else {
             throw "StudentForm: Unknown mode: " + mode;
         }
+        
+        // configure auto resizing textarea
+        autosize($("textarea[name]"));
+        $("textarea[name").change((e) => {
+            const input = e.target;
+            autosize.update(input)
+        });
 
         // configure mentor field
         this.configureMentor(this.mentors);
 
         // configure skillsets field
         this.configureSkillsets(this.skillsets);
+    
+        // configure photo field
+        this.configurePhoto();
 
         // configure on the fly validation for touched inputs
         this.configureValidation();
@@ -255,13 +280,21 @@ class StudentForm {
             this.show("skillSets", "Please select skillsets only the provided skillsets");
             isValid = false;
         }
+    
+        // check if the photo selected is valid 
+        // (ie is it actually a photo)
+        const file = this.extractPhoto();
+        if(file != null && /^image\/[a-zA-Z]+$/.test(file.type) == false) {
+            methodShow($("#student-photo").get(0),
+                "picture", "Please select a image file");
+        }
+
 
         if(isValid === false) this.scrollFirstShown();
 
         return isValid;
     }
 
-    
     /* submiting data */
     // submit the contents of this form, performing the action as as configured
     // by configure()
@@ -283,6 +316,12 @@ class StudentForm {
             route = "/api/student/update/" + this.student.studentId;
         } else if (this.mode === "Create") {
             route = "/api/student/create";
+        }
+
+        // submit profile picture
+        const photo = this.extractPhoto();
+        if(photo != null) {
+            student.photo = await this.submitPhoto(student, photo);
         }
             
         const response = await this.api.call("POST", route, 
@@ -315,11 +354,32 @@ class StudentForm {
     }
 
     // submit the given skillsets, assigning them to the given student
-    submitSkillsets(student, skillsets) {
-        skillsets.map((skillset) => {
-            this.api.call("POST", "/api/skillset/assign/" + skillset.id
+    async submitSkillsets(student, skillsets) {
+        // assign skillsets concurrently
+        await Promise.all(skillsets.map((skillset) => {
+            return this.api.call("POST", "/api/skillset/assign/" + skillset.id
                 + "?student=" + student.studentId);
-        });
+        }));
+    }
+
+    // submit the given photoFile as profile picture for given student
+    // if deleteExisting is true will delete existing photo file
+    // returns file id of the uploaded file
+    async submitPhoto(student, photoFile, deleteExisting=false) {
+        // check if existing photo exists
+        if(student.photo != null && deleteExisting === true) {
+            // remove existing photo
+            await this.api.call("POST", "/api/file/delete/" + student.photo);
+        }
+
+        // update photo using file API
+        var formData = new FormData();
+        formData.append("file", photoFile);
+        const response = await this.api.call("POST", "/api/file/upload",
+            {}, formData);
+        const receipt = JSON.parse(response.content);
+
+        return receipt.fileId;
     }
 
     
@@ -368,6 +428,10 @@ class StudentForm {
         // load skillsets into form
         const skillsetNames = this.student.skillsets.map(ss => ss.name);
         $("#student-skillsets").val(skillsetNames.join(","));
+
+        // load profile picture into form
+        $("#student-photo-preview").attr("src", 
+            this.api.endpoint + "/api/file/" + this.student.photo);
     }
 
     // extract & return  the mentor from the mentor form field
@@ -378,7 +442,6 @@ class StudentForm {
         const tags = JSON.parse(input);
         const mentorName = tags[0].value;
         const mentor = this.mentors.filter((m) => m.name == mentorName)[0]
-
         return mentor;
     }
 
@@ -395,6 +458,17 @@ class StudentForm {
         return skillsets;
     }
 
+    // extract & return the image that the user selected as photo
+    // Return null if cannot extract photo
+    extractPhoto() {
+        const input = $("#student-photo").get(0);
+        // check any files selected
+        if(input.files.length <= 0) return null;
+        const file = input.files[0];
+        
+        return file;
+    }
+    
     // extracts fields of the form to produce a student object
     // returns the extracted student or null if could not extract student
     extract() {
@@ -427,7 +501,7 @@ class StudentForm {
         return student;
     }
 
-    /* display error messages */  
+    /* display & rendering */
     // show the given message underneath the input field with the given name
     show(name, message) {
         // add element to show message

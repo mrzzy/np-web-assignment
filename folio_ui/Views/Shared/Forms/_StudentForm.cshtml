@@ -1,3 +1,6 @@
+@{ 
+    ViewData["APIEndpoint"] = Context.Items["APIEndpoint"];
+}
 <!-- student form -->
 <div class="student-form-container">
   <div class="alert alert-danger d-none" id="form-message-template" role="alert">
@@ -8,6 +11,19 @@
 
     <div class="form-group-portfolio form-group">
       <h4 class="form-group-header"> Portfolio </h4>
+
+      <div class="form-field text-center my-5">
+        <div class="preview">
+          <img class="profile-picture d-inline-block" id="student-photo-preview"/>
+        </div>
+        <label class="button call-to-action my-4" for="student-photo"> 
+          <span class="text"> Pick a Photo.</span>
+          <div class="stack">
+            <img class="expand" src="/img/down@2x.png"/>
+          </div>
+        </label>
+        <input type="file" id="student-photo" name="picture" class="text-center form-control-file d-none" accept="image/*" />
+      </div>
 
       <div class="md-form form-field">
         <label for="student-name">Name</label>

@@ -7,7 +7,6 @@ form {
     position: relative;
 }
 
-
 form .form-group {
     margin-top: 1.6em;
     margin-bottom: 3.2em;
@@ -22,6 +21,12 @@ form .submit-message {
     font-style: "Roboto", sans-serif;
     font-weight: 500;
     font-size: 0.8em;
+}
+
+form img.profile-picture {
+    width: 12em;
+    height: 12em;
+    object-fit: contain;
 }
 
 /* tagify */

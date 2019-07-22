@@ -26,20 +26,20 @@ namespace folio.API.Controllers
     public class FileController: Controller
     {   
         private const string ContentPrefix = "usr";
-        private IContentService ContentService  = new GCSContentService();
 
         /* API Actions */
         // get the file for the given file id 
         [HttpGet("/api/file/{fileId}")]
         public ActionResult GetFile(string fileId)
         {
+            IContentService contentService  = new GCSContentService();
             // check if content service has file with the given file id
-            if(!this.ContentService
+            if(!contentService
                     .HasObject(fileId, FileController.ContentPrefix))
             { return NotFound(); }
 
             // determine url for file with the given file id using content service
-            string fileUrl = this.ContentService
+            string fileUrl = contentService
                 .EncodeUrl(fileId, FileController.ContentPrefix);
 
             return RedirectPermanent(fileUrl);
@@ -53,17 +53,19 @@ namespace folio.API.Controllers
         [Produces("application/json")]
         public ActionResult UploadFile(IFormFile file)
         {
+
             // build stream of the uploaded file
             MemoryStream contentStream = new MemoryStream();
             file.CopyTo(contentStream);
         
             // insert file into content service
-            string fileId = this.ContentService.Insert(contentStream, 
+            IContentService contentService  = new GCSContentService();
+            string fileId = contentService.Insert(contentStream, 
                     file.ContentType, FileController.ContentPrefix);
             
             return Json(new Dictionary<string, string>
             {
-                {"FileId", fileId}
+                {"fileId", fileId}
             });
         }
     
@@ -85,18 +87,19 @@ namespace folio.API.Controllers
             formModel.File.CopyTo(contentStream);
 
             // check if content actually exists
+            IContentService contentService  = new GCSContentService();
             string fileId = formModel.FileId;
-            if(!this.ContentService
+            if(!contentService
                     .HasObject(formModel.FileId, FileController.ContentPrefix))
             { return NotFound(); }
 
             // update file with content service
-            fileId = this.ContentService
+            fileId = contentService
                 .Update(fileId, contentStream, FileController.ContentPrefix);
         
             return Json(new Dictionary<string, string>
             {
-                {"FileId", fileId}
+                {"fileId", fileId}
             });
         }
     
@@ -112,10 +115,11 @@ namespace folio.API.Controllers
         
             // remove file using content service
             // delete only if content actually exists
-            if(this.ContentService
+            IContentService contentService  = new GCSContentService();
+            if(contentService
                     .HasObject(fileId, FileController.ContentPrefix))
             {
-                this.ContentService.Delete(fileId, FileController.ContentPrefix);
+                contentService.Delete(fileId, FileController.ContentPrefix);
             }
 
             return Ok();
