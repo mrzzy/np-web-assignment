@@ -19,5 +19,12 @@ namespace folio_ui.Controllers
         {
             return View();
         }
+    
+        // sign up action provides user with option to sign up as either a
+        // student or lecturer
+        public ActionResult SignUp()
+        {
+            return View();
+        }
     }
 }
