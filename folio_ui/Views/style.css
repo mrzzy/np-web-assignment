@@ -12,7 +12,7 @@ body {
 /* headers */
 h1, h2, h3, h4, h5, h6 {
     font-family: "Roboto", sans-serif;
-    font-weight: 900;
+    font-weight: 600 !important;
     color: black;
 }
 
@@ -32,6 +32,11 @@ h1 {
     box-shadow: none;
 }
 
+/* fix for link appearing higher than buttons in navbar */
+.navbar a {
+    padding-top: 0.95em !important;
+}
+ 
 /* remove default button styling */
 button, input[type="submit"], input[type="reset"] {
 	background: none;
@@ -103,5 +108,26 @@ a, a:hover {
 
 /* Forms */
 input:not([type="submit"]):focus {
-    border-bottom-color:  #FFD00B;
 }
+
+/* cards */
+.card.fancy {
+    position: relative;
+    border-radius: 0;
+    border-style: none;
+    box-shadow: 0 3px 9px rgba(0,0,0,0.06), 0 3px 9px rgba(0,0,0,0.06);
+
+    padding-top: 4.2em;
+}
+
+.card.fancy .card-title {
+    position: absolute;
+    top: -0.6em;
+    left: -0.4em;
+    
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-size: 4.2em;
+    text-shadow: 0px 3px 20px #DDD;
+}
+

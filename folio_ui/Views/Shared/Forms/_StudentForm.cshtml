@@ -1,0 +1,99 @@
+@{ 
+    ViewData["APIEndpoint"] = Context.Items["APIEndpoint"];
+}
+<!-- student form -->
+<div class="student-form-container">
+  <div class="alert alert-danger d-none" id="form-message-template" role="alert">
+  </div>
+  <form id="student-form" class="d-none" accept-charset="utf-8">
+    <!-- NOTE: name attributes of input fields MUST match the names in Student model (as lowercase) -->
+    <input type="hidden" value="@ViewData["StudentFormMode"]"  id="form-mode"/>
+
+    <div class="form-group-portfolio form-group">
+      <h4 class="form-group-header"> Portfolio </h4>
+
+      <div class="form-field text-center my-5">
+        <div class="preview">
+          <img class="profile-picture d-inline-block" id="student-photo-preview"/>
+        </div>
+        <label class="button call-to-action my-4" for="student-photo"> 
+          <span class="text"> Pick a Photo.</span>
+          <div class="stack">
+            <img class="expand" src="/img/down@2x.png"/>
+          </div>
+        </label>
+        <input type="file" id="student-photo" name="picture" class="text-center form-control-file d-none" accept="image/*" />
+      </div>
+
+      <div class="md-form form-field">
+        <label for="student-name">Name</label>
+        <input required type="text" name="name" class="form-control" id="student-name" />
+      </div>
+    
+      <div class="md-form form-field">
+        <label for="student-course">Course</label>
+        <input required type="text" name="course" class="form-control" id="student-course" />
+      </div>
+
+      <div class="md-form form-field">
+        <label for="student-description">Description</label>
+        <textarea name="description" class="form-control md-textarea" id="student-description" rows="8"></textarea>
+      </div>
+
+      <div class="md-form form-field">
+        <label for="student-achievement">Achievement</label>
+        <textarea name="achievement" class="form-control md-textarea" id="student-achievement" rows="4"></textarea>
+      </div>
+
+      <div class="md-form form-field">
+        <label for="student-external-link">External Link</label>
+        <input type="text" name="externalLink" class="form-control" id="student-external-link" />
+      </div>
+    
+      <div class="md-form form-field">
+        <input type="text" name="mentorId" class="form-control" id="student-mentor" placeholder="Mentor" />
+      </div>
+      
+      <div class="md-form form-field">
+        <input type="text" name="skillSets" class="form-control" id="student-skillsets" placeholder="Skillsets" />
+      </div>
+    </div>
+
+    <div class="form-group-account form-group">
+      <h4 class="form-group-header"> Account </h4>
+
+      <div class="md-form form-field">
+        <label for="student-email">Email</label>
+        <input type="email" name="emailAddr" class="form-control" id="student-email" />
+      </div>
+
+      <div class="md-form form-field">
+        <label for="student-password">Password</label>
+        <input type="password" class="form-control" id="student-password">
+      </div>
+      <div class="md-form form-field">
+        <label for="student-confirm-password">Confirm Password</label>
+        <input type="password" name="password" class="form-control" id="student-confirm-password">
+      </div>
+    </div>
+    
+    <div class="form-group-submit form-group row align-items-center">
+      <button class="btn button striking" id="btn-submit-student">
+        Save
+      </button>
+      <div class="submit-message faded ml-2">
+        <div class="saving d-none"> 
+          Saving ...
+        </div>
+        <div class="success d-none">
+          <img src="/img/Yes.png" alt="Saved"/>
+          Saved
+        </div>
+        <div class="errors d-none"> 
+          <img src="/img/Warning.png" alt="Not Saved"/>
+          Errors Found
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

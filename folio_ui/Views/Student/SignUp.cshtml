@@ -1,0 +1,16 @@
+@{
+    ViewData["Title"] = "Student Sign Up";
+    ViewData["StudentFormMode"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="signup-student container">
+  <div id="form-card" class="card fancy p-4 mx-auto col-md-10 col-lg-8">
+    <div class="card-body">
+      <div class="card-title">
+        Sign Up
+      </div>
+      <partial name="~/Views/Shared/Forms/_StudentForm.cshtml"/>
+    </div>
+  </div>
+</div>

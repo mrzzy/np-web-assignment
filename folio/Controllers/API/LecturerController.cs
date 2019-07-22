@@ -25,9 +25,9 @@ namespace folio.Controllers.API
         {
             get
             {
-                return Conflict(new Dictionary<string, string>
+                return Conflict(new Dictionary<string, List<string>>
                 {
-                    { "EmailAddr", "User with Email adddress already exists." }
+                    { "EmailAddr", new List<string>{ "User with Email adddress already exists." }}
                 });
             }
         }
@@ -46,25 +46,44 @@ namespace folio.Controllers.API
         }
 
         // GET: api/lecturers
+        // route to get lectuer ids, governed by optional query parameters:
+        // student - filter to only those whom mentor the student by given student id
+        // names - if 1, will include names of lectuers together with response
         [HttpGet("/api/lecturers")]
         [Produces("application/json")]
-        public ActionResult GetLecturers([FromQuery] int? student)
+        public ActionResult GetLecturers([FromQuery] int? student, 
+                [FromQuery] int? names)
         {
-            List<int> lecturerIds = null;
             using (EPortfolioDB db = new EPortfolioDB())
             {
-                IQueryable<Lecturer> matchingLecturer = db.Lecturers;
+                IQueryable<Lecturer> matchingLecturers = db.Lecturers;
 
                 if (student != null)
                 {
-                    matchingLecturer = matchingLecturer
+                    matchingLecturers = matchingLecturers
                         .Include(l => l.Students)
                         .Where(l => l.Students.Any(ll => ll.StudentId == student));
                 }
 
-                lecturerIds = matchingLecturer.Select(l => l.LecturerId).ToList();
+                // construct response with matching lecturers
+                if(names != null && names.Value == 1) // id + names
+                {
+                    List<Object> results = matchingLecturers
+                    .Select(l => new 
+                    {
+                        Id = l.LecturerId,
+                        Name = l.Name
+                    } as Object ).ToList();
+                    
+                    return Json(results);
+                }
+                else // only ids
+                {
+                    List<int> results = matchingLecturers
+                        .Select(l => l.LecturerId).ToList();
+                    return Json(results);
+                }
             }
-            return Json(lecturerIds);
         }
 
         // GET api/lecturer/5
