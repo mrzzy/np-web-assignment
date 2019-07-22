@@ -15,14 +15,12 @@ namespace folio_ui.Controllers
     public class HomeController : Controller
     {
         // Landing page of the side
-        [PassUserInfo]
         public IActionResult Index()
         {
             return View();
         }
     
         // Server Error Page
-        [PassUserInfo]
         [ResponseCache(
                 Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

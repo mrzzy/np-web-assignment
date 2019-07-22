@@ -1,6 +1,7 @@
 <!-- navbar for student users -->
 @{  
-ViewData["StudentId"] = (ViewData["UserInfo"] as UserInfo).Id;
+  ViewData["UserInfo"] = Context.Items["UserInfo"];
+  ViewData["StudentId"] = (ViewData["UserInfo"] as UserInfo).Id;
 }
 <ul class="navbar-nav flex-grow-1 flex-md-row justify-content-sm-end align-items-sm-center">
   <li class="nav-item text-center">

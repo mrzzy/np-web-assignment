@@ -21,7 +21,6 @@ namespace folio_ui.Controllers
     {
         // display student portfolio for the given id
         [HttpGet("/student/portfolio/{id}")]
-        [PassUserInfo]
         public ActionResult Portfolio(int id)
         {
             APIClient api = new APIClient(HttpContext);
@@ -66,7 +65,6 @@ namespace folio_ui.Controllers
         
         // edit student profile for the student with the given id
         [HttpGet("/student/profile")]
-        [PassUserInfo]
         public ActionResult Profile()
         {
             APIClient api = new APIClient(HttpContext);
