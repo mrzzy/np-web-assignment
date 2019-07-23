@@ -9,6 +9,37 @@
 			"name": "folio/api/auth",
 			"item": [
 				{
+					"name": "get user info for student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenStudent}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/auth/info",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "login with credentials student",
 					"event": [
 						{
@@ -161,6 +192,37 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get user info lecturer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{sessionTokenLecturer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/auth/info",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"info"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -227,7 +289,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/skillsets?student=1",
+							"raw": "http://localhost:5000/api/skillsets?student=1&names=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -240,6 +302,10 @@
 							"query": [
 								{
 									"key": "student",
+									"value": "1"
+								},
+								{
+									"key": "names",
 									"value": "1"
 								}
 							]
@@ -340,14 +406,7 @@
 					"name": "assign skillset to student",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{sessionTokenStudent}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [],
@@ -420,7 +479,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{sessionToken}}",
+									"value": "{{sessionTokenLecturer}}",
 									"type": "string"
 								}
 							]
@@ -518,6 +577,32 @@
 							"query": [
 								{
 									"key": "project",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student ids with names",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/students?names=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "names",
 									"value": "1"
 								}
 							]
@@ -659,7 +744,7 @@
 					"response": []
 				},
 				{
-					"name": "update student",
+					"name": "update student by id",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -676,13 +761,13 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Sir Johnny Ive\",\n    \"course\": \"IT\",\n    \"photo\": \"male1.jpg\",\n    \"description\": \"I am a passionate individual with a proven track record in creating database and cloud projects. I have strong technical skills as well as excellent interpersonal skills which were further honed during my time in school and internship. I am also an individual who is eager to be challenged in order to grow and improve my career development so that I will be better equipped to handle challenging projects in the future.\",\n    \"achievement\": \"Knighted by the Queen\",\n    \"externalLink\": \"https://www.linkedin.com/in/johnny\",\n    \"password\": \"p@55Student\",\n    \"mentorId\": 2\n}"
+							"raw": "{\n    \"name\": \"Sir Johnny Ive\",\n    \"course\": \"IT\",\n    \"photo\": \"male1.jpg\",\n    \"description\": \"I am a passionate individual with a proven track record in creating database and cloud projects. I have strong technical skills as well as excellent interpersonal skills which were further honed during my time in school and internship. I am also an individual who is eager to be challenged in order to grow and improve my career development so that I will be better equipped to handle challenging projects in the future.\",\n    \"achievement\": \"Knighted by the Queen\",\n    \"externalLink\": \"https://www.linkedin.com/in/johnny\",\n    \"email\": \"ive@gmail.com\",\n    \"password\": \"p@55Student\",\n    \"mentorId\": 2\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/api/student/update/{{studentId}}",
@@ -755,7 +840,7 @@
 								"exec": [
 									"// save url of file for future requests",
 									"var response = pm.response.json();",
-									"pm.globals.set(\"fileUrl\", response.FileUrl);"
+									"pm.globals.set(\"fileId\", response.FileId);"
 								],
 								"type": "text/javascript"
 							}
@@ -763,14 +848,7 @@
 					],
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{sessionTokenStudent}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [
@@ -820,9 +898,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{fileUrl}}",
+							"raw": "http://localhost:5000/api/file/{{fileId}}",
+							"protocol": "http",
 							"host": [
-								"{{fileUrl}}"
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"file",
+								"{{fileId}}"
 							]
 						}
 					},
@@ -861,8 +946,8 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "FileUrl",
-									"value": "{{fileUrl}}",
+									"key": "FileId",
+									"value": "{{fileId}}",
 									"type": "text"
 								},
 								{
@@ -910,18 +995,8 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "FileUrl",
-									"value": "{{fileUrl}}",
-									"type": "text"
-								}
-							]
-						},
 						"url": {
-							"raw": "http://localhost:5000/api/file/delete",
+							"raw": "http://localhost:5000/api/file/delete/{{fileId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -930,7 +1005,8 @@
 							"path": [
 								"api",
 								"file",
-								"delete"
+								"delete",
+								"{{fileId}}"
 							]
 						}
 					},
@@ -967,7 +1043,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/lecturers?student=1",
+							"raw": "http://localhost:5000/api/lecturers?student=1&names=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -980,6 +1056,10 @@
 							"query": [
 								{
 									"key": "student",
+									"value": "1"
+								},
+								{
+									"key": "names",
 									"value": "1"
 								}
 							]

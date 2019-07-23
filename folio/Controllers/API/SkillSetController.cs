@@ -27,9 +27,9 @@ namespace folio.API.Controllers
         {
             get
             {
-                return Conflict(new Dictionary<string, string>
+                return Conflict(new Dictionary<string, List<string>>
                 {
-                    { "SkillSetName", "Name of skillset conflicts with an existing skillset" }
+                    { "SkillSetName", new List<string>{"Name of skillset conflicts with an existing skillset" }}
                 });
             }
         }
@@ -37,13 +37,14 @@ namespace folio.API.Controllers
         /* Controller Routes */
         // route to query skillsets, with optional specification in url params:
         // student - filter by student (given by id) whom have been assigned skillse
+        // names - if 1 includes the name of the skillset in addition to ids
         // responds to request with the ids of all matching skillsets
         [HttpGet("/api/skillsets")]
         [Produces("application/json")]
-        public ActionResult Query([FromQuery] int? student)
+        public ActionResult Query([FromQuery] int? student, 
+                [FromQuery] int? names)
         {
             // obtain the skillsets that match the query
-            List<int> matchIds = null;
             using(EPortfolioDB database = new EPortfolioDB())
             {
                 IQueryable<SkillSet> matchingSkillsets = database.SkillSets;
@@ -58,11 +59,25 @@ namespace folio.API.Controllers
                             .Any(ss => ss.StudentId == student));
                 }
             
-                // convert matching skillsets to there corresponding ids
-                matchIds = matchingSkillsets.Select(s => s.SkillSetId).ToList();
+                // contruct response
+                if(names != null && names.Value == 1)
+                {
+                    List<Object> results = matchingSkillsets
+                    .Select(s => new 
+                    {
+                        Id = s.SkillSetId,
+                        Name = s.SkillSetName
+                    } as Object ).ToList();
+                    
+                    return Json(results);
+                }
+                else // ids only
+                {
+                    List<int> matchIds = matchingSkillsets
+                        .Select(s => s.SkillSetId).ToList();
+                    return Json(matchIds);
+                }
             }
-            
-            return Json(matchIds);
         }
 
         // route to get a skillset for the given id
@@ -200,7 +215,6 @@ namespace folio.API.Controllers
         // route to assign the skillset with the specified id to the student 
         // with the specified student id in query
         [HttpPost("/api/skillset/assign/{id}")]
-        [Authenticate("Student")]
         public ActionResult AssignSkillSet(int id, [FromQuery] int student)
         {
             using(EPortfolioDB database = new EPortfolioDB())

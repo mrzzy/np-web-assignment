@@ -33,7 +33,8 @@ $("#login-form").submit(async (event) => {
 
     // obtain info about the user being authenticated
     const userinfo = await api.getUser();
-    console.log("logged in as:", userinfo);
     console.log(userinfo);
-    //TODO: go somewhere after being logggein
+    if(userinfo.userRole == "Student") {
+        window.location.href = "/student/portfolio/" + userinfo.id;
+    }
 });

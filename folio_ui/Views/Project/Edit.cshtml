@@ -38,7 +38,7 @@
         <!--Grid column-->
         <div class="col-md-9 mb-md-0 mb-5">
             <form asp-action="Edit" method="post">
-               
+
                 <!--Grid row-->
                 <div class="row">
 
@@ -88,7 +88,13 @@
                         </div>
                     </div>
                 </div>
+                <br />
                 <div class="buttonsubmit">
+                    <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit" asp-action="Index">
+                        Back
+                    </button>
+
+
                     <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit">
                         Confirm
                     </button>
@@ -108,7 +114,8 @@
     }
 
     .buttonsubmit {
-        text-align: center;
+        float:left;
+        margin-left:450px;
        
     }
 </style>

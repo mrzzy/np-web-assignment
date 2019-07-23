@@ -25,12 +25,12 @@ export default class API {
     */
     constructor(endpoint=null) {
         this.endpoint = "http://"  + ( 
-            (endpoint == null) ? process.env.API_INGRESS : endpoint
+            (endpoint == null) ? process.env.API_ENDPOINT : endpoint
         );
         
         // load session token from cookie
         this.token = null;
-        const gotToken = Cookies.get("API.token");
+        const gotToken = Cookies.get(process.env.API_TOKEN_KEY);
         if(gotToken != null) this.token = gotToken;
     }
 
@@ -59,10 +59,10 @@ export default class API {
         // build the request
         var request = {}
         request.headers = headers;
+        this.bless(request); // set auth header
         request.method = method;
         request.mode = "cors";
         if(content != null) request.body = content;
-        this.bless(request);
 
         // make the API call
         const fetchResponse = await fetch(this.endpoint + route, request);
@@ -127,7 +127,7 @@ export default class API {
         this.token = reply.sessionToken;
 
         // save token for future object authentications
-        Cookies.set("Auth.token", this.token);
+        Cookies.set(process.env.API_TOKEN_KEY, this.token);
 
         return true;
     }
@@ -135,10 +135,10 @@ export default class API {
     /* Perform logout of the currently authenticated user 
      * If not already authenticated, would do nothing
     */
-    async logout(){
+    logout(){
         // clear bearer auth tokens to reset to state before login
         this.token = null;
-        Cookies.remove("Auth.token");
+        Cookies.remove(process.env.API_TOKEN_KEY);
     }
 
     /* Checks if authenticationed using API's check function asyncronously 

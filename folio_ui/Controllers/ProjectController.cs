@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using folio.Models;
+using folio.Services.API;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -13,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace folio_ui.Controllers
 {
-    public class ProjectController : Controller
+    public class ProjectController : Controller 
     {
         // GET: /<controller>/
         public async Task<ActionResult> Index()
@@ -33,12 +34,12 @@ namespace folio_ui.Controllers
                 return View(new List<Project>());
             }
         }
-        //public async Task<ActionResult> Create()
-        //{
+        public async Task<ActionResult> Create()
+        {
 
-        //    return View();
+            return View();
 
-        //}
+        }
         public async Task<ActionResult> Edit(int id)
         {
             // Make Web API call to get a list of Lecturers related to a BookId
@@ -87,9 +88,41 @@ namespace folio_ui.Controllers
                 return RedirectToAction("Index", "Project");
             }
         }
-        //public async Task<ActionResult> Detail(int id, Project project , [FromQuery] int student)
-        //{
-        //    return View();
-        //}
+        public async Task<ActionResult> Detail(int id, Project project , [FromQuery] int student)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.GetAsync("/api/project/" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                Project projectList =
+                JsonConvert.DeserializeObject<Project>(data);
+                return View(projectList);
+            }
+            else
+            {
+                return View(new Project());
+            }
+        }
+        public async Task<ActionResult> ViewProjMember(int id)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await client.GetAsync("/api/project/member/" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                List<ProjectMember> projectMemberList = JsonConvert.DeserializeObject<List<ProjectMember>>(data);
+                return View(projectMemberList);
+            }
+            else
+            {
+                return View(new List<ProjectMember>());
+            }
+        }
+  
+
     }
 }
