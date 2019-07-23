@@ -25,6 +25,17 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Views\Project\Create.cshtml.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Views\Project\Create.cshtml" />
+      <Content Remove="Views\Project\Detail.cshtml" />
+      <Content Remove="Views\Project\Edit.cshtml" />
+      <Content Remove="Views\Project\ViewProjMember.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Content Remove="Views\Suggestion\Details.cshtml" />
       <Content Remove="Views\Suggestion\Index.cshtml" />
     </ItemGroup>
