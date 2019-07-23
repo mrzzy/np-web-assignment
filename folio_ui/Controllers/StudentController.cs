@@ -1,108 +1,77 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Net.Http;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
-//using Newtonsoft.Json;
-//using folio.Models;
+﻿/*
+ * NP Web Assignment
+ * Folio UI
+*/
 
-//namespace folio_ui.Controllers
-//{
-//    public class StudentController : Controller
-//    {
-//        // GET: Student
-//        public async Task<ActionResult> Index()
-//        {
-//            HttpClient client = new HttpClient();
-//            client.BaseAddress = new Uri("http://localhost:5000");
-//            HttpResponseMessage response = await client.GetAsync("/api/students");
-//            if (response.IsSuccessStatusCode)
-//            {
-//                string data = await response.Content.ReadAsStringAsync();
-//                List<Student> studentList = JsonConvert.DeserializeObject<List<Student>>(data);
-//                return View(studentList);
-//            }
-//            else
-//            {
-//                return View(new List<Student>());
-//            }
-//        }
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using folio.Models;
+using folio.Services.API;
 
-//        // GET: Student/Details/5
-//        public ActionResult Details(int id)
-//        {
-//            return View();
-//        }
+namespace folio_ui.Controllers
+{     
+    // ui controller: /student
+    public class StudentController : Controller
+    {
+        // display student portfolio for the given id
+        [HttpGet("/student/portfolio/{id}")]
+        public ActionResult Portfolio(int id)
+        {
+            APIClient api = new APIClient(HttpContext);
 
-//        // GET: Student/Create
-//        public ActionResult Create()
-//        {
-//            return View();
-//        }
+            // pull student portfolio data for id
+            APIResponse response = api.CallAPI("GET", "/api/student/portfolio/" + id);
+            Student student = JsonConvert.DeserializeObject<Student>(response.Content);
 
-//        // POST: Student/Create
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public ActionResult Create(IFormCollection collection)
-//        {
-//            try
-//            {
-//                // TODO: Add insert logic here
+            // pull student projects
+            response = api.CallAPI("GET", "/api/projects?student=" + id);
+            List<int> projectIds = JsonConvert.DeserializeObject<List<int>>(response.Content);
+            IEnumerable<Project> projects = projectIds.Select((projectId) => 
+            {
+                response = api.CallAPI("GET", "/api/project/" + projectId);
+                Project project = JsonConvert.DeserializeObject<Project>(response.Content);
+                
+                //clamp description down for rendering in small view
+                int clampLimit = 200;
+                if(project.Description.Count() > clampLimit) 
+                {
+                    project.Description = 
+                        project.Description.Substring(0, clampLimit) + " ...";
+                }
 
-//                return RedirectToAction(nameof(Index));
-//            }
-//            catch
-//            {
-//                return View();
-//            }
-//        }
+                return project;
+            });
+            ViewData["Projects"] = projects;
 
-//        // GET: Student/Edit/5
-//        public ActionResult Edit(int id)
-//        {
-//            return View();
-//        }
+            // pull student's skilsets
+            response = api.CallAPI("GET", "/api/skillsets?student=" + id);
+            List<int> skillSetIds = JsonConvert.DeserializeObject<List<int>>(response.Content);
+            IEnumerable<SkillSet> skillSets = skillSetIds.Select((skillSetId) => {
+                response = api.CallAPI("GET", "/api/skillset/" + skillSetId);
+                return JsonConvert.DeserializeObject<SkillSet>(response.Content);
+            });
+            ViewData["SkillSets"] = skillSets;
+            
+            return View(student);
 
-//        // POST: Student/Edit/5
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public ActionResult Edit(int id, IFormCollection collection)
-//        {
-//            try
-//            {
-//                // TODO: Add update logic here
+        }
 
-//                return RedirectToAction(nameof(Index));
-//            }
-//            catch
-//            {
-//                return View();
-//            }
-//        }
-
-//        // GET: Student/Delete/5
-//        public ActionResult Delete(int id)
-//        {
-//            return View();
-//        }
-
-//        // POST: Student/Delete/5
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public ActionResult Delete(int id, IFormCollection collection)
-//        {
-//            try
-//            {
-//                // TODO: Add delete logic here
-
-//                return RedirectToAction(nameof(Index));
-//            }
-//            catch
-//            {
-//                return View();
-//            }
-//        }
-//    }
-//}
+        // edit student profile for the student with the given id
+        public ActionResult SignUp() 
+        {
+            return View();
+        }
+        
+        // edit student profile for the student with the given id
+        public ActionResult Profile()
+        {
+            return View();
+        }
+    }
+}

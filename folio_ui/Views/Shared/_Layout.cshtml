@@ -1,4 +1,5 @@
 ﻿@{
+    ViewData["UserInfo"] = Context.Items["UserInfo"];
 }
 <!DOCTYPE html>
 <html>
@@ -15,17 +16,21 @@
                   crossorigin="anonymous"
                   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
     </script>
+   <!-- popper js -->
+   <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
 
-    <!-- bootstrap  -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-                           asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-                           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
-                                                                                                   crossorigin="anonymous"
-                                                                                                   integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
-    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
-                  crossorigin="anonymous"
-                  integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
-    </script>
+    <!-- bootstrap with material design  -->
+    <!-- styling -->
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/css/mdb.min.css" rel="stylesheet">
+    
+    <!-- javascript -->
+    <!-- Bootstrap core JavaScript -->
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/js/mdb.min.js"></script>
 
     <!-- bundled js -->
     <script defer src="~/js/bundle.js"></script>
@@ -34,7 +39,7 @@
     <!-- check if navbar is enabled -->
     @if(ViewData["IsNavbarDisabled"] == null || (bool)ViewData["IsNavbarDisabled"] == false){
     <header class="my-4">
-      <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
+      <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light">
         <div class="container flex-col flex-sm-row">
           <!-- logo -->
           <a class="navbar-left" asp-controller="Home" asp-action="Index">
@@ -48,6 +53,17 @@
           <!-- navigation items -->
           <div class="navbar-collapse collapse flex-sm-row mt-2 mt-sm-0">
             @RenderSection("Navbar", required: false)
+            @if (!IsSectionDefined("Navbar"))
+            {
+              @if(ViewData["UserInfo"] == null)
+              {
+              <partial name="~/Views/Shared/Navbars/_NavbarAnonymous.cshtml" />
+              }
+              else if((ViewData["UserInfo"] as UserInfo).UserRole == "Student")
+              {
+              <partial name="~/Views/Shared/Navbars/_NavbarStudent.cshtml" />
+              }
+            }
           </div>
         </div>
       </nav>

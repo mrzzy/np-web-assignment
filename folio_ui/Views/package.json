@@ -22,6 +22,7 @@
     "dotenv": "^8.0.0",
     "dotenv-webpack": "^1.7.0",
     "file-loader": "^4.0.0",
+    "js-cookie": "^2.2.0",
     "mocha": "^6.1.4",
     "style-loader": "^0.23.1",
     "webpack": "^4.35.2",
@@ -31,13 +32,18 @@
     "presets": [
       "@babel/preset-env"
     ],
-    "plugins": ["@babel/plugin-transform-runtime"]
+    "plugins": [
+      "@babel/plugin-transform-runtime"
+    ]
   },
   "dependencies": {
     "@babel/runtime": "^7.5.4",
+    "@yaireo/tagify": "^2.23.0",
+    "autosize": "^4.0.2",
     "bootstrap": "^4.3.1",
     "core-js": "^3.1.4",
     "jquery": "^1.9.1",
+    "mdbootstrap": "^4.8.5",
     "popper.js": "^1.15.0"
   }
 }

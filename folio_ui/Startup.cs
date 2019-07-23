@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
+using folio.Services.API;
+
 namespace folio_ui
 {
     public class Startup
@@ -21,16 +23,14 @@ namespace folio_ui
 
             // mvc routing service 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            
             // enable CORS for talking to api server
-            string apiHost = "http://" + Environment.GetEnvironmentVariable(
-                    "API_HOST");
-            string apiIngress = "http://" + Environment.GetEnvironmentVariable(
-                    "API_INGRESS");
+            APIClient api = new APIClient();
             services.AddCors(options =>
             {  
                 options.AddPolicy(Startup.APIHostPolicy, builder => 
                 {
-                    builder.WithOrigins(apiHost, apiIngress)
+                    builder.WithOrigins(api.APIService, api.APIEndpoint)
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -51,6 +51,17 @@ namespace folio_ui
         
             // serve static files in wwwroot
             app.UseStaticFiles();
+
+            // middleware to inject userinfo & api endpoint into http context
+            app.Use(async (context, next) =>
+            {
+                // pull user info form api and pass as http context items
+                APIClient api = new APIClient(context);
+                context.Items["UserInfo"] = api.GetUserInfo();
+                context.Items["APIEndpoint"] = api.APIEndpoint;
+
+                await next.Invoke();
+            });
         
             // MVC routing
             app.UseMvc(routes =>

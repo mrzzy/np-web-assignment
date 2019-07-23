@@ -1,0 +1,66 @@
+﻿@model Student;
+@{
+    ViewData["Title"] = "Student Portfolio";
+    ViewData["APIEndpoint"] = Context.Items["APIEndpoint"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="portfolio container">
+  <div class="header">
+    <div class="header row d-flex flex-nowrap flex-column flex-md-row justify-content-around align-items-center">
+      <div class="picture-container">
+        <img class="frame frame-upper-right" src="/img/upper_right_picture_frame.png" />
+        <img class="frame frame-bottom-left" src="/img/bottom_left_picture_frame.png" />
+        <img class="picture" src="@ViewData["APIEndpoint"]/api/file/@Model.Photo" />
+      </div>
+      
+      <div class="userinfo-container my-5 col-md-6">
+        <div class="userrole faded">Student</div>
+        <h1 class="name">@Model.Name</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="skillsets my-5">
+    <h3 class="title text-center"> Skills </h3>
+    <div class="d-flex flex-column flex-sm-row justify-content-around align-items-center">
+      @foreach(SkillSet skillSet in ViewData["SkillSets"] as IEnumerable<SkillSet>) 
+      {
+      <div class="skillset text-center my-2">
+        @skillSet.SkillSetName
+      </div>
+      }
+    </div>
+  </div>
+  
+  <div class="about my-5">
+    <div class="row">
+      <div class="col-sm-10 col-md-8 col-lg-6 mx-auto">
+        <h3 class="title text-center"> About </h3>
+        <p>
+          @Model.Description
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="projects my-5">
+    <h3 class="title text-center"> Projects  </h3>
+    <div class="d-flex flex-column flex-md-row justify-content-around align-items-center">
+      @foreach (Project project in ViewData["Projects"] as IEnumerable<Project>)
+      {
+      <div class="project card text-center my-4">
+        <img class="frame frame-upper-right" src="/img/upper_right_project_frame.png" />
+        <img class="frame frame-bottom-left" src="/img/bottom_left_project_frame.png" />
+        <h5 class="card-title title"> @project.Title  </h5>
+        <p class="card-text mx-auto"> @project.Description <p>
+            <!-- TODO: link to actual project -->
+            <a class="button btn btn-view striking" >
+              View <img class="right" src="/img/right.png" />
+            </a>
+      </div>
+      }
+    </div>
+  </div>
+
+</div>

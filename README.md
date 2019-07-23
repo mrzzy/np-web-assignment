@@ -9,7 +9,8 @@ This repository contains our WEB assignment source code.
         3. Copy the `.env` file into `folio`, `folio_ui`, `folio_tests`,`folio_ui/Views`folders
     - if you have `make`, save the `.env` in project root and copy the files automaticaly using `make`
 4. Run `docker-compose up`
-5. Open the site at http://localhost:50
+5. Open the site at http://localhost:5001
+
 ### Visual Studio
 1. Configure & Run SQL Server with script in `db\Student_EPortfolio_Db_SetUp_Script.sql`
 2. Make a copy of the `dotenv` as `.env.`and fill up the values to variables 
@@ -37,9 +38,11 @@ Current Project Status:
 - 2.6.4 | File API | :heavy_check_mark:
 - 2.7.1 | Landing Page | :construction:
 - 2.7.1 | Sign Up Page | :construction:
-- 2.7.1 | Login Page | :construction:
+- 2.7.1 | Login Page | :heavy_check_mark:
 - 2.7.1 | Student Porfolio Page | :construction:
-- 2.7.1 | Student Dashboard Page | :construction:
+- 2.7.1 | Student Profile page | :heavy_check_mark:
+- 2.7.1 | Student View & Acknowledge skillsets |  :construction:
+
 
 ## Design
 ### Project Directory Structure
@@ -51,6 +54,7 @@ Current Project Status:
         - API - api controllers
     - Services - utility services
         - Auth - Authentication
+        - API - API support
         - Content - content delivery
 - folio_ui - folio frontend source
     - Services - utility services

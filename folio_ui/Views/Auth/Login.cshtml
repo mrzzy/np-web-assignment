@@ -5,11 +5,13 @@ ViewData["IsNavbarDisabled"] = true;
 
 <div id="login-container" class="container">
   <div class="row my-5">
-    <img class="faded logo mx-auto" alt="folio" src="/img/logo.png">
+    <a id="home-logo" class="mx-auto" asp-controller="Home" asp-action="Index">
+      <img class="faded logo" alt="folio" src="/img/logo.png">
+    </a>
   </div>
   <div class="row"> 
     <!-- login card -->
-    <div id="login-card" class="card col-10 col-sm-8 col-md-6 col-lg-4 mx-auto my-5">
+    <div id="login-card" class="card fancy col-10 col-sm-8 col-md-6 col-lg-4 mx-auto my-5">
       <div class="card-body">
         <div class="card-title">
           Login.
@@ -18,9 +20,19 @@ ViewData["IsNavbarDisabled"] = true;
         </div>
         <!-- login form -->
         <form id="login-form" accept-charset="utf-8">
-          <input type="email" name="EmailAddr" id="login-EmailAddr" placeholder="email">
-          <input type="password" name="Password" id="login-Password" placeholder="password">
-          <input class="button striking" type="submit" name="submit-btn" id="login-btn-submit" value="Login">
+          <div class="md-form">
+             <input type="email" name="EmailAddr" class="form-control" id="login-EmailAddr">
+            <label for="login-EmailAddr">Email Address</label>
+          </div>
+
+          <div class="md-form">
+            <label for="login-Password">Password</label>
+            <input type="password" name="Password" class="form-control" id="login-Password">
+          </div>
+
+          <button class="btn button striking" type="submit" name="submit-btn" id="login-btn-submit">
+            Login
+          </button>
         </form>
         <!-- sign up link -->
         <a id="sign-up" class="button faded" asp-controller="Auth" asp-action="SignUp">

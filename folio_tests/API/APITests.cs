@@ -18,7 +18,7 @@ namespace folio.Tests.API
         {
             // load api host form host
             DotNetEnv.Env.Load();
-            string apiHost = Environment.GetEnvironmentVariable("API_HOST");
+            string apiHost = Environment.GetEnvironmentVariable("API_SERVICE");
             
             // Attempt to access the api at the /api/students route
             string apiUrl = "http://" + apiHost + "/api/students";

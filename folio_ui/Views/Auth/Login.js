@@ -1,10 +1,10 @@
 /*
- * Auth - Login View
+ * API - Login View
  * JS
 */
 
 import "./Login.css";
-import Auth from "../Auth.js";
+import API from "../API.js";
 
 // hide login messageon startup
 $("#login-message").hide();
@@ -23,11 +23,18 @@ $("#login-form").submit(async (event) => {
     const password = $("#login-Password").val();
 
     // perform login   
-    console.log(process.env.API_INGRESS);
-    const auth = new Auth("http://" + process.env.API_INGRESS);
-    if(await auth.login(emailAddr, password) == false){
+    const api = new API();
+    if(await api.login(emailAddr, password) == false){
         // login was not successful
         $("#login-message").show();
         $("#login-message").text("Wrong email or password.");
+        return;
+    } 
+
+    // obtain info about the user being authenticated
+    const userinfo = await api.getUser();
+    console.log(userinfo);
+    if(userinfo.userRole == "Student") {
+        window.location.href = "/student/portfolio/" + userinfo.id;
     }
 });
