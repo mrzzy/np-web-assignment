@@ -1,0 +1,35 @@
+/*
+ * Student Suggestions
+ * NP Web Assignment
+ * Styling
+*/
+
+#suggestions-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100vw;
+    height: 100vh;
+    z-index: 3;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#suggestions-container .suggestions-list {
+    max-height: 72vh;
+    overflow: scroll;
+}
+
+#suggestions-container .suggestion {
+    margin-bottom: 2.6em;
+}
+
+#suggestions-container .suggestion .picture {
+    width: 1.6em;
+    height: 1.6em;
+    object-fit: contain;
+}
+
+#suggestions-container .suggestion button.acknowlege {
+    min-width: 3.6em;
+    white-space: nowrap;
+}
