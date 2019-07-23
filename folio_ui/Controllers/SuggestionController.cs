@@ -35,7 +35,8 @@ namespace folio_ui.Controllers
         // GET: Suggestion/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            // Make Web API call to get a list of votes related to a BookId
+            ViewData["ID"] = id;
+            // Make Web API call to get a list of votes related to a SuggestionId
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await

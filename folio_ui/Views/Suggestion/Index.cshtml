@@ -40,22 +40,23 @@
 
             @foreach (var i in Model)
             {
-            <a href="">
                 <div class="LCards">
-                    @{ string imageFileName = i.Name + ".jpg"; }
-                    <img src="~/img/@imageFileName"
-                         style="width:100%;" alt="@i.Name" class="LSelect" />
+                    <a href="~/Suggestion/Details/@i.StudentId">
+                        @{ string imageFileName = i.Name + ".jpg"; }
+                        <img src="~/img/@imageFileName"
+                             style="width:100%;" alt="@i.Name" class="LSelect" />
 
-                    <div class="LContainer">
-                        <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.Name</h4>
-                        <p class="text-md-left font-weight-bold "
-                           style="margin: 5px; color:#2d2d30;
+                        <div class="LContainer">
+                            <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.Name</h4>
+                            <p class="text-md-left font-weight-bold "
+                               style="margin: 5px; color:#2d2d30;
                             overflow: hidden;text-overflow: ellipsis;
                             width: 240px; white-space: nowrap; ">@i.Description</p>
                         </div>
+                    </a>
 
-                    </div>
-                </a>
+                </div>
+                
                 
                 }
         </div>
