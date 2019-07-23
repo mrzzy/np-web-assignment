@@ -37,11 +37,11 @@ Current Project Status:
 - 2.6.3 | Authentication API | :heavy_check_mark:
 - 2.6.4 | File API | :heavy_check_mark:
 - 2.7.1 | Landing Page | :construction:
-- 2.7.1 | Sign Up Page | :construction:
+- 2.7.1 | Sign Up Page | :heavy_check_mark:
 - 2.7.1 | Login Page | :heavy_check_mark:
 - 2.7.1 | Student Porfolio Page | :construction:
 - 2.7.1 | Student Profile page | :heavy_check_mark:
-- 2.7.1 | Student View & Acknowledge skillsets |  :construction:
+- 2.7.1 | Student View & Acknowledge Suggestion |  :heavy_check_mark:
 
 
 ## Design

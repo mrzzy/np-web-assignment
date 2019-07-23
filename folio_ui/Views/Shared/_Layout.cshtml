@@ -9,9 +9,8 @@
     <title>@ViewData["Title"] - folio_ui</title>
 
     <!-- google fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Merriweather:500|Roboto:500,900&display=swap" rel="stylesheet">
-
-    <!-- jquery -->
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans|Roboto:500,700&display=swap" rel="stylesheet">
+      <!-- jquery -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
                   crossorigin="anonymous"
                   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
@@ -70,6 +69,11 @@
     </header>
     }
 
+    @if( ViewData["UserInfo"] != null && (ViewData["UserInfo"] as UserInfo).UserRole == "Student") 
+    {
+    <partial name="~/Views/Shared/Suggestions/_SuggestionsStudent.cshtml" />
+    }
+    
     <main>
       @RenderBody()
     </main>

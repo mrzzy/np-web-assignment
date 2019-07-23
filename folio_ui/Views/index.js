@@ -12,6 +12,9 @@ import "./Layout/Layout.js"
 // Navbars
 import "./Shared/Navbars/_NavbarStudent.js"
 
+// Suggestions 
+import "./Shared/Suggestions/_SuggestionsStudent"
+
 // Forms
 import "./Shared/Forms/_StudentForm.js"
 
