@@ -33,12 +33,12 @@ namespace folio_ui.Controllers
                 return View(new List<Project>());
             }
         }
-        public async Task<ActionResult> Create()
-        {
+        //public async Task<ActionResult> Create()
+        //{
 
-            return View();
+        //    return View();
 
-        }
+        //}
         public async Task<ActionResult> Edit(int id)
         {
             // Make Web API call to get a list of Lecturers related to a BookId
@@ -87,9 +87,9 @@ namespace folio_ui.Controllers
                 return RedirectToAction("Index", "Project");
             }
         }
-        public async Task<ActionResult> Detail(int id, Project project , [FromQuery] int student)
-        {
-            return View();
-        }
+        //public async Task<ActionResult> Detail(int id, Project project , [FromQuery] int student)
+        //{
+        //    return View();
+        //}
     }
 }

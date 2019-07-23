@@ -85,7 +85,20 @@ namespace folio.API.Controllers
 
             return Json(skillset);
         }
-            
+
+        [HttpGet("/api/skillset/details")]
+        [Produces("application/json")]
+        public ActionResult AllSkillSets(int id)
+        {
+            List<SkillSet> skillSetList = new List<SkillSet>();
+            using (EPortfolioDB db = new EPortfolioDB())
+            {
+                skillSetList = db.SkillSets.ToList();
+                db.SaveChanges();
+            }
+            return Json(skillSetList);
+        }
+
         // route to create a skillset for skillset form model
         // responds to request with json representatoin of the skillset
         // authentication lecturer is required

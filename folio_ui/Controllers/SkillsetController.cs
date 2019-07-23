@@ -18,7 +18,7 @@ namespace folio_ui.Controllers
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await client.GetAsync("/api/skillset/" + id);
+            HttpResponseMessage response = await client.GetAsync("/api/skillset/details");
             if (response.IsSuccessStatusCode)
             {
                 string data = await response.Content.ReadAsStringAsync();

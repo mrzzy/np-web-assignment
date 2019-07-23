@@ -9,7 +9,7 @@
     {
     <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" style="border-bottom: 1px solid #FFD00B;" href="">View Profile</a>
+            <a class="button" href="">View Profile</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
             <a class="button" href="">Post Suggestion</a>
@@ -18,7 +18,7 @@
             <a class="button" href="">View Mentees</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="">Skill Sets</a>
+            <a class="button" style="border-bottom: 1px solid #FFD00B;" href="">Skill Sets</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
             <a class="button" href="">Change Password</a>
@@ -32,3 +32,20 @@
     </ul>
 }
 
+@if (Model.ToList().Count > 0)
+{
+    <h2>Available Skill Sets</h2>
+    <button class="btn button striking">Delete</button>
+    <button class="btn button striking">Create</button>
+    <div class="ssCards" style="  display: flex; flex-wrap: wrap ">
+        @foreach (var item in Model)
+        {
+            <div class="card" style="width: 16rem; margin: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.SkillSetName)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.SkillSetId)</h6>
+                </div>
+            </div>
+        }
+    </div>
+}
