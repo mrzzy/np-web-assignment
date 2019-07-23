@@ -52,7 +52,6 @@ class SuggestionsView {
 
     // render the unacknowledged suggestions for the current student
     async render(suggestions) {
-        console.log(suggestions);
         this.renderIndicator(suggestions);
 
         for(const suggestion of suggestions) {
@@ -62,7 +61,6 @@ class SuggestionsView {
             const element = $(template).clone();
 
             // configure element 
-            console.log(suggestion);
             element
                 .removeAttr("id")
                 .removeClass("d-none")
