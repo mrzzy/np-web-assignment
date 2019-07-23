@@ -140,9 +140,8 @@ class StudentForm {
                 const skillset = this.skillsets
                     .filter(ss => ss.name == skillsetName)[0];
                 if(skillset == null) return;
+                this.removeSkillset(this.student, skillset);
 
-                this.api.call("POST", "/api/skillset/remove/" + skillset.id
-                    + "?student=" + this.student.studentId);
                 }
         });
     }
@@ -362,6 +361,13 @@ class StudentForm {
             return this.api.call("POST", "/api/skillset/assign/" + skillset.id
                 + "?student=" + student.studentId);
         }));
+    }
+
+    // remove the given skillset, removing them fromthe given student
+    async removeSkillset(student, skillset) {
+        // remove skillset from the given student
+        await this.api.call("POST", "/api/skillset/remove/" + skillset.id
+            + "?student=" + student.studentId);
     }
 
     // submit the given photoFile as profile picture for given student

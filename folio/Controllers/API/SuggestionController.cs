@@ -109,7 +109,7 @@ namespace folio.Controllers.API
         // GET api/suggestion/5
         [HttpGet("/api/suggestion/{id}")]
         [Produces("application/json")]
-        [Authenticate("Lecturer")]
+        [Authenticate()]
         public ActionResult GetLectureById(int id)
         {
             Console.WriteLine("get id:", id.ToString());
