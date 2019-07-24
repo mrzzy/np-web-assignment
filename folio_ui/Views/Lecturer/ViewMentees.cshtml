@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "View Mentees";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["APIEndpoint"] = Context.Items["APIEndpoint"];
 }
 @section Navbar
     {
@@ -40,20 +41,26 @@
 
             @foreach (var i in Model)
             {
+            <a asp-action="Portfolio" asp-controller="Student" asp-route-id="@i.StudentId">
                 <div class="LCards">
-                    @{ string imageFileName = i.Name + ".jpg"; }
-                    <img src="~/img/@imageFileName"
-                         style="width:100%;" alt="@i.Name" class="LSelect" />
+                    <div style="overflow:hidden !important; height:75%;">
+                        @{ string imageFileName = i.Name + ".jpg"; }
+                        <img src="@ViewData["APIEndpoint"]/api/file/@i.Photo"
+                             style="width:100%; " alt="@i.Name" class="LSelect" />
+                    </div>
+                   
 
                     <div class="LContainer">
                         <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.Name</h4>
                         <p class="text-md-left font-weight-bold "
                            style="margin: 5px; color:#2d2d30;
                             overflow: hidden;text-overflow: ellipsis;
-                            width: 240px; white-space: nowrap; " >@i.Description</p>
-                    </div>
+                            width: 240px; white-space: nowrap; ">@i.Description</p>
+                        </div>
 
-                </div>
+                    </div>
+                </a>
+                
             }
         </div>
 
@@ -64,6 +71,7 @@
     div.LCards {
         margin: 50px;
         float: left;
+        height: 450px;
         width: 250px;
         box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         text-align: left;

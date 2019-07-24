@@ -38,13 +38,15 @@
     <div class="d-flex flex-column" style="overflow:scroll; width:35%; height:550px; border:5px;">
         @foreach (var i in Model)
         {
-            <a class="" href="#">
+            <a onclick="ShowDes()">
                 <ul class="list-group">
                     <li class="font-weight-bold list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        ID: @i.SuggestionId
+                        <p id="l_id">ID: @i.SuggestionId</p>
                         <div class="font-weight-bold p-2 bd-highlight"
                              style="border-color:darkslategrey;
-                                overflow: hidden;text-overflow: ellipsis; width: 240px; white-space: nowrap;">@i.Description</div>
+                                overflow: hidden;text-overflow: ellipsis; width: 240px; white-space: nowrap;">
+                            <p id="l_des">@i.Description</p>
+                        </div>
                                 <div class="font-weight-bold badge badge-primary badge-pill"
                                      style="color:#000; background:#FFD00B">@i.Status</div>
                                 </li>
@@ -53,43 +55,31 @@
 
                     }
     </div>
-    <form asp-action="Details">
-        @foreach (var j in Model)
-        {
-            @if (j.StudentId.ToString() == ViewData["ID"].ToString())
-            {
-                <div class="d-flex flex-column LCards">
-                    <div class="d-flex flex-row">
-                        <div style="box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 1px 0px 0 rgba(0, 0, 0, 0.1);
-                                width:550px; height:55px;">@j.StudentId</div>
-                        <a href="#">
-                            <div class="text-center"
-                                 style="background-color:#FFD00B; font-size:35px; width:60px; height:55px;
-                                    padding:0px;
-                                    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 1px 0px 0 rgba(0, 0, 0, 0.1);">
-                                +
-                            </div>
-                        </a>
-                        
-                    </div>
-                        
-                    <div>
-                        <div class="d-flex" style="box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.1);
-                               height: 450px;width: 470px; 
-                               margin:30px 50px 20px 40px;"><p style="padding:8px;">@j.Description</p></div>
-                    </div>
+    
+    <div class="d-flex flex-column LCards ">
+            <div class="d-flex flex-row">
+                <div style="box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 1px 0px 0 rgba(0, 0, 0, 0.1);
+                     width:550px; height:55px;">
+                    <p id="r_id" style="padding:8px;"></p>
+
                 </div>
 
-                break;
-            }
-            else
-            {
-                break;
-            }
-
-        }
-
-    </form>   
+                <a asp-action="Create" asp-controller="Suggestion">
+                    <div class="text-center"
+                         style="background-color:#FFD00B; font-size:35px; width:60px; height:55px;
+                         box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 1px 0px 0 rgba(0, 0, 0, 0.1);">
+                         +
+                    </div>
+                </a>
+                        
+            </div>
+                        
+            <div>
+                <div class="d-flex" style="box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+                     height: 450px;width: 470px; 
+                     margin:30px 50px 20px 40px;"><p style="padding:8px;" id="r_des"></p></div>
+            </div>
+    </div>
 
 </div>
 
@@ -103,3 +93,16 @@
         text-align: left;
     }
 </style>
+
+
+
+
+<script>
+    function ShowDes() {
+        var id = document.getElementById("l_id").innerHTML;
+        var des = document.getElementById("l_des").innerHTML;
+        document.getElementById("r_id").innerHTML = id;
+        document.getElementById("r_des").innerHTML = des;
+        
+    }
+</script>

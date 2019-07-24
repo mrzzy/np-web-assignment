@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using folio.Models;
-
+using folio.Services.API;
 
 namespace folio_ui.Controllers
 {
@@ -35,7 +35,6 @@ namespace folio_ui.Controllers
         // GET: Suggestion/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            ViewData["ID"] = id;
             // Make Web API call to get a list of votes related to a SuggestionId
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
@@ -46,6 +45,8 @@ namespace folio_ui.Controllers
                 string data = await response.Content.ReadAsStringAsync();
                 List<Suggestion> suggestionList =
                  JsonConvert.DeserializeObject<List<Suggestion>>(data);
+              
+           
                 return View(suggestionList);
             }
             else
@@ -53,6 +54,8 @@ namespace folio_ui.Controllers
                 return View(new List<Suggestion>());
             }
         }
+
+
 
         // GET: Suggestion/Create
         public ActionResult Create()
@@ -63,17 +66,24 @@ namespace folio_ui.Controllers
         // POST: Suggestion/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateAsync(IFormCollection collection)
         {
-            try
-            {
-                // TODO: Add create logic here
+            Suggestion suggestion = new Suggestion();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+
+            //Make Web API call to post the vote object
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.PostAsJsonAsync("/api/suggestion/create", suggestion);
+            if (response.IsSuccessStatusCode)
             {
-                return View();
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Create");
             }
         }
 
