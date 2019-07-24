@@ -53,6 +53,7 @@
 
     <Target Name="DevelopmentBuildClientApp" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
         <!-- development build JS resources -->
+        <Exec WorkingDirectory="$(ClientApp)" Command="npm install" />
         <Exec WorkingDirectory="$(ClientApp)" Command="npm run build-dev" />
     </Target>
 
