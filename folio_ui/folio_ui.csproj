@@ -29,8 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Remove="Views\Lecturer\ChangePassword.cshtml" />
-      <Content Remove="Views\Lecturer\LecturerPassword.cshtml" />
       <Content Remove="Views\Project\Create.cshtml" />
       <Content Remove="Views\Project\Detail.cshtml" />
       <Content Remove="Views\Project\Edit.cshtml" />
