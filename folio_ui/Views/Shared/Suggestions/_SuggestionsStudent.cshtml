@@ -1,0 +1,25 @@
+@{  
+  ViewData["UserInfo"] = Context.Items["UserInfo"];
+}
+
+<!-- Suggestions Card  -->
+<div id="suggestions-container" class="container-fluid d-none flex-column justify-content-around">
+  <div class="suggestions card fancy mx-auto col-10 col-sm-8 col-md-6 col-lg-4">
+    <div class="card-body">
+      <div class="card-title">
+        Suggestions
+      </div>
+  
+      <div class="suggestions-list">
+        <div id="suggestion-template" class="suggestion d-none flex-row align-items-center justify-content-around">     
+          <img class="picture mx-3" src="/img/notification_without_dot.png" />
+          <div class="description">
+            Hi Amy, You should specify the skills that you have learnt from the course.
+          </div>
+          
+          <button class="acknowlege button btn striking"> Ok </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

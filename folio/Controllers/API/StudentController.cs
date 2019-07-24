@@ -251,7 +251,5 @@ namespace folio.Controllers.API
 
             return Ok();
         }
-
-        //Change profile picture
     }
 }

@@ -23,36 +23,62 @@
         </li>
     </ul>
 }
+
 @if (Model.ToList().Count > 0)
 {
     <div class="container">
         <div class="d-flex justify-content-center flex-wrap">
+
+
 
             @foreach (var i in Model)
             {
                 <div class="LCards">
 
                     <div class="LContainer">
-                        <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.StudentId</h4>
-                        <p class="text-md-left font-weight-bold "
-                           style="margin: 5px; color:#2d2d30;
+                        StudentID:<h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.StudentId</h4>
+                        Role:<p class="text-md-left font-weight-bold "
+                                style="margin: 5px; color:#2d2d30;
                             overflow: hidden;text-overflow: ellipsis;
                             width: 240px; white-space: nowrap; ">@i.Role</p>
 
                         </div>
 
                     </div>
+
                 }
         </div>
-
+        <select class="browser-default custom-select mb-4" id="select">
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+        </select>
     </div>
 }
-    <style>
-        div.LCards {
-            margin: 50px;
-            float: left;
-            width: 250px;
-            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            text-align: left;
-        }
-    </style>
+<style>
+    div.LCards {
+        margin: 50px;
+        float: left;
+        width: 250px;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: left;
+    }
+
+    div.LContainer.text-lg-left {
+        text-align: center;
+    }
+
+    a.button.striking {
+        float: right;
+        margin-right:50px;
+    }
+
+    h4.PageTitle {
+        text-align: center;
+    }
+
+    #editbtn {
+        float: left;
+    }
+</style>
