@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -28,6 +29,7 @@ namespace folio_ui.Controllers
                 string data = await response.Content.ReadAsStringAsync();
                 List<Project> projectList = JsonConvert.DeserializeObject<List<Project>>(data);
                 return View(projectList);
+                
             }
             else
             {
@@ -36,10 +38,31 @@ namespace folio_ui.Controllers
         }
         public async Task<ActionResult> Create()
         {
-
             return View();
-
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(int id, Project project, IFormCollection collection)
+        {
+            APIClient client = new APIClient(HttpContext);
+            string projectJson = JsonConvert.SerializeObject(project);
+
+            APIResponse response = client.CallAPI("POST", "/api/project/create",
+                new StringContent(projectJson, Encoding.UTF8, "application/json"));
+            Dictionary<string, int> reciept = JsonConvert.DeserializeObject<Dictionary<string, int>>(response.Content);
+            int projectId = reciept["projectId"];
+            
+            if (response.StatusCode == 200)
+            {
+                // assign creator to project
+                UserInfo creator = HttpContext.Items["UserInfo"] as UserInfo;
+                response = client.CallAPI("POST", "/api/project/assign/" + projectId + "?student=" + creator.Id);
+                Console.WriteLine(">>>>>>>" + response.StatusCode);
+                
+            }
+            return View(project);
+        }
+
         public async Task<ActionResult> Edit(int id)
         {
             // Make Web API call to get a list of Lecturers related to a BookId
@@ -62,31 +85,27 @@ namespace folio_ui.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(int id,  Project project , IFormCollection collection)
         {
-            string Title = collection["Model.Title"];
-            string ProjectUrl = collection["Model.ProjectUrl"];
-            string ProjectPoster = collection["Model.ProjectPoster"];
-            string Description = collection["Model.Description"];
-            Project projects = new Project();
-            projects.Title = Title;
-            projects.ProjectUrl = ProjectUrl;
-            projects.ProjectPoster = ProjectPoster;
-            projects.Description = Description;
+            //string Title = collection["Model.Title"];
+            //string ProjectUrl = collection["Model.ProjectUrl"];
+            //string ProjectPoster = collection["Model.ProjectPoster"];
+            //string Description = collection["Model.Description"];
+            //Project projects = new Project();
+            //projects.Title = Title;
+            //projects.ProjectUrl = ProjectUrl;
+            //projects.ProjectPoster = ProjectPoster;
+            //projects.Description = Description;
 
 
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await
-            
-            client.PostAsJsonAsync("/api/project/update/" + id.ToString(), projects);
-            if (response.IsSuccessStatusCode)
-            {
+            APIClient client = new APIClient(HttpContext);
+            string projectJson = JsonConvert.SerializeObject(project);
 
-                return RedirectToAction("Detail", id);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Project");
-            }
+            APIResponse response = client.CallAPI("POST", "/api/project/update/" + id,
+                new StringContent(projectJson, Encoding.UTF8, "application/json"));
+            Dictionary<string, int> reciept = JsonConvert.DeserializeObject<Dictionary<string, int>>(response.Content);
+      
+
+         
+            return View(project);
         }
         public async Task<ActionResult> Detail(int id, Project project , [FromQuery] int student)
         {
@@ -122,18 +141,17 @@ namespace folio_ui.Controllers
                 return View(new List<ProjectMember>());
             }
         }
-        public async Task<ActionResult> AssignProjMember(int id)
+        [HttpPost]
+        public async Task<ActionResult> ViewProjMember(int id, Project project)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await client.GetAsync("/api/project/assign/" + id.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                string data = await response.Content.ReadAsStringAsync();
-                List<ProjectMember> projectMemberList = JsonConvert.DeserializeObject<List<ProjectMember>>(data);
-                return View(projectMemberList);
-            }
-            return View();
+            APIClient client = new APIClient(HttpContext);
+            string projectJson = JsonConvert.SerializeObject(project);
+            UserInfo creator = HttpContext.Items["UserInfo"] as UserInfo;
+            APIResponse response = client.CallAPI("POST", "/api/project/assign/" + id + "?student=" + creator.Id,
+                new StringContent(projectJson, Encoding.UTF8, "application/json"));
+
+            return View(project);
+        
         }  
 
     }

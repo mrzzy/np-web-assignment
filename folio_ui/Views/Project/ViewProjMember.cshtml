@@ -23,39 +23,51 @@
         </li>
     </ul>
 }
+    <form asp-action="ViewProjMember" method="post">
+        @if (Model.ToList().Count > 0)
+        {
+        <div class="container">
+            <div class="d-flex justify-content-center flex-wrap">
 
-@if (Model.ToList().Count > 0)
-{
-    <div class="container">
-        <div class="d-flex justify-content-center flex-wrap">
 
 
+                @foreach (var i in Model)
+                {
+                    <div class="LCards">
 
-            @foreach (var i in Model)
-            {
-                <div class="LCards">
-
-                    <div class="LContainer">
-                        StudentID:<h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.StudentId</h4>
-                        Role:<p class="text-md-left font-weight-bold "
-                                style="margin: 5px; color:#2d2d30;
+                        <div class="LContainer">
+                            StudentID:<h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.StudentId</h4>
+                            Role:<p class="text-md-left font-weight-bold "
+                                    style="margin: 5px; color:#2d2d30;
                             overflow: hidden;text-overflow: ellipsis;
                             width: 240px; white-space: nowrap; ">@i.Role</p>
 
                         </div>
-
+                        <div class="col-md-4">
+                            <div class="md-form mb-0">
+                                <input type="text" id="ProjTitle" class="form-control" asp-for="@i.ProjectId" readonly>
+                                <label for="name" class="ProjTitle"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="md-form mb-0">
+                                <input type="text" id="ProjTitle" class="form-control" asp-for="@i.StudentId" value="@i.StudentId">
+                                <label for="name" class="ProjTitle"></label>
+                            </div>
+                        </div>
                     </div>
 
                 }
+
+            </div>
+
+            <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit">
+                Confirm
+            </button>
         </div>
-        <select class="browser-default custom-select mb-4" id="select">
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-            <option value="4">Option 4</option>
-        </select>
-    </div>
-}
+
+        }
+    </form>
 <style>
     div.LCards {
         margin: 50px;
@@ -71,7 +83,7 @@
 
     a.button.striking {
         float: right;
-        margin-right:50px;
+        margin-right: 50px;
     }
 
     h4.PageTitle {
