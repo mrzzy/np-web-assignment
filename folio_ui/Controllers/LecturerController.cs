@@ -112,11 +112,54 @@ namespace folio_ui.Controllers
             if (response.IsSuccessStatusCode)
             {
                 
-                return RedirectToAction("Details", id);
+                return RedirectToAction("Details",new { id = id });
             }
             else
             {
                 return RedirectToAction("Index", "Lecturer");
+            }
+        }
+
+        //GET: Lecturer/ChangePassword/5
+        public async Task<ActionResult> ChangePassword(int id)
+        {
+            // Make Web API call to get a list of Lecturers related to a BookId
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.GetAsync("/api/lecturer/" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                Lecturer lecturerList =
+                JsonConvert.DeserializeObject<Lecturer>(data);
+                return View(lecturerList);
+            }
+            else
+            {
+                return View(new Lecturer());
+            }
+        }
+
+        // POST: Lecturer/lecturerPassword/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(int id, Lecturer lecturer)
+        {
+
+            //Make Web API call to post the vote object
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.PostAsJsonAsync("/api/lecturer/changePW/" + id.ToString(), lecturer);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+
+                return RedirectToAction("ChangePassword");
             }
         }
 
@@ -160,5 +203,7 @@ namespace folio_ui.Controllers
                 return View(new List<Student>());
             }
         }
+
+        
     }
 }
