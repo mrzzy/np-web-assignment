@@ -38,7 +38,7 @@
 
         <!--Grid column-->
         <div class="col-md-9 mb-md-0 mb-5">
-            <form id="create-form">
+            <form asp-action="Create" method="post">
 
                 <!--Grid row-->
                 <div class="row">
@@ -46,7 +46,7 @@
                     <!--Grid column-->
                     <div class="col-md-4">
                         <div class="md-form mb-0">
-                            <input type="text" id="ProjTitle" name="name" class="form-control" asp-for="@Model.Title">
+                            <input type="text" id="ProjTitle"  class="form-control" asp-for="Title">
                             <label for="name" class="ProjTitle">Project Title</label>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                     <!--Grid column-->
                     <div class="col-md-4">
                         <div class="md-form mb-0">
-                            <input type="text" id="ProjURL" name="email" class="form-control" asp-for="@Model.ProjectUrl">
+                            <input type="text" id="ProjURL"  class="form-control" asp-for="ProjectUrl">
                             <label for="email" class="projURL">Project URL</label>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                     <div class="col-md-8">
 
                         <div class="md-form">
-                            <textarea type="text" id="description" name="message" rows="1" class="form-control md-textarea" asp-for="@Model.Description"></textarea>
+                            <textarea type="text" id="description" rows="1" class="form-control md-textarea" asp-for="Description"></textarea>
                             <label for="message">Project Description</label>
                         </div>
 
@@ -84,19 +84,19 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" asp-for="@Model.ProjectPoster">
+                            <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" asp-for="ProjectPoster">
                             <label class="custom-file-label" for="fileInput">File Label</label>
                         </div>
                     </div>
                 </div>
-                
+                <div class="buttonsubmit">
+                    <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit">
+                        Create
+                    </button>
+                </div>
             </form>
 
-            <div class="buttonsubmit">
-                <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit"> 
-                Create
-                </button>
-            </div>
+            
             <div class="status"></div>
         </div>
         <!--Grid column-->

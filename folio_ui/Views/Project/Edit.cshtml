@@ -34,7 +34,12 @@
     </p>
 
     <div class="row">
-
+        @{ 
+            string pTitle = Model.Title;
+            string pURL = Model.ProjectUrl;
+            string pDesc = Model.Description;
+            string pposter = Model.ProjectPoster;
+        }
         <!--Grid column-->
         <div class="col-md-9 mb-md-0 mb-5">
             <form asp-action="Edit" method="post">
@@ -45,7 +50,7 @@
                     <!--Grid column-->
                     <div class="col-md-4">
                         <div class="md-form mb-0">
-                            <input type="text" id="ProjTitle" class="form-control" asp-for="@Model.Title">
+                            <input type="text" id="ProjTitle" class="form-control" asp-for="Title" value="@pTitle">
                             <label for="name" class="ProjTitle">Project Title</label>
                         </div>
                     </div>
@@ -53,7 +58,7 @@
                     <!--Grid column-->
                     <div class="col-md-4">
                         <div class="md-form mb-0">
-                            <input type="text" id="ProjURL" name="email" class="form-control" asp-for="@Model.ProjectUrl">
+                            <input type="text" id="ProjectURL" class="form-control" asp-for="ProjectUrl" value="@pURL">
                             <label for="email" class="projURL">Project URL</label>
                         </div>
                     </div>
@@ -72,7 +77,7 @@
                     <div class="col-md-8">
 
                         <div class="md-form">
-                            <textarea type="text" id="description" name="message" rows="1" class="form-control md-textarea" asp-for="@Model.Description"></textarea>
+                            <input type="text" id="Description" rows="1" class="form-control md-textarea"  asp-for="Description" value="@pDesc">
                             <label for="message">Project Description</label>
                         </div>
 
@@ -83,7 +88,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" asp-for="@Model.ProjectPoster">
+                            <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" asp-for="ProjectPoster" value="@pposter">
                             <label class="custom-file-label" for="fileInput">File Label</label>
                         </div>
                     </div>

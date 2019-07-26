@@ -12,7 +12,7 @@ namespace folio.FormModels
 
         [MinLength(1)]
         [DataType(DataType.Text)]
-        [Required(ErrorMessage = "Skillset name is required")]
+        [Required(ErrorMessage = "Project name is required")]
         public string Title { get; set; }
 
         [DataType(DataType.Text)]
