@@ -1,0 +1,99 @@
+﻿@model folio.Models.Lecturer
+
+@{
+    ViewData["Title"] = "Lecturer Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["APIEndpoint"] = Context.Items["APIEndpoint"];
+}
+@section Navbar
+    {
+    <ul id="navbar-anonymous" class="navbar-nav flex-grow-1 flex-md-row justify-content-sm-end">
+  <li class="nav-item text-center mx-sm-3">
+    <button class="search button">
+      <img alt="Search" src="/img/search@2x.png"/>
+      <span class="d-sm-none"> Search </span>
+    </button>
+  </li>
+  <li class="nav-item text-center mx-sm-3">
+    <a class="button btn-outline-link" asp-controller="Auth" asp-action="Login">
+      Login
+    </a>
+  </li>
+  <li class="nav-item text-center mx-sm-3">
+    <a class="button striking" asp-controller="Auth" asp-action="SignUp">
+      Join
+    </a>
+  </li>
+</ul>
+}
+
+
+<!-- Lecturer form -->
+<div class="container">
+    <div class="alert alert-danger d-none" id="form-message-template" role="alert">
+    </div>
+    <form id="lecturer-form" class="" accept-charset="utf-8" asp-action="SignUp" asp-controller="Lecturer" method="post">
+        <div class="form-group-portfolio form-group">
+            <h4 class="form-group-header"> Sign Up As A Lecturer. </h4>
+
+            <div class="md-form form-field">
+                <label for="lecturer-name">Name</label>
+                <input required type="text" class="form-control" id="lecturer-name" asp-for="Name" />
+            </div>
+
+            <div class="md-form form-field">
+                <label for="lecturer-email">Email</label>
+                <input required type="email" class="form-control" id="lecturer-email" asp-for="EmailAddr" />
+            </div>
+
+            <div class="md-form form-field">
+                <label for="lecturer-description">Description</label>
+                <textarea class="form-control md-textarea" id="lecturer-description" rows="8" asp-for="Description"></textarea>
+            </div>
+
+            <div class="form-group-submit form-group row align-items-center">
+                <button class="btn button striking submitBtn" type="submit">
+                    <span>Save</span>
+                </button>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    .submitBtn {
+        margin: 7px;
+        font-size: 25px;
+        background-color: #FFD00B;
+        border-color: #FFD00B;
+        padding: 7px 15px;
+        width: 150px;
+        transition: all 0.5s;
+    }
+
+        .submitBtn span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+            .submitBtn span:after {
+                content: '\25b6';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -20px;
+                transition: 0.5s;
+            }
+
+        .submitBtn:hover span {
+            padding-right: 30px;
+        }
+
+            .submitBtn:hover span:after {
+                opacity: 1;
+                right: 0;
+            }
+</style>

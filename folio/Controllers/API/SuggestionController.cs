@@ -47,7 +47,7 @@ namespace folio.Controllers.API
         //Create
         [HttpPost("/api/suggestion/create")]
         [Produces("application/json")]
-        [Authenticate("Lecturer")]
+        //[Authenticate("Lecturer")]
         public ActionResult PostSuggestion([FromBody] SuggestionFormModel formModel)
         {
             EPortfolioDB context = new EPortfolioDB();

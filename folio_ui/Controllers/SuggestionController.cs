@@ -45,8 +45,8 @@ namespace folio_ui.Controllers
                 string data = await response.Content.ReadAsStringAsync();
                 List<Suggestion> suggestionList =
                  JsonConvert.DeserializeObject<List<Suggestion>>(data);
-              
-           
+
+                ViewData["studentId"] = id;
                 return View(suggestionList);
             }
             else
@@ -58,19 +58,18 @@ namespace folio_ui.Controllers
 
 
         // GET: Suggestion/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
+            ViewData["studentId"] = id;
             return View();
         }
 
         // POST: Suggestion/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync(IFormCollection collection)
+        public async Task<ActionResult> Create(Suggestion suggestion)
         {
-            Suggestion suggestion = new Suggestion();
-
-
+            
             //Make Web API call to post the vote object
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
@@ -79,7 +78,7 @@ namespace folio_ui.Controllers
             if (response.IsSuccessStatusCode)
             {
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Lecturer");
             }
             else
             {

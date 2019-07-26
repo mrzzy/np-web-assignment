@@ -54,7 +54,7 @@ namespace folio_ui.Controllers
         }
 
         // GET: Lecturer/Create
-        public ActionResult Create()
+        public ActionResult SignUp()
         {
             return View();
         }
@@ -62,17 +62,20 @@ namespace folio_ui.Controllers
         // POST: Lecturer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> SignUp(Lecturer lecturer)
         {
-            try
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.PostAsJsonAsync("/api/lecturer/create", lecturer);
+            if (response.IsSuccessStatusCode)
             {
-                // TODO: Add update logic here
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Login", "Auth");
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("SignUp", "Lecturer");
             }
         }
 
@@ -141,7 +144,7 @@ namespace folio_ui.Controllers
             }
         }
 
-        // POST: Lecturer/lecturerPassword/5
+        // POST: Lecturer/ChangePassword/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(int id, Lecturer lecturer)
