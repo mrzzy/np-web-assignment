@@ -9,6 +9,7 @@ using folio_ui.Models;
 using folio.Models;
 using Microsoft.AspNetCore.Http;
 using System.Net;
+using System.IO;
 
 namespace folio_ui.Controllers
 {
@@ -123,6 +124,69 @@ namespace folio_ui.Controllers
             }
         }
 
+        // GET: Lecturer/UploadPhoto/5
+        public async Task<ActionResult> UploadPhoto(int id)
+        {
+            // Make Web API call to get a list of Lecturers related to a BookId
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.GetAsync("/api/lecturer/" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                LecturerViewModel lecturerList =
+                JsonConvert.DeserializeObject<LecturerViewModel>(data);
+                return View(lecturerList);
+            }
+            else
+            {
+                return View(new LecturerViewModel());
+            }
+        }
+
+        //POST: Upload Photo
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadPhoto( int id,LecturerViewModel lvm)
+        {
+            if (lvm.FileToUpload != null &&
+            lvm.FileToUpload.Length > 0)
+            {
+                try
+                {
+                    // Find the filename extension of the file to be uploaded.
+                    string fileExt = Path.GetExtension(
+                     lvm.FileToUpload.FileName);
+                    // Rename the uploaded file with the staff’s name.
+                    string uploadedFile = lvm.Name + fileExt;
+                    // Get the complete path to the images folder in server
+                    string savePath = Path.Combine(
+                     Directory.GetCurrentDirectory(),
+                     "wwwroot\\img", uploadedFile);
+                    // Upload the file to server
+                    using (var fileSteam = new FileStream(
+                     savePath, FileMode.Create))
+                    {
+                        await lvm.FileToUpload.CopyToAsync(fileSteam);
+                    }
+                    lvm.Photo = uploadedFile;
+                    ViewData["Message"] = "File uploaded successfully.";
+                }
+                catch (IOException)
+                {
+                    //File IO error, could be due to access rights denied
+                    ViewData["Message"] = "File uploading fail!";
+                }
+                catch (Exception ex) //Other type of error
+                {
+                    ViewData["Message"] = ex.Message;
+                }
+            }
+            return View(lvm);
+
+        }
+
         //GET: Lecturer/ChangePassword/5
         public async Task<ActionResult> ChangePassword(int id)
         {
@@ -166,26 +230,26 @@ namespace folio_ui.Controllers
             }
         }
 
-        // GET: Lecturer/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        
 
         // POST: Lecturer/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id)
         {
-            try
+            //Make Web API call to post the vote object
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.PostAsJsonAsync("/api/lecturer/delete/" + id.ToString(),id);
+            if (response.IsSuccessStatusCode)
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Home");
             }
-            catch
+            else
             {
-                return View();
+                ViewData["Msg"] = "You are not Wasted! Another One";
+                return RedirectToAction("Edit", new { id = id });
             }
         }
 

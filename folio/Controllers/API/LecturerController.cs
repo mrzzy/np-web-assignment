@@ -187,10 +187,10 @@ namespace folio.Controllers.API
                 if (lecturer == null)
                 { return NotFound(); }
 
-                Session session = AuthService.ExtractSession(HttpContext);
-                if (session.MetaData["userrole"] != "lecturer" && // any lecturer
-                     session.EmailAddr != lecturer.EmailAddr) // this student
-                { return Unauthorized(); }
+                //Session session = AuthService.ExtractSession(HttpContext);
+                //if (session.MetaData["userrole"] != "lecturer" && // any lecturer
+                //     session.EmailAddr != lecturer.EmailAddr) // this student
+                //{ return Unauthorized(); }
 
                 // remove the skillSet from db
                 database.Lecturers.Remove(lecturer);

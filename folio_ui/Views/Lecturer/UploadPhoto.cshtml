@@ -1,7 +1,7 @@
-﻿@model folio.Models.Lecturer
+﻿@model folio.Models.LecturerViewModel
 
 @{
-    ViewData["Title"] = "Lecturer Details";
+    ViewData["Title"] = "Upload Photo";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["LecturerId"] = (Context.Items["UserInfo"] as UserInfo).Id;
 }
@@ -30,67 +30,37 @@
     </ul>
 }
 
-<form asp-action="Edit" method="post">
+<h2 class="text-center">Upload Your Profile Photo</h2>
+
+<form asp-action="UploadPhoto" method="post" asp-controller="Lecturer" enctype="multipart/form-data">
     <div class="container">
-        <div class="d-flex flex-row">
+        <div class="d-flex justify-content-center flex-column">
             <div class="p-2" style="width:35%;">
                 @{ string imageFileName = Model.Name + ".jpg"; }
                 <img src="~/img/@imageFileName"
                      style="width:100%;" alt="@Model.Name's Profile Photo" />
             </div>
-
-            <div class="float-left" style="margin: 50px;">
-
-                <div class="input-group input-group-lg">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text font-weight-bold" id="basic-addon1"
-                              style="background-color:#fff; border:none; color:#111;">Name</span>
-                    </div>
-                    <input type="text" class="form-control" asp-for="Name" placeholder="@Model.Name">
+            <input style="visibility:hidden;" asp-for="Name" value="@Model.Name"/>
+            <br />
+            <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                    <span class="input-group-text font-weight-bold"
+                          style="background-color:#fff; border:none; color:#111;">Upload Photo</span>
                 </div>
-                <br />
-                <div class="input-group input-group-lg">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text font-weight-bold" id="basic-addon1"
-                              style="background-color:#fff; border:none; color:#111;">Email</span>
-                    </div>
-                    <input type="text" class="form-control" asp-for="EmailAddr" placeholder="@Model.EmailAddr">
-                </div>
-                <br />
-                <div class="input-group input-group-lg">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text font-weight-bold"
-                              style="background-color:#fff; border:none; color:#111;">Description</span>
-                    </div>
-                    <textarea class="form-control" asp-for="Description">@Model.Description</textarea>
-                </div>
-                <br />
-                <div class="input-group input-group-lg ">
-                    
-                    <a class="btn font-weight-bold" href="/Lecturer/UploadPhoto/@ViewData["LecturerId"]"                            
-                            style="font-size:15px; background-color:#e8e8e8">Upload Photo</a>
-                </div>
-
-                <div class="input-group input-group-lg">
-                    <button class="btn"
-                        style="background-color:#111; color:#FFD00B; border:0px; "
-                        type="submit" asp-action="Delete" asp-route-id="@Model.LecturerId">Wasted !</button>
-                    <span>@ViewData["Msg"]</span>
-                </div>
+                <input class="btn" asp-for="FileToUpload" accept="image/*">
             </div>
-
-        </div>
-        <br />
-        <div class="d-flex justify-content-center flex-row">
-            <button type="submit" class="submitBtn font-weight-bold">
-                <span>Submit</span>
-            </button>
-
-            <button type="submit" class="submitBtn font-weight-bold" asp-action="Index"
+            <br />
+            <br />
+            <button type="submit" class="submitBtn font-weight-bold"><span>Submit</span></button>
+            <span style="color:red;">@ViewData["Message"]</span>
+            <br />
+            <br />
+            <button type="submit" class="submitBtn font-weight-bold" asp-action="Details" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]"
                     style="background-color:#000; color:#fff;">
                 <span>Back</span>
             </button>
         </div>
+
     </div>
 </form>
 
