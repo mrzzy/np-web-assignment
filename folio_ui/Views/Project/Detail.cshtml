@@ -85,18 +85,20 @@
                         </div>
 
                     </div>
+                    <br>
                     <!--Grid row-->
                     <div class="buttonsubmit">
-                        <button class="btn button striking" type="submit" name="submit-btn" id="projmember-btn-create" asp-action="ViewProjMember" asp-route-id="@Model.ProjectId">
+                        <a class="button striking" asp-controller="Project" asp-action="ViewProjMember" asp-route-id="@Model.ProjectId">
                             View Member
-                        </button>
-                        <div class="buttonsubmit">
-                            <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit" asp-action="Index">
-                                Back
-                            </button>
-                        </div>
-
+                        </a>
                     </div>
+                    <br />
+                    <div class="buttonsubmit">
+                        <a class="button striking" asp-controller="Project" asp-action="Index">
+                            Back
+                        </a>
+                    </div>
+
                 </form>
 
 
@@ -124,7 +126,7 @@
         text-align: left;
     }
     .buttonsubmit {
-        float: left;
-        margin-left:220px;
+        
+       
     }
 </style>

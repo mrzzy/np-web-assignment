@@ -125,6 +125,7 @@ namespace folio_ui.Controllers
                 return View(new Project());
             }
         }
+        [HttpGet]
         public async Task<ActionResult> ViewProjMember(int id)
         {
             HttpClient client = new HttpClient();
@@ -142,15 +143,15 @@ namespace folio_ui.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult> ViewProjMember(int id, Project project)
+        public async Task<ActionResult> ViewProjMember(int id, ProjectMember projMember)
         {
-            APIClient client = new APIClient(HttpContext);
-            string projectJson = JsonConvert.SerializeObject(project);
-            UserInfo creator = HttpContext.Items["UserInfo"] as UserInfo;
-            APIResponse response = client.CallAPI("POST", "/api/project/assign/" + id + "?student=" + creator.Id,
-                new StringContent(projectJson, Encoding.UTF8, "application/json"));
 
-            return View(project);
+            APIClient client = new APIClient(HttpContext);
+            string projectJson = JsonConvert.SerializeObject(projMember);
+            APIResponse response = client.CallAPI("POST", "/api/project/assign/" + id.ToString() + "?student=" + projectJson);
+                new StringContent(projectJson, Encoding.UTF8, "application/json");
+
+            return View(projMember);
         
         }  
 
