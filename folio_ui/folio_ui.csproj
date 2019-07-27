@@ -29,11 +29,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Remove="Views\Project\AssignProjMember.cshtml" />
+      <Content Remove="Views\Lecturer\SignUp.cshtml" />
+      <Content Remove="Views\Lecturer\UploadPhoto.cshtml" />
       <Content Remove="Views\Project\Create.cshtml" />
       <Content Remove="Views\Project\Detail.cshtml" />
       <Content Remove="Views\Project\Edit.cshtml" />
+      <Content Remove="Views\Project\UploadPoster.cshtml" />
       <Content Remove="Views\Project\ViewProjMember.cshtml" />
+      <Content Remove="Views\Suggestion\Create.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

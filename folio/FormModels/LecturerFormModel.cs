@@ -55,4 +55,19 @@ namespace folio.FormModels
 
         }
     }
+
+    public class LecturerPasswordFormModel
+    {
+        [MinLength(8)]
+        [MaxLength(18)]
+        [Required]
+        [DataType(DataType.Text)]
+        public string Password { get; set; }
+
+        public void Apply(Lecturer l)
+        {
+            if (this.Password != null) l.Password = this.Password;
+
+        }
+    }
 }

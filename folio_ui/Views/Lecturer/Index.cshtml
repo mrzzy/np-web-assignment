@@ -3,36 +3,33 @@
 @{
     ViewData["Title"] = "View Lecturers";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["LecturerId"] = (Context.Items["UserInfo"] as UserInfo).Id;
 }
 @section Navbar
     {
     <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="./Lecturer/Details/">View Profile</a>
+            <a class="button" asp-action="Details" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Profile</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="">Post Suggestion</a>
+            <a class="button" asp-controller="Suggestion" asp-action="Index" asp-route-id="@ViewData["LecturerId"]">Post Suggestion</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="">View Mentees</a>
+            <a class="button" asp-action="ViewMentees" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Mentees</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="">Skill Sets</a>
+            <a class="button" asp-action="Index" asp-controller="SkillSet" asp-route-id="@ViewData["LecturerId"]">Skill Sets</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="">Change Password</a>
+            <a class="button" asp-action="ChangePassword" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">Change Password</a>
         </li>
 
         <li class="nav-item text-center mx-sm-3">
-            <button class="search button">
-                <img alt="Search" src="/img/search@2x.png" />
-                <span class="d-sm-none"> Search </span>
-            </button>
+            <a class="button" id="btn-logout">Log Out</a>
         </li>
     </ul>
-
-
 }
+
 <h1 class="text-center">View Lecturers</h1>
 @if (Model.ToList().Count > 0)
 {
@@ -42,20 +39,24 @@
             @foreach (var i in Model)
             {
                 <div class="LCards">
-                    @{ string imageFileName = i.Name + ".jpg"; }
-                    <img src="~/img/@imageFileName"
-                         style="width:100%;" alt="@i.Name" class="LSelect" />
+                    <div style="overflow:hidden !important; height:75%;">
+                        @{ string imageFileName = i.Name + ".jpg"; }
+                        <img src="~/img/@imageFileName"
+                             style="width:100%;" alt="@i.Name" class="LSelect" />
+                    </div>
+
 
                     <div class="LContainer">
                         <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.Name</h4>
                         <p class="text-md-left font-weight-light font-italic" style="margin: 5px;">@i.EmailAddr</p>
                         <p class="text-md-left font-weight-bold "
-                           style="margin: 5px; color:#2d2d30">@i.Description</p>
+                           style="margin: 5px; color:#2d2d30; overflow:hidden; 
+                                text-overflow: ellipsis; white-space:nowrap;">@i.Description</p>
                     </div>
 
                 </div>
             }
-            
+
         </div>
 
     </div>
@@ -63,10 +64,12 @@
 
 <style>
     div.LCards {
-    margin: 50px;
-    float: left;
-    width: 250px;
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    text-align:left;
-}
+        margin: 50px;
+        float: left;
+        height: 450px;
+        width: 250px;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: left;
+    }
 </style>
+

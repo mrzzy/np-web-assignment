@@ -37,4 +37,7 @@ $("#login-form").submit(async (event) => {
     if(userinfo.userRole == "Student") {
         window.location.href = "/student/portfolio/" + userinfo.id;
     }
+    if (userinfo.userRole == "Lecturer") {
+        window.location.href = "/lecturer/index";
+    }
 });

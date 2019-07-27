@@ -101,7 +101,7 @@ namespace folio.Controllers.API
             return Json(projectList);
         }
         [HttpPost("/api/project/create")]
-        [Authenticate("Student")]
+        //[Authenticate("Student")]
         [Produces("application/json")]
         public ActionResult Createproject([FromBody] ProjectFormModel formModel)
         {
@@ -137,7 +137,7 @@ namespace folio.Controllers.API
         }
         // route to update project for project id and project form model
         [HttpPost("/api/project/update/{id}")]
-        [Authenticate("Student")]
+        //[Authenticate("Student")]
         public ActionResult UpdateProject(
                 int id, [FromBody] ProjectFormModel formModel)
         {

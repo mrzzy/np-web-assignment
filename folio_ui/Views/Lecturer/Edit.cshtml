@@ -3,31 +3,29 @@
 @{
     ViewData["Title"] = "Lecturer Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["LecturerId"] = (Context.Items["UserInfo"] as UserInfo).Id;
 }
 @section Navbar
     {
     <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" style="border-bottom: 1px solid #FFD00B;" href="">View Profile</a>
+            <a class="button" asp-action="Details" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Profile</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="">Post Suggestion</a>
+            <a class="button" asp-controller="Suggestion" asp-action="Index" asp-route-id="@ViewData["LecturerId"]">Post Suggestion</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="">View Mentees</a>
+            <a class="button" asp-action="ViewMentees" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Mentees</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="">Skill Sets</a>
+            <a class="button" asp-action="Index" asp-controller="SkillSet" asp-route-id="@ViewData["LecturerId"]">Skill Sets</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="">Change Password</a>
+            <a class="button" asp-action="ChangePassword" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">Change Password</a>
         </li>
 
         <li class="nav-item text-center mx-sm-3">
-            <button class="search button">
-                <img alt="Search" src="/img/search@2x.png" />
-                <span class="d-sm-none"> Search </span>
-            </button>
+            <a class="button" id="btn-logout">Log Out</a>
         </li>
     </ul>
 }
@@ -66,7 +64,19 @@
                     </div>
                     <textarea class="form-control" asp-for="Description">@Model.Description</textarea>
                 </div>
+                <br />
+                <div class="input-group input-group-lg ">
+                    
+                    <a class="btn font-weight-bold" href="/Lecturer/UploadPhoto/@ViewData["LecturerId"]"                            
+                            style="font-size:15px; background-color:#e8e8e8">Upload Photo</a>
+                </div>
 
+                <div class="input-group input-group-lg">
+                    <button class="btn"
+                        style="background-color:#111; color:#FFD00B; border:0px; "
+                        type="submit" asp-action="Delete" asp-route-id="@Model.LecturerId">Wasted !</button>
+                    <span>@ViewData["Msg"]</span>
+                </div>
             </div>
 
         </div>
@@ -96,28 +106,29 @@
         width: 150px;
         transition: all 0.5s;
     }
-    .submitBtn span {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.5s;
-}
 
-.submitBtn span:after {
-  content: '\25b6';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
-}
+        .submitBtn span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
 
-.submitBtn:hover span {
-  padding-right: 30px;
-}
+            .submitBtn span:after {
+                content: '\25b6';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -20px;
+                transition: 0.5s;
+            }
 
-.submitBtn:hover span:after {
-  opacity: 1;
-  right: 0;
-}
+        .submitBtn:hover span {
+            padding-right: 30px;
+        }
+
+            .submitBtn:hover span:after {
+                opacity: 1;
+                right: 0;
+            }
 </style>
