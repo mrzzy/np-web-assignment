@@ -47,7 +47,7 @@ namespace folio.Controllers.API
         //Create
         [HttpPost("/api/suggestion/create")]
         [Produces("application/json")]
-        [Authenticate("Lecturer")]
+        //[Authenticate("Lecturer")]
         public ActionResult PostSuggestion([FromBody] SuggestionFormModel formModel)
         {
             EPortfolioDB context = new EPortfolioDB();
@@ -109,7 +109,7 @@ namespace folio.Controllers.API
         // GET api/suggestion/5
         [HttpGet("/api/suggestion/{id}")]
         [Produces("application/json")]
-        [Authenticate()]
+        //[Authenticate("Lecturer")]
         public ActionResult GetSuggestionById(int id)
         {
             Console.WriteLine("get id:", id.ToString());

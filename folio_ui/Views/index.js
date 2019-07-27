@@ -32,3 +32,7 @@ import "./Auth/Login.js"
 
 // Project - Create page
 import "./Project/Create.js"
+
+// Lecturer - ChangePassword 
+import "./Lecturer/ChangePassword.js"
+

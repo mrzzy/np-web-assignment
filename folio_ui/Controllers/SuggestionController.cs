@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using folio.Models;
-
+using folio.Services.API;
 
 namespace folio_ui.Controllers
 {
@@ -35,7 +35,6 @@ namespace folio_ui.Controllers
         // GET: Suggestion/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            ViewData["ID"] = id;
             // Make Web API call to get a list of votes related to a SuggestionId
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
@@ -46,6 +45,8 @@ namespace folio_ui.Controllers
                 string data = await response.Content.ReadAsStringAsync();
                 List<Suggestion> suggestionList =
                  JsonConvert.DeserializeObject<List<Suggestion>>(data);
+
+                ViewData["studentId"] = id;
                 return View(suggestionList);
             }
             else
@@ -54,26 +55,34 @@ namespace folio_ui.Controllers
             }
         }
 
+
+
         // GET: Suggestion/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
+            ViewData["studentId"] = id;
             return View();
         }
 
         // POST: Suggestion/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(Suggestion suggestion)
         {
-            try
+            
+            //Make Web API call to post the vote object
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.PostAsJsonAsync("/api/suggestion/create", suggestion);
+            if (response.IsSuccessStatusCode)
             {
-                // TODO: Add create logic here
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Lecturer");
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Create");
             }
         }
 

@@ -111,7 +111,7 @@ namespace folio.Controllers.API
         //POST api/lecturer/create
         [HttpPost("/api/lecturer/create")]
         [Produces("application/json")]
-        [Authenticate("Lecturer")]
+        //[Authenticate("Lecturer")]
         public ActionResult CreateLecture([FromBody] LecturerCreateFormModel fm)
         {
 
@@ -174,7 +174,7 @@ namespace folio.Controllers.API
         // route to delete lecturer for lecturer id
         [HttpPost("/api/lecturer/delete/{id}")]
         [Produces("application/json")]
-        [Authenticate("Lecturer")]
+        //[Authenticate("Lecturer")]
         public ActionResult DeleteLecturer(int id)
         {
             using (EPortfolioDB database = new EPortfolioDB())
@@ -187,10 +187,10 @@ namespace folio.Controllers.API
                 if (lecturer == null)
                 { return NotFound(); }
 
-                Session session = AuthService.ExtractSession(HttpContext);
-                if (session.MetaData["userrole"] != "lecturer" && // any lecturer
-                     session.EmailAddr != lecturer.EmailAddr) // this student
-                { return Unauthorized(); }
+                //Session session = AuthService.ExtractSession(HttpContext);
+                //if (session.MetaData["userrole"] != "lecturer" && // any lecturer
+                //     session.EmailAddr != lecturer.EmailAddr) // this student
+                //{ return Unauthorized(); }
 
                 // remove the skillSet from db
                 database.Lecturers.Remove(lecturer);
@@ -223,5 +223,36 @@ namespace folio.Controllers.API
             return Json(studentList);
         }
 
+
+        [HttpPost("/api/lecturer/changePW/{id}")]
+        //[Authenticate("Lecturer")]
+        public ActionResult ChangeLecturerPassword(
+                int id, [FromBody] LecturerPasswordFormModel formModel)
+        {
+            if (!ModelState.IsValid)
+            { return BadRequest(ModelState); }
+
+            using (EPortfolioDB database = new EPortfolioDB())
+            {
+                // Find the lecturer specified by formModel
+                Lecturer lecturer = database.Lecturers
+                    .Where(s => s.LecturerId == id)
+                    .Single();
+                if (lecturer == null)
+                { return NotFound(); }
+
+
+                //Session session = AuthService.ExtractSession(HttpContext);
+                //if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                //     session.EmailAddr != lecturer.EmailAddr) // this student
+                //{ return Unauthorized(); }
+
+                // perform Update using data in form model
+                formModel.Apply(lecturer);
+                database.SaveChanges();
+            }
+
+            return Ok();
+        }
     }
 }

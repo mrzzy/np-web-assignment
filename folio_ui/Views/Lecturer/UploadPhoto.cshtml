@@ -1,7 +1,7 @@
-﻿@model folio.Models.Lecturer
+﻿@model folio.Models.LecturerViewModel
 
 @{
-    ViewData["Title"] = "Lecturer Details";
+    ViewData["Title"] = "Upload Photo";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["LecturerId"] = (Context.Items["UserInfo"] as UserInfo).Id;
 }
@@ -30,52 +30,46 @@
     </ul>
 }
 
-<div class="container">
-    <div class="d-flex flex-row">
-        <div class="p-2" style="width:35%;">
-            @{ string imageFileName = Model.Name + ".jpg"; }
-            <img src="~/img/@imageFileName"
-                 style="width:100%;" alt="@Model.Name's Profile Photo" />
-        </div>
+<h2 class="text-center">Upload Your Profile Photo</h2>
 
-        <div class="float-left" style="margin: 50px;">
-            <h1 class="text-left font-weight-bold" style="margin: 5px; font-size:100px;">@Model.Name</h1>
-            <p class="text-left font-weight-light font-italic"
-               style="margin: 5px; color:#2a2828; font-size:25px;">@Model.EmailAddr</p>
+<form asp-action="UploadPhoto" method="post" asp-controller="Lecturer" enctype="multipart/form-data">
+    <div class="container">
+        <div class="d-flex justify-content-center flex-column">
+            <div class="p-2" style="width:35%;">
+                @{ string imageFileName = Model.Name + ".jpg"; }
+                <img src="~/img/@imageFileName"
+                     style="width:100%;" alt="@Model.Name's Profile Photo" />
+            </div>
+            <input style="visibility:hidden;" asp-for="Name" value="@Model.Name"/>
+            <br />
+            <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                    <span class="input-group-text font-weight-bold"
+                          style="background-color:#fff; border:none; color:#111;">Upload Photo</span>
+                </div>
+                <input class="btn" asp-for="FileToUpload" accept="image/*">
+            </div>
             <br />
             <br />
-            <p class="text-left font-weight-bold"
-               style="margin: 5px;font-size:20px;">Description:</p>
-            <p class="text-left font-weight-light"
-               style="margin: 5px; color:#2a2828; font-size:40px;">@Model.Description</p>
-        </div>
-
-    </div>
-    <br />
-    <div class="d-flex justify-content-center flex-row">
-
-        <form asp-action="Edit" asp-route-id="@ViewData["LecturerId"]" method="get">
-            <button type="submit" class="editBtn font-weight-bold">
-                <span>Edit</span>
-            </button>
-        </form>
-
-        <form asp-action="Details">
-            <button type="submit" class="editBtn font-weight-bold" asp-action="Index"
+            <button type="submit" class="submitBtn font-weight-bold"><span>Submit</span></button>
+            <span style="color:red;">@ViewData["Message"]</span>
+            <br />
+            <br />
+            <button type="submit" class="submitBtn font-weight-bold" asp-action="Details" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]"
                     style="background-color:#000; color:#fff;">
                 <span>Back</span>
             </button>
-        </form>
-
+        </div>
 
     </div>
-</div>
+</form>
+
 
 
 <style>
-    .editBtn {
+    .submitBtn {
         margin: 7px;
-        font-size: 30px;
+        font-size: 25px;
         background-color: #FFD00B;
         border-color: #FFD00B;
         padding: 7px 15px;
@@ -83,14 +77,14 @@
         transition: all 0.5s;
     }
 
-        .editBtn span {
+        .submitBtn span {
             cursor: pointer;
             display: inline-block;
             position: relative;
             transition: 0.5s;
         }
 
-            .editBtn span:after {
+            .submitBtn span:after {
                 content: '\25b6';
                 position: absolute;
                 opacity: 0;
@@ -99,11 +93,11 @@
                 transition: 0.5s;
             }
 
-        .editBtn:hover span {
+        .submitBtn:hover span {
             padding-right: 30px;
         }
 
-            .editBtn:hover span:after {
+            .submitBtn:hover span:after {
                 opacity: 1;
                 right: 0;
             }
