@@ -106,9 +106,6 @@ namespace folio_ui.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, Lecturer lecturer)
         {
-            //Transfer data read to a Lecturer object
-
-            //Make Web API call to post the vote object
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await

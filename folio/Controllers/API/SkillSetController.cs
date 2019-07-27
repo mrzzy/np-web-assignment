@@ -119,7 +119,7 @@ namespace folio.API.Controllers
         // authentication lecturer is required
         [HttpPost("/api/skillset/create")]
         [Produces("application/json")]
-        [Authenticate("Lecturer")]
+        //[Authenticate("Lecturer")]
         public ActionResult CreateSkillSet([FromBody] SkillSetFormModel formModel)
         {
             // check if contents of form model is valid

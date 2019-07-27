@@ -1,7 +1,7 @@
-﻿@model IEnumerable<folio.Models.SkillSet>
+﻿@model folio.Models.SkillSet
 
 @{
-    ViewData["Title"] = "View Skillsets";
+    ViewData["Title"] = "Delete Skillsets";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["LecturerId"] = (Context.Items["UserInfo"] as UserInfo).Id;
 }
@@ -31,26 +31,19 @@
     </ul>
 }
 
-@if (Model.ToList().Count > 0)
-{
-    <h2>Available Skill Sets</h2>
-    <div style="text-align: right;">
-        <button class="search button">
-            <img alt="Search" src="/img/search@2x.png" />
-            <span class="d-sm-none"> Search </span>
-        </button>
-        <a class="button" asp-action="Delete" asp-controller="SkillSet">Delete</a>
-        <a class="btn button striking" asp-action="Create" asp-controller="SkillSet">Create</a>
+<form class="border border-light p-5" asp-action="Delete", asp-controller="Skillset" method="post">
+
+    <div class="text-center">
+        <p class="h4 mb-4">Delete Skillsets</p>
     </div>
-    <div class="ssCards" style=" display: flex; flex-wrap: wrap; justify-content: center;">
-        @foreach (var item in Model)
-        {
-            <div class="card" style="width: 16rem; margin: 10px;">
-                <div class="card-body">
-                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.SkillSetName)</h5>
-                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.SkillSetId)</h5>
-                </div>
-            </div>
-        }
+
+    <input type="number" id="skillsetid" class="form-control mb-4" placeholder="Skillset ID">
+
+    <button class="btn btn-info btn-block" type="submit">Delete</button>
+
+    <div class="d-flex justify-content-between">
+        <div>
+            <a class="button" asp-action="Index" asp-controller="SkillSet" asp-route-id="@ViewData["LecturerId"]">Back</a>
+        </div>
     </div>
-}
+</form>
