@@ -10,6 +10,7 @@ using folio.Models;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.IO;
+using folio.Services.API;
 
 namespace folio_ui.Controllers
 {
@@ -18,6 +19,7 @@ namespace folio_ui.Controllers
         // GET: Lecturers
         public async Task<ActionResult> Index()
         {
+
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await client.GetAsync("/api/lecturers/details");
@@ -34,24 +36,13 @@ namespace folio_ui.Controllers
         }
 
         // GET: Lecturer/Details/5
-        public async Task<ActionResult> Details(int id)
+        public ActionResult Details(int id)
         {
-            
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await
-             client.GetAsync("/api/lecturer/" + id.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                string data = await response.Content.ReadAsStringAsync();
-                 Lecturer lecturerList =
-                 JsonConvert.DeserializeObject<Lecturer>(data);
-                return View(lecturerList);
-            }
-            else
-            {
-                return View(new Lecturer());
-            }
+            APIClient api = new APIClient(HttpContext);
+            APIResponse response = api.CallAPI("GET", "/api/lecturer/" + id);
+            Lecturer lecturer = JsonConvert.DeserializeObject<Lecturer>(response.Content);
+
+            return View(lecturer);
         }
 
         // GET: Lecturer/Create
@@ -81,24 +72,13 @@ namespace folio_ui.Controllers
         }
 
         // GET: Lecturer/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public ActionResult Edit(int id)
         {
-            // Make Web API call to get a list of Lecturers related to a BookId
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await
-             client.GetAsync("/api/lecturer/" + id.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                string data = await response.Content.ReadAsStringAsync();
-                Lecturer lecturerList =
-                JsonConvert.DeserializeObject<Lecturer>(data);
-                return View(lecturerList);
-            }
-            else
-            {
-                return View(new Lecturer());
-            }
+            APIClient api = new APIClient(HttpContext);
+            APIResponse response = api.CallAPI("GET", "/api/lecturer/" + id);
+            Lecturer lecturer = JsonConvert.DeserializeObject<Lecturer>(response.Content);
+
+            return View(lecturer);
         }
 
         //POST: Lecturer/Edit/5
@@ -185,24 +165,13 @@ namespace folio_ui.Controllers
         }
 
         //GET: Lecturer/ChangePassword/5
-        public async Task<ActionResult> ChangePassword(int id)
+        public ActionResult ChangePassword(int id)
         {
-            // Make Web API call to get a list of Lecturers related to a BookId
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await
-             client.GetAsync("/api/lecturer/" + id.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                string data = await response.Content.ReadAsStringAsync();
-                Lecturer lecturerList =
-                JsonConvert.DeserializeObject<Lecturer>(data);
-                return View(lecturerList);
-            }
-            else
-            {
-                return View(new Lecturer());
-            }
+            APIClient api = new APIClient(HttpContext);
+            APIResponse response = api.CallAPI("GET", "/api/lecturer/" + id);
+            Lecturer lecturer = JsonConvert.DeserializeObject<Lecturer>(response.Content);
+
+            return View(lecturer);
         }
 
         // POST: Lecturer/ChangePassword/5
@@ -238,10 +207,10 @@ namespace folio_ui.Controllers
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await
-             client.PostAsJsonAsync("/api/lecturer/delete/" + id.ToString(),id);
+             client.PostAsJsonAsync("/api/lecturer/delete/" + id.ToString(), id);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -251,21 +220,15 @@ namespace folio_ui.Controllers
         }
 
         // GET: Lecturer/ViewMentees/5
-        public async Task<ActionResult> ViewMentees(int id)
+        public ActionResult ViewMentees(int id)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await client.GetAsync("/api/lecturer/mentees/" + id.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                string data = await response.Content.ReadAsStringAsync();
-                List<Student> studentList = JsonConvert.DeserializeObject<List<Student>>(data);
-                return View(studentList);
-            }
-            else
-            {
-                return View(new List<Student>());
-            }
+            APIClient api = new APIClient(HttpContext);
+            APIResponse response = api.CallAPI("GET", "/api/lecturer/mentees/" + id);
+            List<Student> lecturer = JsonConvert.DeserializeObject<List<Student>>(response.Content);
+
+            return View(lecturer);
+
+            
         }
 
         

@@ -89,7 +89,7 @@ namespace folio.Controllers.API
         // GET api/lecturer/5
         [HttpGet("/api/lecturer/{id}")]
         [Produces("application/json")]
-        //[Authenticate("Lecturer")]
+        [Authenticate("Lecturer")]
         public ActionResult GetLectureById(int id)
         {
             Console.WriteLine("get id:", id.ToString());
@@ -203,7 +203,7 @@ namespace folio.Controllers.API
         // GET api/lecturer/mentees/5/
         [HttpGet("/api/lecturer/mentees/{id}")]
         [Produces("application/json")]
-        //[Authenticate("Lecturer")]
+        [Authenticate("Lecturer")]
         public ActionResult GetMentees(int id)
         {
             Console.WriteLine("get id:", id.ToString());
