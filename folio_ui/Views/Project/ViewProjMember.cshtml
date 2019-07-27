@@ -23,51 +23,49 @@
         </li>
     </ul>
 }
+<div class="projects my-5">
+    <h3 class="title text-center"> Projects  </h3>
     <form asp-action="ViewProjMember" method="post">
-        @if (Model.ToList().Count > 0)
-        {
-        <div class="container">
-            <div class="d-flex justify-content-center flex-wrap">
+        <div class="d-flex flex-column flex-md-row justify-content-around align-items-center">
+            
+            @foreach (ProjectMember project in Model as IEnumerable<ProjectMember>)
+            {
+            <div class="project card text-center my-4">
+                <img class="frame frame-upper-right" src="/img/upper_right_project_frame.png" />
+                StudentId: <h5 class="card-title title"> @project.StudentId  </h5>
+                Role: <p class="card-text mx-auto"> @project.Role <p>
+                    <img class="frame frame-bottom-left" src="/img/bottom_left_project_frame.png" />
 
 
-
-                @foreach (var i in Model)
-                {
-                    <div class="LCards">
-
-                        <div class="LContainer">
-                            StudentID:<h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@i.StudentId</h4>
-                            Role:<p class="text-md-left font-weight-bold "
-                                    style="margin: 5px; color:#2d2d30;
-                            overflow: hidden;text-overflow: ellipsis;
-                            width: 240px; white-space: nowrap; ">@i.Role</p>
-
-                        </div>
-                        <div class="col-md-4">
-                            <div class="md-form mb-0">
-                                <input type="text" id="ProjTitle" class="form-control" asp-for="@i.ProjectId" readonly>
-                                <label for="name" class="ProjTitle"></label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="md-form mb-0">
-                                <input type="text" id="ProjTitle" class="form-control" asp-for="@i.StudentId" value="@i.StudentId">
-                                <label for="name" class="ProjTitle"></label>
-                            </div>
+                    <div class="col-md-4">
+                        <div class="md-form mb-0">
+                            <input type="number" id="ProjTitle" class="form-control" asp-for="@project.ProjectId" readonly>
+                            <label for="studentlabelId" class="ProjTitle"></label>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="md-form mb-0">
+                            <input type="number" id="ProjTitle" class="form-control" asp-for="@project.StudentId">
+                            <label for="studentlabelId" class="ProjTitle"></label>
+                        </div>
+                    </div>
+                <p>
+                </p>
 
-                }
-
+                <div class="buttonsubmit">
+                    <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit">
+                        Create
+                    </button>
+                </div>
             </div>
+           
+            }
 
-            <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit">
-                Confirm
-            </button>
         </div>
-
-        }
     </form>
+</div>
+
+
 <style>
     div.LCards {
         margin: 50px;

@@ -10,6 +10,7 @@ using folio.Services.API;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.IO;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -101,7 +102,7 @@ namespace folio_ui.Controllers
 
             APIResponse response = client.CallAPI("POST", "/api/project/update/" + id,
                 new StringContent(projectJson, Encoding.UTF8, "application/json"));
-            Dictionary<string, int> reciept = JsonConvert.DeserializeObject<Dictionary<string, int>>(response.Content);
+
       
 
          
@@ -125,6 +126,7 @@ namespace folio_ui.Controllers
                 return View(new Project());
             }
         }
+        [HttpGet]
         public async Task<ActionResult> ViewProjMember(int id)
         {
             HttpClient client = new HttpClient();
@@ -142,17 +144,79 @@ namespace folio_ui.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult> ViewProjMember(int id, Project project)
+        public async Task<ActionResult> ViewProjMember(int id, ProjectMember projMember)
         {
+
             APIClient client = new APIClient(HttpContext);
-            string projectJson = JsonConvert.SerializeObject(project);
-            UserInfo creator = HttpContext.Items["UserInfo"] as UserInfo;
-            APIResponse response = client.CallAPI("POST", "/api/project/assign/" + id + "?student=" + creator.Id,
-                new StringContent(projectJson, Encoding.UTF8, "application/json"));
+            string projectJson = JsonConvert.SerializeObject(projMember);
+            APIResponse response = client.CallAPI("POST", "/api/project/assign/" + id.ToString() + "?student=" + projectJson);
+                new StringContent(projectJson, Encoding.UTF8, "application/json");
 
-            return View(project);
+            return View(projMember);
         
-        }  
+        }
+        // GET: Lecturer/UploadPhoto/5
+        public async Task<ActionResult> UploadPoster(int id)
+        {
+            // Make Web API call to get a list of Lecturers related to a BookId
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5000");
+            HttpResponseMessage response = await
+             client.GetAsync("/api/project/" + id.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                ProjectViewModel projectList =
+                JsonConvert.DeserializeObject<ProjectViewModel>(data);
+                return View(projectList);
+            }
+            else
+            {
+                return View(new ProjectViewModel());
+            }
+        }
 
+        //POST: Upload Photo
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadPoster(int id, ProjectViewModel lvm)
+        {
+            if (lvm.FileToUpload != null &&
+            lvm.FileToUpload.Length > 0)
+            {
+                try
+                {
+                    // Find the filename extension of the file to be uploaded.
+                    string fileExt = Path.GetExtension(
+                     lvm.FileToUpload.FileName);
+                    // Rename the uploaded file with the staff’s name.
+                    string uploadedFile = lvm.ProjectPoster + fileExt;
+                    // Get the complete path to the images folder in server
+                    string savePath = Path.Combine(
+                     Directory.GetCurrentDirectory(),
+                     "wwwroot\\img", uploadedFile);
+                    // Upload the file to server
+                    using (var fileSteam = new FileStream(
+                     savePath, FileMode.Create))
+                    {
+                        await lvm.FileToUpload.CopyToAsync(fileSteam);
+                    }
+                    lvm.ProjectPoster = uploadedFile;
+                    ViewData["Message"] = "File uploaded successfully.";
+                }
+                catch (IOException)
+                {
+                    //File IO error, could be due to access rights denied
+                    ViewData["Message"] = "File uploading fail!";
+                }
+                catch (Exception ex) //Other type of error
+                {
+                    ViewData["Message"] = ex.Message;
+                }
+            }
+            return View(lvm);
+
+        }
     }
 }
+   

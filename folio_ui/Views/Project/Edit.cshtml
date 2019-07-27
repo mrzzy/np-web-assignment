@@ -1,6 +1,7 @@
 ﻿@model folio.Models.Project
 @{
     ViewData["Title"] = "Edit";
+    ViewData["ProjectId"] = (Context.Items["UserInfo"] as UserInfo).Id;
 }
 
 @section Navbar {
@@ -77,7 +78,7 @@
                     <div class="col-md-8">
 
                         <div class="md-form">
-                            <input type="text" id="Description" rows="1" class="form-control md-textarea"  asp-for="Description" value="@pDesc">
+                            <input type="text" id="Description" rows="1" class="form-control md-textarea" asp-for="Description" value="@pDesc">
                             <label for="message">Project Description</label>
                         </div>
 
@@ -92,6 +93,12 @@
                             <label class="custom-file-label" for="fileInput">File Label</label>
                         </div>
                     </div>
+                </div>
+                <br />
+                <div class="input-group input-group-lg ">
+
+                    <a class="btn font-weight-bold" href="/Project/UploadPoster/@ViewData["ProjectId"]"
+                       style="font-size:15px; background-color:#e8e8e8">Upload Photo</a>
                 </div>
                 <br />
                 <div class="buttonsubmit">
@@ -122,5 +129,8 @@
         float:left;
         margin-left:450px;
        
+    }
+    .btn.font-weight-bold{
+        margin-left:460px;
     }
 </style>
