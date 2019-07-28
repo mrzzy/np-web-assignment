@@ -66,19 +66,7 @@ namespace folio_ui.Controllers
 
             return RedirectToAction("Login", "Auth");
 
-            //HttpClient client = new HttpClient();
-            //client.BaseAddress = new Uri("http://localhost:5000");
-            //HttpResponseMessage response = await
-            // client.PostAsJsonAsync("/api/lecturer/create", lecturer);
-            //if (response.IsSuccessStatusCode)
-            //{
-
-            //    return RedirectToAction("Login", "Auth");
-            //}
-            //else
-            //{
-            //    return RedirectToAction("SignUp", "Lecturer");
-            //}
+            
         }
 
         // GET: Lecturer/Edit/5
@@ -187,20 +175,7 @@ namespace folio_ui.Controllers
 
             return RedirectToAction("Index");
 
-            ////Make Web API call to post the vote object
-            //HttpClient client = new HttpClient();
-            //client.BaseAddress = new Uri("http://localhost:5000");
-            //HttpResponseMessage response = await
-            // client.PostAsJsonAsync("/api/lecturer/changePW/" + id.ToString(), lecturer);
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-            //else
-            //{
-
-            //    return RedirectToAction("ChangePassword");
-            //}
+            
         }
 
         

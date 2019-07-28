@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using folio.Models;
 using folio.Services.API;
+using System.Text;
 
 namespace folio_ui.Controllers
 {
@@ -23,19 +24,7 @@ namespace folio_ui.Controllers
 
             return View(lecturer);
 
-            //HttpClient client = new HttpClient();
-            //client.BaseAddress = new Uri("http://localhost:5000");
-            //HttpResponseMessage response = await client.GetAsync("/api/lecturer/mentees/" + id.ToString());
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    string data = await response.Content.ReadAsStringAsync();
-            //    List<Student> studentList = JsonConvert.DeserializeObject<List<Student>>(data);
-            //    return View(studentList);
-            //}
-            //else
-            //{
-            //    return View(new List<Student>());
-            //}
+            
         }
 
         // GET: Suggestion/Details/5
@@ -48,24 +37,7 @@ namespace folio_ui.Controllers
             ViewData["studentId"] = id;
             return View(suggestionList);
 
-            //// Make Web API call to get a list of votes related to a SuggestionId
-            //HttpClient client = new HttpClient();
-            //client.BaseAddress = new Uri("http://localhost:5000");
-            //HttpResponseMessage response = await
-            // client.GetAsync("/api/suggestion/student/" + id.ToString());
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    string data = await response.Content.ReadAsStringAsync();
-            //    List<Suggestion> suggestionList =
-            //     JsonConvert.DeserializeObject<List<Suggestion>>(data);
-
-                
-            //    return View(suggestionList);
-            //}
-            //else
-            //{
-            //    return View(new List<Suggestion>());
-            //}
+            
         }
 
 
@@ -80,70 +52,22 @@ namespace folio_ui.Controllers
         // POST: Suggestion/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Suggestion suggestion)
+        public ActionResult Create(Suggestion suggestion)
         {
+            var content = JsonConvert.SerializeObject(suggestion);
+            string contentType = "application/json";
+
+            var sContent = new StringContent(content, Encoding.UTF8, contentType);
+
+            APIClient api = new APIClient(HttpContext);
+
+            APIResponse response = api.CallAPI("POST", "/api/suggestion/create", sContent);
+
+            return RedirectToAction("Index", "Lecturer");
+
             
-            //Make Web API call to post the vote object
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await
-             client.PostAsJsonAsync("/api/suggestion/create", suggestion);
-            if (response.IsSuccessStatusCode)
-            {
-
-                return RedirectToAction("Index","Lecturer");
-            }
-            else
-            {
-                return RedirectToAction("Create");
-            }
-        }
-
-        // GET: Suggestion/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Suggestion/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Suggestion/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Suggestion/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        }        
+       
     }
 }
 
