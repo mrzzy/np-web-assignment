@@ -264,10 +264,10 @@ namespace folio.Controllers.API
 
             return Ok();
         }
-        // GET api/lecturer/mentees/5/
+      
         [HttpGet("/api/project/member/{id}")]
         [Produces("application/json")]
-        //[Authenticate("Student")]
+        [Authenticate("Student")]
         public ActionResult GetMember(int id)
         {
             Console.WriteLine("get id:", id.ToString());
@@ -282,7 +282,6 @@ namespace folio.Controllers.API
 
             }
 
-            // check if skill has been found for targetId
             if (projectList == null) return NotFound();
 
             return Json(projectList);

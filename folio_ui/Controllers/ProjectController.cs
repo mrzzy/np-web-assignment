@@ -66,7 +66,7 @@ namespace folio_ui.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            // Make Web API call to get a list of Lecturers related to a BookId
+           
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await
@@ -86,17 +86,6 @@ namespace folio_ui.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(int id,  Project project , IFormCollection collection)
         {
-            //string Title = collection["Model.Title"];
-            //string ProjectUrl = collection["Model.ProjectUrl"];
-            //string ProjectPoster = collection["Model.ProjectPoster"];
-            //string Description = collection["Model.Description"];
-            //Project projects = new Project();
-            //projects.Title = Title;
-            //projects.ProjectUrl = ProjectUrl;
-            //projects.ProjectPoster = ProjectPoster;
-            //projects.Description = Description;
-
-
             APIClient client = new APIClient(HttpContext);
             string projectJson = JsonConvert.SerializeObject(project);
 
@@ -127,38 +116,32 @@ namespace folio_ui.Controllers
             }
         }
         [HttpGet]
-        public async Task<ActionResult> ViewProjMember(int id)
+        public ActionResult ViewProjMember(int id)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await client.GetAsync("/api/project/member/" + id.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                string data = await response.Content.ReadAsStringAsync();
-                List<ProjectMember> projectMemberList = JsonConvert.DeserializeObject<List<ProjectMember>>(data);
-                return View(projectMemberList);
-            }
-            else
-            {
-                return View(new List<ProjectMember>());
-            }
+            APIClient api = new APIClient(HttpContext);
+            APIResponse response = api.CallAPI("GET", "/api/project/member/" + id);
+            List<ProjectMember> projectMemberList = JsonConvert.DeserializeObject<List<ProjectMember>>(response.Content);
+
+            return View(projectMemberList);
+
+
         }
         [HttpPost]
-        public async Task<ActionResult> ViewProjMember(int id, ProjectMember projMember)
+        public async Task<ActionResult> ViewProjMember(int id, ProjectMember projMember, int student)
         {
 
             APIClient client = new APIClient(HttpContext);
             string projectJson = JsonConvert.SerializeObject(projMember);
-            APIResponse response = client.CallAPI("POST", "/api/project/assign/" + id.ToString() + "?student=" + projectJson);
+            APIResponse response = client.CallAPI("POST", "/api/project/assign/" + id + "?student=" + student);
                 new StringContent(projectJson, Encoding.UTF8, "application/json");
 
             return View(projMember);
         
         }
-        // GET: Lecturer/UploadPhoto/5
+      
         public async Task<ActionResult> UploadPoster(int id)
         {
-            // Make Web API call to get a list of Lecturers related to a BookId
+            
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await
@@ -176,21 +159,20 @@ namespace folio_ui.Controllers
             }
         }
 
-        //POST: Upload Photo
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UploadPoster(int id, ProjectViewModel lvm)
+        public async Task<IActionResult> UploadPoster(int id, ProjectViewModel pvm)
         {
-            if (lvm.FileToUpload != null &&
-            lvm.FileToUpload.Length > 0)
+            if (pvm.FileToUpload != null &&
+            pvm.FileToUpload.Length > 0)
             {
                 try
                 {
                     // Find the filename extension of the file to be uploaded.
                     string fileExt = Path.GetExtension(
-                     lvm.FileToUpload.FileName);
-                    // Rename the uploaded file with the staff’s name.
-                    string uploadedFile = lvm.ProjectPoster + fileExt;
+                     pvm.FileToUpload.FileName);
+                    // Rename the uploaded file with the Project Poster’s name.
+                    string uploadedFile = pvm.ProjectPoster + fileExt;
                     // Get the complete path to the images folder in server
                     string savePath = Path.Combine(
                      Directory.GetCurrentDirectory(),
@@ -199,9 +181,9 @@ namespace folio_ui.Controllers
                     using (var fileSteam = new FileStream(
                      savePath, FileMode.Create))
                     {
-                        await lvm.FileToUpload.CopyToAsync(fileSteam);
+                        await pvm.FileToUpload.CopyToAsync(fileSteam);
                     }
-                    lvm.ProjectPoster = uploadedFile;
+                    pvm.ProjectPoster = uploadedFile;
                     ViewData["Message"] = "File uploaded successfully.";
                 }
                 catch (IOException)
@@ -214,7 +196,7 @@ namespace folio_ui.Controllers
                     ViewData["Message"] = ex.Message;
                 }
             }
-            return View(lvm);
+            return View(pvm);
 
         }
     }
