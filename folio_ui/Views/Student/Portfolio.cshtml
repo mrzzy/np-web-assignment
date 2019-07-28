@@ -71,7 +71,7 @@
         <h5 class="card-title title"> @project.Title  </h5>
         <p class="card-text mx-auto"> @project.Description <p>
             <!-- TODO: link to actual project -->
-            <a class="button btn btn-view striking" >
+            <a class="button btn btn-view striking" asp-controller="Project" asp-action="Detail" asp-route-id="@project.ProjectId">
               View <img class="right" src="/img/right.png" />
             </a>
       </div>
