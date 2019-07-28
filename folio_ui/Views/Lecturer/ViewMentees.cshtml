@@ -20,10 +20,10 @@
             <a class="button" asp-action="ViewMentees" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Mentees</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" asp-action="Index" asp-controller="SkillSet" asp-all-route-id="@ViewData["LecturerId"]">Skill Sets</a>
+            <a class="button" asp-action="Index" asp-controller="SkillSet" asp-route-id="@ViewData["LecturerId"]">Skill Sets</a>
         </li>
         <li class="nav-item text-center mx-sm-3">
-            <a class="button" href="#">Change Password</a>
+            <a class="button" asp-action="ChangePassword" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">Change Password</a>
         </li>
 
         <li class="nav-item text-center mx-sm-3">

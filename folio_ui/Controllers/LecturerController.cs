@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.IO;
 using folio.Services.API;
+using System.Text;
 
 namespace folio_ui.Controllers
 {
@@ -54,21 +55,30 @@ namespace folio_ui.Controllers
         // POST: Lecturer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SignUp(Lecturer lecturer)
+        public ActionResult SignUp(Lecturer lecturer)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await
-             client.PostAsJsonAsync("/api/lecturer/create", lecturer);
-            if (response.IsSuccessStatusCode)
-            {
+            var content = JsonConvert.SerializeObject(lecturer);
+            string contentType = "application/json";
+            var sContent = new StringContent(content, Encoding.UTF8, contentType);
 
-                return RedirectToAction("Login", "Auth");
-            }
-            else
-            {
-                return RedirectToAction("SignUp", "Lecturer");
-            }
+            APIClient api = new APIClient(HttpContext);
+            APIResponse response = api.CallAPI("POST", "/api/lecturer/create", sContent);
+
+            return RedirectToAction("Login", "Auth");
+
+            //HttpClient client = new HttpClient();
+            //client.BaseAddress = new Uri("http://localhost:5000");
+            //HttpResponseMessage response = await
+            // client.PostAsJsonAsync("/api/lecturer/create", lecturer);
+            //if (response.IsSuccessStatusCode)
+            //{
+
+            //    return RedirectToAction("Login", "Auth");
+            //}
+            //else
+            //{
+            //    return RedirectToAction("SignUp", "Lecturer");
+            //}
         }
 
         // GET: Lecturer/Edit/5
@@ -84,45 +94,31 @@ namespace folio_ui.Controllers
         //POST: Lecturer/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, Lecturer lecturer)
+        public ActionResult Edit(int id, Lecturer lecturer)
         {
-            //Transfer data read to a Lecturer object
+            var content = JsonConvert.SerializeObject(lecturer);
+            string contentType = "application/json";
+            
+            var sContent = new StringContent(content,Encoding.UTF8,contentType);
 
-            //Make Web API call to post the vote object
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await
-             client.PostAsJsonAsync("/api/lecturer/update/" + id.ToString(), lecturer);
-            if (response.IsSuccessStatusCode)
-            {
-                
-                return RedirectToAction("Details",new { id = id });
-            }
-            else
-            {
-                return RedirectToAction("Index", "Lecturer");
-            }
+            APIClient api = new APIClient(HttpContext);
+
+            APIResponse response = api.CallAPI("POST", "/api/lecturer/update/" + id, sContent);
+
+            return RedirectToAction("Details", new { id = id });
         }
 
         // GET: Lecturer/UploadPhoto/5
-        public async Task<ActionResult> UploadPhoto(int id)
+        public ActionResult UploadPhoto(int id)
         {
-            // Make Web API call to get a list of Lecturers related to a BookId
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await
-             client.GetAsync("/api/lecturer/" + id.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                string data = await response.Content.ReadAsStringAsync();
-                LecturerViewModel lecturerList =
-                JsonConvert.DeserializeObject<LecturerViewModel>(data);
-                return View(lecturerList);
-            }
-            else
-            {
-                return View(new LecturerViewModel());
-            }
+
+            APIClient api = new APIClient(HttpContext);
+            APIResponse response = api.CallAPI("GET", "/api/lecturer/" + id);
+            LecturerViewModel lecturer = JsonConvert.DeserializeObject<LecturerViewModel>(response.Content);
+
+            return View(lecturer);
+
+            
         }
 
         //POST: Upload Photo
@@ -180,23 +176,31 @@ namespace folio_ui.Controllers
         // POST: Lecturer/ChangePassword/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(int id, Lecturer lecturer)
+        public ActionResult ChangePassword(int id, Lecturer lecturer)
         {
+            var content = JsonConvert.SerializeObject(lecturer);
+            string contentType = "application/json";
+            var sContent = new StringContent(content, Encoding.UTF8, contentType);
 
-            //Make Web API call to post the vote object
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await
-             client.PostAsJsonAsync("/api/lecturer/changePW/" + id.ToString(), lecturer);
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
+            APIClient api = new APIClient(HttpContext);
+            APIResponse response = api.CallAPI("POST", "/api/lecturer/changePW/" + id, sContent);
 
-                return RedirectToAction("ChangePassword");
-            }
+            return RedirectToAction("Index");
+
+            ////Make Web API call to post the vote object
+            //HttpClient client = new HttpClient();
+            //client.BaseAddress = new Uri("http://localhost:5000");
+            //HttpResponseMessage response = await
+            // client.PostAsJsonAsync("/api/lecturer/changePW/" + id.ToString(), lecturer);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    return RedirectToAction("Index");
+            //}
+            //else
+            //{
+
+            //    return RedirectToAction("ChangePassword");
+            //}
         }
 
         
@@ -204,22 +208,14 @@ namespace folio_ui.Controllers
         // POST: Lecturer/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id)
+        public ActionResult Delete(int id)
         {
-            //Make Web API call to post the vote object
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await
-             client.PostAsJsonAsync("/api/lecturer/delete/" + id.ToString(), id);
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                ViewData["Msg"] = "You are not Wasted! Another One";
-                return RedirectToAction("Edit", new { id = id });
-            }
+            APIClient api = new APIClient(HttpContext);
+            APIResponse response = api.CallAPI("POST", "/api/lecturer/delete/" + id);
+
+            return RedirectToAction("Index", "Home");
+
+           
         }
 
         // GET: Lecturer/ViewMentees/5

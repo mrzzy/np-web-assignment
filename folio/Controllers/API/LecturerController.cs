@@ -142,7 +142,8 @@ namespace folio.Controllers.API
         // route to update Lecturers for LectureId and Lecturer form model
         // authentication lecturer is required
         [HttpPost("/api/lecturer/update/{id}")]
-        //[Authenticate("Lecturer")]
+        [Produces("application/json")]
+        [Authenticate("Lecturer")]
         public ActionResult UpdateLecturer(
                 int id, [FromBody] LecturerUpdateFormModel formModel)
         {
@@ -158,12 +159,12 @@ namespace folio.Controllers.API
                 if (lecturer == null)
                 { return NotFound(); }
 
-                //Session session = AuthService.ExtractSession(HttpContext);
-                //if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
-                //     session.EmailAddr != lecturer.EmailAddr) // this student
-                //{ return Unauthorized(); }
+                Session session = AuthService.ExtractSession(HttpContext);
+                if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                     session.EmailAddr != lecturer.EmailAddr) // this student
+                { return Unauthorized(); }
 
-                // perform Update using data in form model
+
                 formModel.Apply(lecturer);
                 database.SaveChanges();
             }
@@ -174,7 +175,7 @@ namespace folio.Controllers.API
         // route to delete lecturer for lecturer id
         [HttpPost("/api/lecturer/delete/{id}")]
         [Produces("application/json")]
-        //[Authenticate("Lecturer")]
+        [Authenticate("Lecturer")]
         public ActionResult DeleteLecturer(int id)
         {
             using (EPortfolioDB database = new EPortfolioDB())
@@ -187,12 +188,12 @@ namespace folio.Controllers.API
                 if (lecturer == null)
                 { return NotFound(); }
 
-                //Session session = AuthService.ExtractSession(HttpContext);
-                //if (session.MetaData["userrole"] != "lecturer" && // any lecturer
-                //     session.EmailAddr != lecturer.EmailAddr) // this student
-                //{ return Unauthorized(); }
+                Session session = AuthService.ExtractSession(HttpContext);
+                if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                     session.EmailAddr != lecturer.EmailAddr) // this student
+                { return Unauthorized(); }
 
-                // remove the skillSet from db
+                
                 database.Lecturers.Remove(lecturer);
                 database.SaveChanges();
             }
@@ -225,7 +226,7 @@ namespace folio.Controllers.API
 
 
         [HttpPost("/api/lecturer/changePW/{id}")]
-        //[Authenticate("Lecturer")]
+        [Authenticate("Lecturer")]
         public ActionResult ChangeLecturerPassword(
                 int id, [FromBody] LecturerPasswordFormModel formModel)
         {
@@ -242,10 +243,10 @@ namespace folio.Controllers.API
                 { return NotFound(); }
 
 
-                //Session session = AuthService.ExtractSession(HttpContext);
-                //if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
-                //     session.EmailAddr != lecturer.EmailAddr) // this student
-                //{ return Unauthorized(); }
+                Session session = AuthService.ExtractSession(HttpContext);
+                if (session.MetaData["UserRole"] != "Lecturer" && // any lecturer
+                     session.EmailAddr != lecturer.EmailAddr) // this student
+                { return Unauthorized(); }
 
                 // perform Update using data in form model
                 formModel.Apply(lecturer);
