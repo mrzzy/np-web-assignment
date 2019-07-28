@@ -77,12 +77,12 @@
                 <br />
                 <div class="input-group input-group-lg ">
 
-                    <a class="btn font-weight-bold" href="/Project/UploadPoster/@ViewData["ProjectId"]"
+                    <a class="btn font-weight-bold" href="/Project/UploadPoster/@ViewData["StudentId"]"
                        style="font-size:15px; background-color:#e8e8e8">Upload Photo</a>
                 </div>
                 <br />
                 <div class="buttonsubmit">
-                    <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit" asp-action="Index">
+                    <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit" asp-action="Index" asp-route-id="@ViewData["StudentId"]">
                         Back
                     </button>
 

@@ -172,7 +172,7 @@ namespace folio_ui.Controllers
                     string fileExt = Path.GetExtension(
                      pvm.FileToUpload.FileName);
                     // Rename the uploaded file with the Project Poster’s name.
-                    string uploadedFile = pvm.ProjectPoster + fileExt;
+                    string uploadedFile = pvm.ProjectPoster + ".jpeg";
                     // Get the complete path to the images folder in server
                     string savePath = Path.Combine(
                      Directory.GetCurrentDirectory(),

@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["StudentId"] = (Context.Items["UserInfo"] as UserInfo).Id;
+
 }
 
 
