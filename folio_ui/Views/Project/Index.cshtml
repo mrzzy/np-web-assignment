@@ -25,8 +25,8 @@
                          style="width:100%;" alt="@project.ProjectPoster" class="LSelect" />
 
                     <div class="LContainer">
-                        Title: <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@Html.DisplayFor(modelItem => project.ProjectId)</h4>
-                        ProjectId:<h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@Html.DisplayFor(modelItem => project.Title)</h4>
+                        ProjectId: <h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@Html.DisplayFor(modelItem => project.ProjectId)</h4>
+                        Title:<h4 class="text-lg-left font-weight-bold" style="margin: 5px;">@Html.DisplayFor(modelItem => project.Title)</h4>
                         <a class="button striking" id="editbtn" asp-controller="Project" asp-action="Edit" asp-route-id="@project.ProjectId">Edit</a>
                         <a class="button striking" id="editbtn1" asp-controller="Project" asp-action="Detail" asp-route-id="@project.ProjectId">View</a>
                         <p class="text-md-left font-weight-light font-italic" style="margin: 5px;"></p>
