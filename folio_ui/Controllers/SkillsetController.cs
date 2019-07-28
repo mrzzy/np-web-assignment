@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using folio.Models;
-using System.Net;
 using folio.Services.API;
 using System.Text;
 
@@ -15,7 +14,6 @@ namespace folio_ui.Controllers
 {
     public class SkillsetController : Controller
     {
-        // GET: Skillset
         public async Task<ActionResult> Index(int id)
         {
             HttpClient client = new HttpClient();
@@ -35,7 +33,6 @@ namespace folio_ui.Controllers
 
         public async Task<ActionResult> Details(int id)
         {
-            // Make Web API call to get a list of votes related to a BookId
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000");
             HttpResponseMessage response = await
@@ -77,19 +74,15 @@ namespace folio_ui.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id)
+        public ActionResult Delete(int id)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await client.PostAsJsonAsync("/api/skillset/delete/" + id.ToString(), id);
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Details", id);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Skillset");
-            }
+            APIClient client = new APIClient(HttpContext);
+            string skillSetJson = JsonConvert.SerializeObject(id);
+
+            APIResponse response = client.CallAPI("POST", "/api/skillset/delete/" + id,
+                new StringContent(skillSetJson, Encoding.UTF8, "application/json"));
+
+            return View();
         }
 
         public ActionResult Edit()
@@ -99,20 +92,35 @@ namespace folio_ui.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, SkillSet skillSet)
+        public ActionResult Edit(int id, SkillSet skillSet)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await client.PostAsJsonAsync("/api/skillset/update/" + id.ToString(), skillSet);
-            if (response.IsSuccessStatusCode)
-            {
+            APIClient client = new APIClient(HttpContext);
+            string skillSetJson = JsonConvert.SerializeObject(skillSet);
 
-                return RedirectToAction("Details", id);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Skillset");
-            }
+            APIResponse response = client.CallAPI("POST", "/api/skillset/update/" + id,
+                new StringContent(skillSetJson, Encoding.UTF8, "application/json"));
+
+            return View();
         }
+
+        public ActionResult Search(int id)
+        {
+            APIClient api = new APIClient(HttpContext);
+
+            APIResponse response = api.CallAPI("GET", "/api/skillset/" + id);
+            SkillSet skillSet = JsonConvert.DeserializeObject<SkillSet>(response.Content);
+
+            response = api.CallAPI("GET", "/api/students?skillset=" + id);
+            List<int> studentIds = JsonConvert.DeserializeObject<List<int>>(response.Content);
+            IEnumerable<Student> students = studentIds.Select((studentId) => {
+                response = api.CallAPI("GET", "/api/student/" + studentId);
+                return JsonConvert.DeserializeObject<Student>(response.Content);
+            });
+            ViewData["Students"] = students;
+
+            return View(skillSet);
+        }
+
+
     }
 }
