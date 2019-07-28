@@ -25,13 +25,12 @@ services:
       - db
       
   ui:
-    image: mrzzy/np_web_folio_ui:develop
+    image: mrzzy/np_web_folio_ui
     build:
       context: .
       dockerfile: ./folio_ui/Dockerfile
       args:
         PROJECT_NAME: "folio_ui"
-      target: develop
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
     ports:
