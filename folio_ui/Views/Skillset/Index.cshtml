@@ -1,0 +1,58 @@
+﻿@model IEnumerable<folio.Models.SkillSet>
+
+@{
+    ViewData["Title"] = "View Skillsets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["LecturerId"] = (Context.Items["UserInfo"] as UserInfo).Id;
+}
+
+@section Navbar
+    {
+    <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="Details" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Profile</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Suggestion" asp-action="Index" asp-route-id="@ViewData["LecturerId"]">Post Suggestion</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="ViewMentees" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Mentees</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="Index" asp-controller="SkillSet" asp-route-id="@ViewData["LecturerId"]">Skill Sets</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="ChangePassword" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">Change Password</a>
+        </li>
+
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" id="btn-logout">Log Out</a>
+        </li>
+    </ul>
+}
+
+@if (Model.ToList().Count > 0)
+{
+    <h2>Available Skill Sets</h2>
+    <div style="text-align: right;">
+        <a class="btn button striking" asp-action="Create" asp-controller="SkillSet">Create</a>
+    </div>
+    <div class="ssCards" style=" display: flex; flex-wrap: wrap; justify-content: center;">
+        @foreach (var item in Model)
+        {
+            <div class="card" style="width: 16rem; margin: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.SkillSetName)</h5>
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.SkillSetId)</h5>
+                    <a class="search button" asp-action="Search" asp-controller="SkillSet" asp-route-id="@item.SkillSetId">
+                        <img alt="Search" src="/img/search@2x.png" />
+                        <span class="d-sm-none"> Search </span>
+                    </a>
+                    <p></p>
+                    <a class="button" asp-action="Delete" asp-controller="SkillSet" asp-route-id="@item.SkillSetId">Delete</a>
+                    <a class="btn button striking" asp-action="Edit" asp-controller="SkillSet" asp-route-id="@item.SkillSetId">Edit</a>
+                </div>
+            </div>
+        }
+    </div>
+}

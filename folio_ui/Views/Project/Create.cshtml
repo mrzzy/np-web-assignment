@@ -2,28 +2,10 @@
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["StudentId"] = (Context.Items["UserInfo"] as UserInfo).Id;
+
 }
 
-@section Navbar {
-    <ul class="navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
-        <li class="nav-item text-center mx-sm-3">
-            <button class="search button">
-                <img alt="Search" src="~/img/bell.png" />
-                <span class="d-sm-none"> Search </span>
-            </button>
-        </li>
-        <li class="nav-item text-center mx-sm-3">
-            <a class="button" asp-controller="Auth" asp-action="Portfolio">
-                Portfolio
-            </a>
-        </li>
-        <li class="nav-item text-center mx-sm-3">
-            <a class="button" asp-controller="Auth" asp-action="Project">
-                Projects
-            </a>
-        </li>
-    </ul>
-}
 <!--Section: Contact v.2-->
 <section class="mb-4">
 
@@ -46,7 +28,7 @@
                     <!--Grid column-->
                     <div class="col-md-4">
                         <div class="md-form mb-0">
-                            <input type="text" id="ProjTitle"  class="form-control" asp-for="Title">
+                            <input required type="text" id="ProjTitle" class="form-control" asp-for="Title">
                             <label for="name" class="ProjTitle">Project Title</label>
                         </div>
                     </div>
@@ -54,7 +36,7 @@
                     <!--Grid column-->
                     <div class="col-md-4">
                         <div class="md-form mb-0">
-                            <input type="text" id="ProjURL"  class="form-control" asp-for="ProjectUrl">
+                            <input type="url" id="ProjURL" class="form-control" asp-for="ProjectUrl">
                             <label for="email" class="projURL">Project URL</label>
                         </div>
                     </div>
@@ -89,11 +71,19 @@
                         </div>
                     </div>
                 </div>
+                <br />
                 <div class="buttonsubmit">
                     <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit">
                         Create
                     </button>
                 </div>
+                <br />
+                <div class="buttonsubmit">
+                    <a class="button striking" asp-controller="Project" asp-action="Index" asp-route-id="@ViewData["StudentId"]">
+                        Back
+                    </a>
+                </div>
+
             </form>
 
             
