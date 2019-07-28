@@ -38,7 +38,7 @@ namespace folio_ui.Controllers
                 Project project = JsonConvert.DeserializeObject<Project>(response.Content);
                 
                 //clamp description down for rendering in small view
-                int clampLimit = 200;
+                int clampLimit = 128;
                 if(project.Description.Count() > clampLimit) 
                 {
                     project.Description = 

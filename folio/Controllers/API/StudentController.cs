@@ -104,6 +104,7 @@ namespace folio.Controllers.API
             // extract portfolio information from student
             Object portfolio = new 
             {
+                StudentId = student.StudentId,
                 Name = student.Name,
                 Course = student.Course,
                 Photo = student.Photo,
