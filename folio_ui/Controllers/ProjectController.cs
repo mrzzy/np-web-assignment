@@ -19,23 +19,23 @@ namespace folio_ui.Controllers
     public class ProjectController : Controller 
     {
         // GET: /<controller>/
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int id)
 
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000");
-            HttpResponseMessage response = await client.GetAsync("/api/projects/details");
-            if (response.IsSuccessStatusCode)
-            {
-                string data = await response.Content.ReadAsStringAsync();
-                List<Project> projectList = JsonConvert.DeserializeObject<List<Project>>(data);
-                return View(projectList);
-                
-            }
-            else
-            {
-                return View(new List<Project>());
-            }
+            APIClient api = new APIClient();
+
+            APIResponse response = api.CallAPI("GET", "/api/project/" + id);
+            Project project = JsonConvert.DeserializeObject<Project>(response.Content);
+
+            response = api.CallAPI("GET", "/api/projects?student=" + id);
+            List<int> studentIds = JsonConvert.DeserializeObject<List<int>>(response.Content);
+            IEnumerable<Project> students = studentIds.Select((studentId) => {
+                response = api.CallAPI("GET", "/api/project/" + studentId);
+                return JsonConvert.DeserializeObject<Project>(response.Content);
+            });
+            ViewData["Projects"] = students;
+
+            return View(project);
         }
         public async Task<ActionResult> Create()
         {
