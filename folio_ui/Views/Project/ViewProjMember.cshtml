@@ -1,0 +1,76 @@
+﻿@model IEnumerable<folio.Models.ProjectMember>
+@{
+    ViewData["Title"] = "Project Member";
+    ViewData["StudentId"] = (Context.Items["UserInfo"] as UserInfo).Id;
+}
+
+
+<div class="projects my-5">
+    <h3 class="title text-center"> Projects  </h3>
+    <form asp-action="ViewProjMember" method="post">
+        <div class="d-flex flex-column flex-md-row justify-content-around align-items-center">
+            
+            @foreach (ProjectMember project in Model as IEnumerable<ProjectMember>)
+            {
+            <div class="project card text-center my-4">
+                <img class="frame frame-upper-right" src="/img/upper_right_project_frame.png" />
+                StudentId: <h5 class="card-title title"> @project.StudentId  </h5>
+                Role: <p class="card-text mx-auto"> @project.Role <p>
+                    <img class="frame frame-bottom-left" src="/img/bottom_left_project_frame.png" />
+
+
+                    <div class="col-md-4">
+                        <div class="md-form mb-0">
+                            <input type="number" id="ProjTitle" class="form-control" asp-for="@project.ProjectId" readonly>
+                            <label for="studentlabelId" class="ProjTitle"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="md-form mb-0">
+                            <input type="number" id="ProjTitle" class="form-control" asp-for="@project.StudentId">
+                            <label for="studentlabelId" class="ProjTitle"></label>
+                        </div>
+                    </div>
+                <p>
+                </p>
+
+                <div class="buttonsubmit">
+                    <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit">
+                        Create
+                    </button>
+                </div>
+            </div>
+           
+            }
+
+        </div>
+    </form>
+</div>
+
+
+<style>
+    div.LCards {
+        margin: 50px;
+        float: left;
+        width: 250px;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: left;
+    }
+
+    div.LContainer.text-lg-left {
+        text-align: center;
+    }
+
+    a.button.striking {
+        float: right;
+        margin-right: 50px;
+    }
+
+    h4.PageTitle {
+        text-align: center;
+    }
+
+    #editbtn {
+        float: left;
+    }
+</style>

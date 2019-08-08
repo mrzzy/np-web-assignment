@@ -1,0 +1,110 @@
+﻿@model folio.Models.Lecturer
+
+@{
+    ViewData["Title"] = "Lecturer Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["LecturerId"] = (Context.Items["UserInfo"] as UserInfo).Id;
+}
+@section Navbar
+    {
+    <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="Details" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Profile</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Suggestion" asp-action="Index" asp-route-id="@ViewData["LecturerId"]">Post Suggestion</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="ViewMentees" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Mentees</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="Index" asp-controller="SkillSet" asp-route-id="@ViewData["LecturerId"]">Skill Sets</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="ChangePassword" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">Change Password</a>
+        </li>
+
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" id="btn-logout">Log Out</a>
+        </li>
+    </ul>
+}
+
+<div class="container">
+    <div class="d-flex flex-row">
+        <div class="p-2" style="width:35%;">
+            @{ string imageFileName = Model.Name + ".jpg"; }
+            <img src="~/img/@imageFileName"
+                 style="width:100%;" alt="@Model.Name's Profile Photo" />
+        </div>
+
+        <div class="float-left" style="margin: 50px;">
+            <h1 class="text-left font-weight-bold" style="margin: 5px; font-size:100px;">@Model.Name</h1>
+            <p class="text-left font-weight-light font-italic"
+               style="margin: 5px; color:#2a2828; font-size:25px;">@Model.EmailAddr</p>
+            <br />
+            <br />
+            <p class="text-left font-weight-bold"
+               style="margin: 5px;font-size:20px;">Description:</p>
+            <p class="text-left font-weight-light"
+               style="margin: 5px; color:#2a2828; font-size:40px;">@Model.Description</p>
+        </div>
+
+    </div>
+    <br />
+    <div class="d-flex justify-content-center flex-row">
+
+        <form asp-action="Edit" asp-route-id="@ViewData["LecturerId"]" method="get">
+            <button type="submit" class="editBtn font-weight-bold">
+                <span>Edit</span>
+            </button>
+        </form>
+
+        <form asp-action="Details">
+            <button type="submit" class="editBtn font-weight-bold" asp-action="Index"
+                    style="background-color:#000; color:#fff;">
+                <span>Back</span>
+            </button>
+        </form>
+
+
+    </div>
+</div>
+
+
+<style>
+    .editBtn {
+        margin: 7px;
+        font-size: 30px;
+        background-color: #FFD00B;
+        border-color: #FFD00B;
+        padding: 7px 15px;
+        width: 150px;
+        transition: all 0.5s;
+    }
+
+        .editBtn span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+            .editBtn span:after {
+                content: '\25b6';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -20px;
+                transition: 0.5s;
+            }
+
+        .editBtn:hover span {
+            padding-right: 30px;
+        }
+
+            .editBtn:hover span:after {
+                opacity: 1;
+                right: 0;
+            }
+</style>

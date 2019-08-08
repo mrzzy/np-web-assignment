@@ -1,0 +1,48 @@
+﻿@model SkillSet;
+
+@{
+    ViewData["Title"] = "Search Students";
+    ViewData["APIEndpoint"] = Context.Items["APIEndpoint"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Navbar
+    {
+    <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="Details" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Profile</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Suggestion" asp-action="Index" asp-route-id="@ViewData["LecturerId"]">Post Suggestion</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="ViewMentees" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Mentees</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="Index" asp-controller="SkillSet" asp-route-id="@ViewData["LecturerId"]">Skill Sets</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="ChangePassword" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">Change Password</a>
+        </li>
+
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" id="btn-logout">Log Out</a>
+        </li>
+    </ul>
+}
+
+<div class="students my-5">
+    <h3 class="title text-center"> Students </h3>
+    <div class="d-flex flex-column flex-sm-row justify-content-around align-items-center">
+        @foreach (Student student in ViewData["Students"] as IEnumerable<Student>)
+        {
+        <div class="card" style="width: 16rem; margin: 10px;">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => student.StudentId)</h5>
+                <h5 class="card-title">@Html.DisplayFor(modelItem => student.Name)</h5>
+                <a class="btn button striking" href="@Html.DisplayFor(modelItem => student.ExternalLink)">Student Profile</a>
+            </div>
+        </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="1.2.0" />
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="2.3.0" />
+    <PackageReference Include="jose-jwt" Version="2.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\folio\folio.csproj" />
+    <ProjectReference Include="..\folio_ui\folio_ui.csproj" />
+  </ItemGroup>
+
+
+   <ItemGroup>
+       <Content Include=".env">
+         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+       </Content>
+   </ItemGroup>
+
+</Project>

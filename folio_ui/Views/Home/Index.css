@@ -1,0 +1,34 @@
+/*
+ * Home Index View CSS
+*/
+
+.container.landing {
+    margin-top: 6vmax;
+    margin-bottom: 6vmax;
+}
+
+.jumbotron-fluid {
+    margin-top: 8vmin;
+    margin-bottom: 8vmin;
+}
+
+/* align navigation contents properly */
+.nav-item > * {
+    display: inline-block;
+}
+
+/* Folio Cards */
+.folio-card {
+    width: 21em;
+    border: none !important;
+    box-shadow: 0 32px 42px rgba(0,0,0,0.06) !important;
+}
+
+.folio-card .picture  {
+    object-fit: cover;
+    height: 18em !important;
+}
+
+.folio-card .description  {
+    text-align: left;
+}

@@ -1,0 +1,115 @@
+﻿@model folio.Models.Project
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["StudentId"] = (Context.Items["UserInfo"] as UserInfo).Id;
+
+}
+
+
+<!--Section: Contact v.2-->
+    <section class="mb-4">
+
+        <!--Section heading-->
+        <h2 class="h1-responsive font-weight-bold text-center my-4">View Project</h2>
+        <!--Section description-->
+        <div class="something">
+            @{ string imageFileName = Model.ProjectPoster; }
+            <img src="~/img/@imageFileName"
+                 style="width:100%;" alt="@Model.ProjectPoster" class="LSelect"  />
+        </div>
+        <p class="text-center w-responsive mx-auto mb-5">
+
+        </p>
+
+        <div class="row">
+
+            <!--Grid column-->
+            <div class="col-md-9 mb-md-0 mb-5">
+                <form asp-action="Edit" method="post">
+
+                    <!--Grid row-->
+                    <div class="row">
+
+                        <!--Grid column-->
+                        <div class="col-md-4">
+                            <div class="md-form mb-0">
+                                <input type="text" id="ProjTitle" class="form-control" asp-for="@Model.Title" readonly>
+                                <label for="name" class="ProjTitle">Project Title</label>
+                            </div>
+                        </div>
+                        <!--Grid column-->
+                        <!--Grid column-->
+                        <div class="col-md-4">
+                            <div class="md-form mb-0">
+                                <input type="url" id="ProjectURL" class="form-control" asp-for="@Model.ProjectUrl" readonly>
+                                <label for="email" class="projURL">Project URL</label>
+                            </div>
+                        </div>
+
+
+                        <!--Grid column-->
+
+                    </div>
+                    <!--Grid row-->
+                    <!--Grid row-->
+                    <!--Grid row-->
+                    <!--Grid row-->
+
+                    <div class="row">
+                        <!--Grid column-->
+                        <div class="col-md-8">
+
+                            <div class="md-form">
+                                <textarea type="text" id="description" name="message" rows="4" class="form-control md-textarea" asp-for="@Model.Description" readonly></textarea>
+                                <label for="message">Project Description</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br>
+                    <!--Grid row-->
+                    <div class="buttonsubmit">
+                        <a class="button striking" asp-controller="Project" asp-action="ViewProjMember" asp-route-id="@Model.ProjectId">
+                            View Member
+                        </a>
+                    </div>
+                    <br />
+                    <div class="buttonsubmit">
+                        <a class="button striking" asp-controller="Project" asp-action="Index" asp-route-id="@ViewData["StudentId"]">
+                            Back
+                        </a>
+                    </div>
+
+                </form>
+
+
+                <!--Grid column-->
+
+            </div>
+        </div>
+    </section>
+
+<style>
+    .row {
+        justify-content: center;
+    }
+
+    .buttonsubmit {
+        text-align: center;
+    }
+    div.something{
+        
+        margin-left:auto;
+        margin-right:auto;
+        display:block;
+        width: 250px;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: left;
+    }
+    .buttonsubmit {
+        
+       
+    }
+</style>

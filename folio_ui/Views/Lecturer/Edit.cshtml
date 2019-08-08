@@ -1,0 +1,134 @@
+﻿@model folio.Models.Lecturer
+
+@{
+    ViewData["Title"] = "Lecturer Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["LecturerId"] = (Context.Items["UserInfo"] as UserInfo).Id;
+}
+@section Navbar
+    {
+    <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="Details" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Profile</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Suggestion" asp-action="Index" asp-route-id="@ViewData["LecturerId"]">Post Suggestion</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="ViewMentees" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Mentees</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="Index" asp-controller="SkillSet" asp-route-id="@ViewData["LecturerId"]">Skill Sets</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="ChangePassword" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">Change Password</a>
+        </li>
+
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" id="btn-logout">Log Out</a>
+        </li>
+    </ul>
+}
+
+<form asp-action="Edit" method="post">
+    <div class="container">
+        <div class="d-flex flex-row">
+            <div class="p-2" style="width:35%;">
+                @{ string imageFileName = Model.Name + ".jpg"; }
+                <img src="~/img/@imageFileName"
+                     style="width:100%;" alt="@Model.Name's Profile Photo" />
+            </div>
+
+            <div class="float-left" style="margin: 50px;">
+
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text font-weight-bold" id="basic-addon1"
+                              style="background-color:#fff; border:none; color:#111;">Name</span>
+                    </div>
+                    <input type="text" class="form-control" asp-for="Name" placeholder="@Model.Name">
+                </div>
+                <br />
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text font-weight-bold" id="basic-addon1"
+                              style="background-color:#fff; border:none; color:#111;">Email</span>
+                    </div>
+                    <input type="text" class="form-control" asp-for="EmailAddr" placeholder="@Model.EmailAddr">
+                </div>
+                <br />
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text font-weight-bold"
+                              style="background-color:#fff; border:none; color:#111;">Description</span>
+                    </div>
+                    <textarea class="form-control" asp-for="Description">@Model.Description</textarea>
+                </div>
+                <br />
+                <div class="input-group input-group-lg ">
+                    
+                    <a class="btn font-weight-bold" href="/Lecturer/UploadPhoto/@ViewData["LecturerId"]"                            
+                            style="font-size:15px; background-color:#e8e8e8">Upload Photo</a>
+                </div>
+
+                <div class="input-group input-group-lg">
+                    <button class="btn"
+                        style="background-color:#111; color:#FFD00B; border:0px; "
+                        type="submit" asp-action="Delete" asp-route-id="@Model.LecturerId">Wasted !</button>
+                    <span>@ViewData["Msg"]</span>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <div class="d-flex justify-content-center flex-row">
+            <button type="submit" class="submitBtn font-weight-bold">
+                <span>Submit</span>
+            </button>
+
+            <button type="submit" class="submitBtn font-weight-bold" asp-action="Index"
+                    style="background-color:#000; color:#fff;">
+                <span>Back</span>
+            </button>
+        </div>
+    </div>
+</form>
+
+
+
+<style>
+    .submitBtn {
+        margin: 7px;
+        font-size: 25px;
+        background-color: #FFD00B;
+        border-color: #FFD00B;
+        padding: 7px 15px;
+        width: 150px;
+        transition: all 0.5s;
+    }
+
+        .submitBtn span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+            .submitBtn span:after {
+                content: '\25b6';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -20px;
+                transition: 0.5s;
+            }
+
+        .submitBtn:hover span {
+            padding-right: 30px;
+        }
+
+            .submitBtn:hover span:after {
+                opacity: 1;
+                right: 0;
+            }
+</style>

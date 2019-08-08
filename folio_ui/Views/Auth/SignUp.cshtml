@@ -1,0 +1,30 @@
+@{
+ViewData["Title"] = "Login";
+ViewData["IsNavbarDisabled"] = true;
+}
+
+<div id="signup-container" class="container">
+  <div class="row my-5">
+    <a id="home-logo" class="mx-auto" asp-controller="Home" asp-action="Index">
+      <img class="faded logo" alt="folio" src="/img/logo.png">
+    </a>
+  </div>
+  <div class="row"> 
+    <!-- signup card -->
+    <div id="signup-card" class="card fancy col-10 col-sm-8 col-md-6 col-lg-4 mx-auto my-5">
+      <div class="card-body text-center">
+        <h1 class="card-title">
+          Sign up.
+        </h1>
+       <!-- signup options  -->
+       <a class="button btn d-block striking" asp-controller="Student" asp-action="SignUp">
+          Sign up as a Student
+       </a>
+      
+       <a class="button btn-outline-link d-block" asp-controller="Lecturer" asp-action="SignUp">
+          Sign up as a Lecturer
+       </a>
+      </div>
+    </div>
+  </div>
+</div>

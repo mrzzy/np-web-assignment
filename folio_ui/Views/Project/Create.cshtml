@@ -1,0 +1,115 @@
+﻿@model folio.Models.Project
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["StudentId"] = (Context.Items["UserInfo"] as UserInfo).Id;
+
+}
+
+<!--Section: Contact v.2-->
+<section class="mb-4">
+
+    <!--Section heading-->
+    <h2 class="h1-responsive font-weight-bold text-center my-4">Create Project</h2>
+    <!--Section description-->
+    <p class="text-center w-responsive mx-auto mb-5">
+        
+    </p>
+
+    <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-9 mb-md-0 mb-5">
+            <form asp-action="Create" method="post">
+
+                <!--Grid row-->
+                <div class="row">
+
+                    <!--Grid column-->
+                    <div class="col-md-4">
+                        <div class="md-form mb-0">
+                            <input required type="text" id="ProjTitle" class="form-control" asp-for="Title">
+                            <label for="name" class="ProjTitle">Project Title</label>
+                        </div>
+                    </div>
+                    <!--Grid column-->
+                    <!--Grid column-->
+                    <div class="col-md-4">
+                        <div class="md-form mb-0">
+                            <input type="url" id="ProjURL" class="form-control" asp-for="ProjectUrl">
+                            <label for="email" class="projURL">Project URL</label>
+                        </div>
+                    </div>
+
+
+                    <!--Grid column-->
+
+                </div>
+                <!--Grid row-->
+                <!--Grid row-->
+                <!--Grid row-->
+                <!--Grid row-->
+
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-md-8">
+
+                        <div class="md-form">
+                            <textarea type="text" id="description" rows="1" class="form-control md-textarea" asp-for="Description"></textarea>
+                            <label for="message">Project Description</label>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!--Grid row-->
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" asp-for="ProjectPoster">
+                            <label class="custom-file-label" for="fileInput">File Label</label>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="buttonsubmit">
+                    <button class="btn button striking" type="submit" name="submit-btn" id="create-btn-submit">
+                        Create
+                    </button>
+                </div>
+                <br />
+                <div class="buttonsubmit">
+                    <a class="button striking" asp-controller="Project" asp-action="Index" asp-route-id="@ViewData["StudentId"]">
+                        Back
+                    </a>
+                </div>
+
+            </form>
+
+            
+            <div class="status"></div>
+        </div>
+        <!--Grid column-->
+        <!--Grid column-->
+        <div class="col-md-3 text-center">
+            <ul class="list-unstyled mb-0">
+
+            </ul>
+        </div>
+        <!--Grid column-->
+
+    </div>
+
+</section>
+
+<style>
+    .row{
+        justify-content:center;
+        margin-left:160px;
+    }
+    
+    .buttonsubmit{
+        text-align:center;
+        margin-left:130px;
+    }
+</style>

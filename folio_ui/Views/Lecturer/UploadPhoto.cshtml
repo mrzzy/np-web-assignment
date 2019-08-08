@@ -1,0 +1,104 @@
+﻿@model folio.Models.LecturerViewModel
+
+@{
+    ViewData["Title"] = "Upload Photo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["LecturerId"] = (Context.Items["UserInfo"] as UserInfo).Id;
+}
+@section Navbar
+    {
+    <ul class=" navbar-nav flex-grow-1 flex-sm-row justify-content-sm-end">
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="Details" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Profile</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-controller="Suggestion" asp-action="Index" asp-route-id="@ViewData["LecturerId"]">Post Suggestion</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="ViewMentees" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">View Mentees</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="Index" asp-controller="SkillSet" asp-route-id="@ViewData["LecturerId"]">Skill Sets</a>
+        </li>
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" asp-action="ChangePassword" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]">Change Password</a>
+        </li>
+
+        <li class="nav-item text-center mx-sm-3">
+            <a class="button" id="btn-logout">Log Out</a>
+        </li>
+    </ul>
+}
+
+<h2 class="text-center">Upload Your Profile Photo</h2>
+
+<form asp-action="UploadPhoto" method="post" asp-controller="Lecturer" enctype="multipart/form-data">
+    <div class="container">
+        <div class="d-flex justify-content-center flex-column">
+            <div class="p-2" style="width:35%;">
+                @{ string imageFileName = Model.Name + ".jpg"; }
+                <img src="~/img/@imageFileName"
+                     style="width:100%;" alt="@Model.Name's Profile Photo" />
+            </div>
+            <input style="visibility:hidden;" asp-for="Name" value="@Model.Name"/>
+            <br />
+            <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                    <span class="input-group-text font-weight-bold"
+                          style="background-color:#fff; border:none; color:#111;">Upload Photo</span>
+                </div>
+                <input class="btn" asp-for="FileToUpload" accept="image/*">
+            </div>
+            <br />
+            <br />
+            <button type="submit" class="submitBtn font-weight-bold"><span>Submit</span></button>
+            <span style="color:red;">@ViewData["Message"]</span>
+            <br />
+            <br />
+            <button type="submit" class="submitBtn font-weight-bold" asp-action="Details" asp-controller="Lecturer" asp-route-id="@ViewData["LecturerId"]"
+                    style="background-color:#000; color:#fff;">
+                <span>Back</span>
+            </button>
+        </div>
+
+    </div>
+</form>
+
+
+
+<style>
+    .submitBtn {
+        margin: 7px;
+        font-size: 25px;
+        background-color: #FFD00B;
+        border-color: #FFD00B;
+        padding: 7px 15px;
+        width: 150px;
+        transition: all 0.5s;
+    }
+
+        .submitBtn span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+            .submitBtn span:after {
+                content: '\25b6';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -20px;
+                transition: 0.5s;
+            }
+
+        .submitBtn:hover span {
+            padding-right: 30px;
+        }
+
+            .submitBtn:hover span:after {
+                opacity: 1;
+                right: 0;
+            }
+</style>

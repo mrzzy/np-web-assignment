@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["UserInfo"] = Context.Items["UserInfo"];
+}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - folio_ui</title>
+
+    <!-- google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans|Roboto:500,700&display=swap" rel="stylesheet">
+      <!-- jquery -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                  crossorigin="anonymous"
+                  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+    </script>
+   <!-- popper js -->
+   <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+
+    <!-- bootstrap with material design  -->
+    <!-- styling -->
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/css/mdb.min.css" rel="stylesheet">
+    
+    <!-- javascript -->
+    <!-- Bootstrap core JavaScript -->
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/js/mdb.min.js"></script>
+
+    <!-- bundled js -->
+    <script defer src="~/js/bundle.js"></script>
+  </head>
+  <body>
+    <!-- check if navbar is enabled -->
+    @if(ViewData["IsNavbarDisabled"] == null || (bool)ViewData["IsNavbarDisabled"] == false){
+    <header class="my-4">
+      <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light">
+        <div class="container flex-col flex-sm-row">
+          <!-- logo -->
+          <a class="navbar-left" asp-controller="Home" asp-action="Index">
+            <img class="brand-logo" alt="folio" src="/img/logo.png"/>
+          </a>  
+          <!-- navbar collapse toggle button --->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- navigation items -->
+          <div class="navbar-collapse collapse flex-sm-row mt-2 mt-sm-0">
+            @RenderSection("Navbar", required: false)
+            @if (!IsSectionDefined("Navbar"))
+            {
+              @if(ViewData["UserInfo"] == null)
+              {
+              <partial name="~/Views/Shared/Navbars/_NavbarAnonymous.cshtml" />
+              }
+              else if((ViewData["UserInfo"] as UserInfo).UserRole == "Student")
+              {
+              <partial name="~/Views/Shared/Navbars/_NavbarStudent.cshtml" />
+              }
+            }
+          </div>
+        </div>
+      </nav>
+    </header>
+    }
+
+    @if( ViewData["UserInfo"] != null && (ViewData["UserInfo"] as UserInfo).UserRole == "Student") 
+    {
+    <partial name="~/Views/Shared/Suggestions/_SuggestionsStudent.cshtml" />
+    }
+    
+    <main>
+      @RenderBody()
+    </main>
+
+    <footer class="border-top footer text-muted">
+    </footer>
+  </body>
+</html>

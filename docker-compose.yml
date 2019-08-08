@@ -1,0 +1,42 @@
+version: "3.7"
+services:
+  db:
+    image: mrzzy/np_web_folio_db
+    build: 
+      context: ./db
+      args:
+        - "SA_PASSWORD=${DB_PASSWORD}"
+    ports:
+      - "1433:1433"
+
+  api:
+    image: mrzzy/np_web_folio_api
+    build:
+      context: .
+      dockerfile: ./folio/Dockerfile
+      args:
+        PROJECT_NAME: "folio"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ".:/src"
+      - "./.env:/app/.env"
+    depends_on:
+      - db
+      
+  ui:
+    image: mrzzy/np_web_folio_ui
+    build:
+      context: .
+      dockerfile: ./folio_ui/Dockerfile
+      args:
+        PROJECT_NAME: "folio_ui"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+    ports:
+      - "5001:5001"
+    volumes:
+      - ".:/src"
+      - "./.env:/app/.env"
+    depends_on:
+      - api
