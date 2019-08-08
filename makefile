@@ -26,6 +26,12 @@ build:
 export: $(DOCKER_TARGET_IMAGES)
 	tar cvzf $(DOCKER_EXPORT_TGZ) $(DOCKER_EXPORT_DIR)
 
+import: $(DOCKER_EXPORT_TGZ)
+	tar xzvf $(DOCKER_EXPORT_TGZ)
+	$(foreach i,$(DOCKER_TARGET_IMAGES),\
+		docker load -i $(DOCKER_EXPORT_DIR)/$(notdir $i).tar;)
+
+
 mrzzy/np_web_folio_%:
 	@mkdir -p $(DOCKER_EXPORT_DIR)
 	docker save --output=$(DOCKER_EXPORT_DIR)/$(notdir $@).tar $@
