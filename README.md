@@ -1,6 +1,16 @@
 # Folio - NP Web Assignment
 This repository contains our WEB assignment source code.
 
+## Intro
+Folio is a website where students can professional exhibit the portfolios for potential employers.
+This project was completed as part of the WEB module's assignment.
+
+### Screenshots
+#### Homepage
+![Homepage](assets/homepage.png)
+#### Portfolio
+![Homepage](assets/portfolio.png)
+
 ## Setup 
 ### Docker
 1. Install `docker` and `docker-compose`
